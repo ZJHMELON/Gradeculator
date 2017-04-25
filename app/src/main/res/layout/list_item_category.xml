@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_category_name"
+        android:textStyle="bold"
+        tools:text = "Name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_category_slash"
+        android:textStyle="bold"
+        android:text="/"
+        tools:text = "/"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/list_item_category_points"
+        android:layout_marginStart="37dp"
+        android:layout_toRightOf="@+id/list_item_category_points"
+        android:layout_marginLeft="37dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_category_possible"
+        android:textStyle="bold"
+        tools:text = "Possible"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/list_item_category_slash"
+        android:layout_marginStart="26dp"
+        android:layout_toRightOf="@+id/list_item_category_slash"
+        android:layout_marginLeft="26dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_category_due"
+        android:textStyle="bold"
+        tools:text = "Due"
+        android:layout_marginStart="47dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/list_item_category_name"
+        android:layout_marginLeft="47dp"
+        android:layout_toRightOf="@+id/list_item_category_name" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_category_points"
+        tools:text = "Points"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:layout_toEndOf="@+id/list_item_category_due"
+        android:layout_marginStart="83dp"
+        android:layout_toRightOf="@+id/list_item_category_due"
+        android:layout_marginLeft="83dp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000000" />
+
+
+</RelativeLayout>

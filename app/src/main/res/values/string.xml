@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">Gradeculator</string>
+
+    <string name="list_course_title">Course title</string>
+    <string name="list_course_identifier">Course Identifier</string>
+
+    <string name="course_name">Object-Oriented Programming I</string>
+
+    <integer name = "default_gpa">3</integer>>
+
+    <string name="credit_label">Credits</string>
+
+    <string name="title_label">Course Title</string>
+
+    <string name="name_label">Course Name</string>
+
+
+    <string name="desired_grade_label">Desired Grade</string>>
+
+    <string name="GradeName_label">Name</string>
+
+    <string name="GradeName_hint">Exam 1</string>
+
+
+    <string name="dueDate_label">Due</string>
+
+    <string name="dueDate_hint">April 1</string>
+
+    <string name="totalPoints_label">Total Points</string>
+
+    <string name="totalPoints_hint">Optional</string>
+
+    <string name="grade_label">Grade</string>
+
+    <string name="weight_label">Weight</string>
+
+    <string name="weight_hint">2%</string>
+
+    <string name="point_hint">Optional</string>
+
+    <string name="status_label">Completed</string>
+
+    <string name="session_label">Section</string>
+
+    <string name="session_hint">Exam</string>
+
+    <string name="course_title">CMSC131</string>
+
+    <string name="save_button">SAVE</string>
+    <string name="cancel_button">CANCEL</string>
+
+    <string name="create_course_button">Create Course</string>
+    <string name="delete_course_button">Delete Course</string>
+
+    <string name="save_course_button">Save Course</string>
+    <string name="cancel_course_button">Cancel Course</string>
+
+    <string name="points_label">Possible Points</string>>
+
+    <string name="back_button">Back Button</string>
+    <string name="add_button">Add Button</string>
+    <string name="edit_button">Edit button</string>
+
+    <string-array name="grade_array">
+        <item>A+</item>
+        <item>A</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B</item>
+        <item>B-</item>
+        <item>C+</item>
+        <item>C</item>
+        <item>C-</item>
+    </string-array>
+
+    <string name="exam_label">Exam</string>
+    <string name="quiz_label">Quiz</string>
+    <string name="assignment_label">Assignment</string>
+    <string name="project_label">Project</string>
+    <string name="extra_label">Extra</string>
+
+    <string name="category_back">Back</string>
+    <string name="category_edit">Edit</string>
+    <string name="category_add">Add</string>
+
+    <string name="confirm_remove">Confirm</string>
+    <string name="cancel_remove">Cancel</string>
+
+</resources>
