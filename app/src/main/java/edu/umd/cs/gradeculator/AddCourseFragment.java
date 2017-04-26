@@ -112,6 +112,8 @@ public class AddCourseFragment extends Fragment {
         grade_spinner.setAdapter(statusAdapter);
         if (course != null) {
             grade_spinner.setSelection(course.getGradePosition());
+        } else {
+            grade_spinner.setSelection(statusAdapter.getPosition("A"));
         }
 
         saveButton = (Button)view.findViewById(R.id.save_story_button);
