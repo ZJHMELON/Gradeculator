@@ -14,6 +14,7 @@
 
     <string name="name_label">Course Name</string>
 
+    <string name="current_grade_label">Current Grade</string>
 
     <string name="desired_grade_label">Desired Grade</string>>
 

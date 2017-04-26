@@ -33,4 +33,11 @@
             android:background="#000000" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:id="@+id/list_item_current_grade"
+        tools:text="@string/current_grade_label"/>
+
 </RelativeLayout>

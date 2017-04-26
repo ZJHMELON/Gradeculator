@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 import edu.umd.cs.gradeculator.model.Work.Category;
 
+import static edu.umd.cs.gradeculator.model.Course.Grade.*;
+
 public class Course implements Serializable {
 	private String id;
 	private String title;
@@ -19,7 +21,7 @@ public class Course implements Serializable {
 	private double project_weight;
 	private double assignment_weight;
 	private double extra_weight;
-	private Grade grade = Grade.A; // default
+	private Grade grade = A; // default
 	private double current_grade;
 	private double desire_grade;
 	private int credit;
@@ -141,7 +143,7 @@ public class Course implements Serializable {
 		this.credit = credit;
 	}
 
-	public double getCredit() {
+	public int getCredit() {
 		return credit;
 	}
 
@@ -184,7 +186,7 @@ public class Course implements Serializable {
 				this.grade = grade.A_PLUS;
 				break;
 			case 1:
-				this.grade = grade.A;
+				this.grade = A;
 				break;
 			case 2:
 				this.grade = grade.A_MINUS;
@@ -208,7 +210,7 @@ public class Course implements Serializable {
 				this.grade = grade.C_MINUS;
 				break;
 			default:
-				this.grade = grade.A;
+				this.grade = A;
 				break;
 		}
 	}
@@ -222,7 +224,29 @@ public class Course implements Serializable {
 		return desire_grade;
 	}
 
-
+	public Grade getDesire_grade_inLetter(double grade) {
+		Grade g = A;
+		if(grade >= 97) {
+			g = A_PLUS;
+		}else if(grade >= 93) {
+			g = A;
+		}else if(grade >= 90) {
+			g = A_MINUS;
+		}else if(grade >= 87) {
+			g = B_PLUS;
+		}else if(grade >= 83) {
+			g = B;
+		}else if(grade >= 80) {
+			g = B_MINUS;
+		}else if(grade >= 77) {
+			g = C_PLUS;
+		}else if(grade >= 73) {
+			g = C;
+		}else if(grade >= 70) {
+			g = C_MINUS;
+		}
+		return g;
+	}
 	public void setDesire_grade(Grade grade) {
 		switch (grade) {
 			case A_PLUS:

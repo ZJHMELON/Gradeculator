@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +41,7 @@ public class MainFragment extends Fragment{
     private RecyclerView courseRecyclerView;
     private CourseAdapter adapter;
     private static final int REQUEST_CODE_CREATE_COURSE = 0;
+    private static final int REQUEST_CODE_EDIT_COURSE = 1;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -100,6 +100,9 @@ public class MainFragment extends Fragment{
             courseService.addCourseToBacklog(courseCreated);
             updateUI();
         }
+        if(requestCode == REQUEST_CODE_EDIT_COURSE) {
+            updateUI();
+        }
     }
 
     @Override
@@ -114,12 +117,6 @@ public class MainFragment extends Fragment{
             case R.id.menu_item_create_course:
                 Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
                 startActivityForResult(createCourseIntent, REQUEST_CODE_CREATE_COURSE);
-//                Intent createStoryIntent = new Intent(getActivity(), StoryActivity.class);
-//                startActivityForResult(createStoryIntent, REQUEST_CODE_CREATE_STORY);
-                return true;
-            case R.id.menu_item_delete_course:
-//                Intent activeSprintIntent = new Intent(getActivity(), SprintActivity.class);
-//                startActivity(activeSprintIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -129,7 +126,7 @@ public class MainFragment extends Fragment{
     private class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView courseTitle;
         private TextView courseIdentifier;
-
+        private TextView currentGrade;
         private Course course;
 
         public CourseHolder(View itemView) {
@@ -138,6 +135,7 @@ public class MainFragment extends Fragment{
 
             courseTitle = (TextView) itemView.findViewById(R.id.list_item_course_title);
             courseIdentifier = (TextView) itemView.findViewById(R.id.list_item_course_identifier);
+            currentGrade = (TextView) itemView.findViewById(R.id.list_item_current_grade);
         }
 
         public void bindCourse(Course course) {
@@ -145,14 +143,17 @@ public class MainFragment extends Fragment{
 
             courseTitle.setText(course.getTitle());
             courseIdentifier.setText(course.getIdentifier());
+            if(Double.compare(course.getCurrent_grade(), 0.0) == 1) {
+                currentGrade.setText(Double.toString(course.getCurrent_grade()));
+            }
         }
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(getActivity(), course.getTitle() + "is selected", Toast.LENGTH_SHORT).show();
-            Intent intent = AddCourseActivity.newIntent(getActivity(), course.getId());
+//            Toast.makeText(getActivity(), course.getTitle() + "is selected", Toast.LENGTH_SHORT).show();
+            Intent intent = CourseDirActivity.newIntent(getActivity(), course.getId());
 
-            startActivityForResult(intent, REQUEST_CODE_CREATE_COURSE);
+            startActivityForResult(intent, REQUEST_CODE_EDIT_COURSE);
         }
     }
 
@@ -212,11 +213,11 @@ public class MainFragment extends Fragment{
     public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         private final ItemTouchHelperAdapter mAdapter;
-        private List<Course> courses = null;
+//        private List<Course> courses = null;
 
         public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
             mAdapter = adapter;
-            courses = DependencyFactory.getCourseService(getActivity()).getAllCourses();
+//            courses = DependencyFactory.getCourseService(getActivity()).getAllCourses();
         }
 
         @Override
