@@ -5,129 +5,169 @@
     android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:paddingTop="30sp"
+    <TableLayout
+        android:paddingTop="20sp"
         android:orientation="horizontal"
-        android:weightSum="8"
+        android:weightSum="9"
         android:layout_width ="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10sp">
+        android:paddingBottom="10sp"
+        >
 
+        <TableRow>
         <TextView
+            android:textColor="@color/text_color"
             android:text="@string/name_label"
-            android:paddingLeft="10sp"
-            android:textSize="20sp"
-            android:layout_weight="3"
+            android:paddingLeft="15sp"
+            android:textSize="16sp"
+            android:layout_weight="4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             />
 
         <EditText
-            android:gravity="center"
+            android:cursorVisible="false"
+            android:textSize="17sp"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="25sp"
+            android:gravity="right"
             android:inputType="text"
             android:id="@+id/course_name"
             android:layout_weight="5"
             android:layout_width ="0dp"
             android:layout_height="wrap_content"
             android:hint = "@string/course_name"
-            android:textColor="#abaeb2"
-        />
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_color"
+            android:background="@android:color/transparent"
+            />
+        </TableRow>
 
-    </LinearLayout>
+    </TableLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@color/hint_color"/>
 
 
-    <LinearLayout
+    <TableLayout
         android:paddingTop="10sp"
-        android:paddingBottom="10sp"
         android:orientation="horizontal"
-        android:weightSum="8"
+        android:weightSum="9"
         android:layout_width ="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="10sp">
 
+        <TableRow>
         <TextView
+            android:textColor="@color/text_color"
             android:text="@string/title_label"
-            android:paddingLeft="10dp"
-            android:textSize="20sp"
-            android:layout_weight="3"
+            android:paddingLeft="16dp"
+            android:textSize="15sp"
+            android:layout_weight="4"
             android:layout_width ="0dp"
             android:layout_height="wrap_content"
             />
 
         <EditText
-            android:gravity="center"
+            android:cursorVisible="false"
+            android:inputType="text"
+            android:textSize="17sp"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="25sp"
+            android:gravity="right"
             android:layout_weight="5"
             android:layout_width ="0dp"
             android:id="@+id/course_title"
             android:layout_height="wrap_content"
             android:hint = "@string/course_title"
-            android:textColor="#abaeb2"
-        />
-    </LinearLayout>
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_color"
+            android:background="@android:color/transparent"
+            />
+        </TableRow>
+    </TableLayout>
 
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@color/hint_color"/>
 
-    <LinearLayout
+    <TableLayout
         android:paddingTop="10sp"
-        android:paddingBottom="10sp"
-        android:weightSum="8"
         android:orientation="horizontal"
+        android:weightSum="9"
         android:layout_width ="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="10sp">
 
+        <TableRow>
         <TextView
+            android:background="@android:color/transparent"
+            android:textColor="@color/text_color"
             android:text="@string/credit_label"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:layout_width ="0dp"
-            android:paddingLeft="10sp"
-            android:textSize="20sp"
+            android:paddingLeft="15sp"
+            android:textSize="16sp"
             android:layout_height="wrap_content"
             />
 
         <EditText
+            android:cursorVisible="false"
+            android:textSize="17sp"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="25sp"
             android:id="@+id/credit"
-            android:gravity="center"
+            android:gravity="right"
             android:inputType="number"
-            android:text="3"
+            android:hint="3"
             android:layout_weight="5"
             android:layout_width ="0dp"
             android:layout_height="wrap_content"
-            android:textColor="#abaeb2"
-        />
-    </LinearLayout>
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_color"
+            android:background="@android:color/transparent"
+            />
+        </TableRow>
+    </TableLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@color/hint_color"/>
 
-    <LinearLayout
+    <TableLayout
         android:paddingTop="10sp"
-        android:paddingBottom="10sp"
-        android:weightSum="8"
         android:orientation="horizontal"
+        android:weightSum="9"
         android:layout_width ="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="10sp">
 
+        <TableRow>
         <TextView
+            android:textColor="@color/text_color"
             android:text="@string/desired_grade_label"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:layout_width ="0dp"
-            android:paddingLeft="10sp"
-            android:textSize="20sp"
+            android:paddingLeft="15sp"
+            android:textSize="16sp"
             android:layout_height="wrap_content"
             />
 
         <Spinner
-            android:layout_marginLeft="20sp"
+            android:gravity="end"
+            android:popupBackground="@color/dark_1st_blue"
+            android:background="@android:color/transparent"
+            android:textAlignment="textEnd"
+            android:textSize="17sp"
+            android:layout_gravity="end"
+            android:textColor="@color/text_color"
+            android:layout_marginLeft="200sp"
+            android:layout_marginRight="18sp"
             android:layout_weight="5"
             android:layout_width ="0dp"
             android:layout_height="wrap_content"
@@ -135,31 +175,22 @@
             android:drawSelectorOnTop="true"
             android:clickable="true"
             />
-    </LinearLayout>
+        </TableRow>
+    </TableLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@color/hint_color"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+    <TextView
+        android:textColor="@color/text_color"
+        android:text="@string/addCourseNote"
+        android:paddingLeft="30sp"
+        android:paddingTop="15sp"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/save_story_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save_button"/>
-
-        <Button
-            android:id="@+id/cancel_story_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel_button"/>
-
-    </LinearLayout>
+        />
 
 </LinearLayout>

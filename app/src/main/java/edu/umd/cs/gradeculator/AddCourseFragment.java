@@ -20,7 +20,7 @@ import edu.umd.cs.gradeculator.model.Course;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 /**
- * Created by apple on 4/20/17.
+ * Created by kay on 4/20/17.
  */
 
 public class AddCourseFragment extends Fragment {
@@ -36,9 +36,6 @@ public class AddCourseFragment extends Fragment {
     private EditText courseTitleEditText;
     private EditText creditEditText;
     private Spinner grade_spinner;
-
-    private Button saveButton;
-    private Button cancelButton;
 
     public static AddCourseFragment newInstance(String courseID){
         Bundle args = new Bundle();
@@ -56,6 +53,8 @@ public class AddCourseFragment extends Fragment {
         String courseId = getArguments().getString(ARG_COURSE_ID);
         course = DependencyFactory.getCourseService(getActivity().getApplicationContext()).
                 getCourseById(courseId);
+
+        setHasOptionsMenu(true);
     }
 
 
@@ -69,17 +68,29 @@ public class AddCourseFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_save_course:
-                if(course == null){
-                    Intent saveCourseIntent = new Intent(getActivity(), MainActivity.class);
-                    startActivityForResult(saveCourseIntent, REQUEST_CODE_SAVE_STORY);
+                if (inputsAreValid()) {
+                    if (course == null) {
+                        course = new Course();
+                    }
+
+                    course.setTitle(courseNameEditText.getText().toString());
+                    course.setIdentifier(courseTitleEditText.getText().toString());
+                    course.setCredit(Integer.parseInt(creditEditText.getText().toString()));
+                    course.setGrade(grade_spinner.getSelectedItemPosition());
+                    course.setDesire_grade(course.getGrade());
+
+                    Intent data = new Intent();
+                    data.putExtra(EXTRA_COURSE_CREATED, course);
+                    getActivity().setResult(RESULT_OK, data);
+                    getActivity().finish();
                 } else{
-                    Intent editCourseIntent = new Intent(getActivity(), MainActivity.class);
-                    startActivityForResult(editCourseIntent, REQUEST_CODE_SAVE_STORY);
+                    // Change it to pop up
+                    Toast.makeText(getActivity(),"Invalid input",Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.menu_item_cancel_course:
-                Intent mainIntent = new Intent(getActivity(), MainActivity.class);
-                startActivity(mainIntent);
+                getActivity().setResult(RESULT_CANCELED);
+                getActivity().finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -115,41 +126,6 @@ public class AddCourseFragment extends Fragment {
         } else {
             grade_spinner.setSelection(statusAdapter.getPosition("A"));
         }
-
-        saveButton = (Button)view.findViewById(R.id.save_story_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (inputsAreValid()) {
-                    if (course == null) {
-                        course = new Course();
-                    }
-
-                    course.setTitle(courseNameEditText.getText().toString());
-                    course.setIdentifier(courseTitleEditText.getText().toString());
-                    course.setCredit(Integer.parseInt(creditEditText.getText().toString()));
-                    course.setGrade(grade_spinner.getSelectedItemPosition());
-                    course.setDesire_grade(course.getGrade());
-
-                    Intent data = new Intent();
-                    data.putExtra(EXTRA_COURSE_CREATED, course);
-                    getActivity().setResult(RESULT_OK, data);
-                    getActivity().finish();
-                } else{
-                    // create a toast message
-                    Toast.makeText(getActivity(),"Invalid input",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        cancelButton = (Button)view.findViewById(R.id.cancel_story_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().setResult(RESULT_CANCELED);
-                getActivity().finish();
-            }
-        });
 
         return view;
 
