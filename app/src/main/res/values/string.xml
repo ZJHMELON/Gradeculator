@@ -94,4 +94,6 @@
         67-69.9=D+; 64-66.9=D;60-63.9=D-;\n
         59.9 and lower=F</string>
 
+    <string name="current_grade_label">N/A</string>>
+
 </resources>

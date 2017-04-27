@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import edu.umd.cs.gradeculator.model.Course;
 
 /**
- * Created by apple on 4/20/17.
+ * Created by kay on 4/20/17.
  */
 
 public class AddCourseActivity extends SingleFragmentActivity {

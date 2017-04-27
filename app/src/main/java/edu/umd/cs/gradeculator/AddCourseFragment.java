@@ -10,10 +10,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import edu.umd.cs.gradeculator.model.Course;
@@ -32,6 +36,9 @@ public class AddCourseFragment extends Fragment {
 
     private Course course;
 
+    private TableLayout nameLayout;
+    private TableLayout titleLayout;
+    private TableLayout creditLayout;
     private EditText courseNameEditText;
     private EditText courseTitleEditText;
     private EditText creditEditText;
@@ -84,6 +91,28 @@ public class AddCourseFragment extends Fragment {
                     getActivity().setResult(RESULT_OK, data);
                     getActivity().finish();
                 } else{
+                    // invalid input, shake each invalid edit text
+                    if(courseNameEditText.getText().toString().length()<=0){
+                        nameLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        courseNameEditText.startAnimation(shake);
+                    } else{
+                        nameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+                    if(courseTitleEditText.getText().toString().length()<=0){
+                        titleLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        courseTitleEditText.startAnimation(shake);
+                    }else{
+                        titleLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+                    if(creditEditText.getText().toString().length()<=0){
+                        creditLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        creditEditText.startAnimation(shake);
+                    }else{
+                        creditLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
                     // Change it to pop up
                     Toast.makeText(getActivity(),"Invalid input",Toast.LENGTH_SHORT).show();
                 }
@@ -102,16 +131,50 @@ public class AddCourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_addcourse, container, false);
 
+        nameLayout = (TableLayout)view.findViewById(R.id.nameLayout);
+        titleLayout = (TableLayout)view.findViewById(R.id.titleLayout);
+        creditLayout = (TableLayout)view.findViewById(R.id.creditLayout);
+
         courseNameEditText = (EditText)view.findViewById(R.id.course_name);
+        courseNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(courseNameEditText.hasFocus()){
+                    courseNameEditText.setCursorVisible(true);
+                    courseNameEditText.setSelection(courseNameEditText.getText().length());
+                }
+            }
+        });
+
         if(course != null){
             courseNameEditText.setText(course.getTitle());
         }
         courseTitleEditText = (EditText)view.findViewById(R.id.course_title);
+        courseTitleEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(courseTitleEditText.hasFocus()){
+                    courseTitleEditText.setCursorVisible(true);
+                    courseTitleEditText.setSelection(courseTitleEditText.getText().length());
+                }
+            }
+        });
+
+
         if(course != null){
             courseTitleEditText.setText(course.getIdentifier());
         }
 
         creditEditText = (EditText)view.findViewById(R.id.credit);
+        creditEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(creditEditText.hasFocus()){
+                    creditEditText.setCursorVisible(true);
+                    creditEditText.setSelection(creditEditText.getText().length());
+                }
+            }
+        });
         if(course != null){
             creditEditText.setText("" + course.getCredit());
         }
@@ -139,7 +202,7 @@ public class AddCourseFragment extends Fragment {
         return
                 courseNameEditText.getText().toString().length() > 0 &&
                         courseTitleEditText.getText().toString().length() > 0 &&
-                        Integer.parseInt(creditEditText.getText().toString()) > 0 &&
+                        creditEditText.getText().toString().length() > 0 &&
                         grade_spinner.getSelectedItemPosition() >= 0;
     }
 }

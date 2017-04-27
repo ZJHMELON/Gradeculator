@@ -6,38 +6,65 @@
     android:layout_height="match_parent"
     android:id="@+id/course_list">
 
+
+
     <LinearLayout
+        android:background="@color/course_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:weightSum="8"
+            android:background="@color/course_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_weight="7"
+                android:textSize="16sp"
+                android:paddingTop="15sp"
+                android:paddingLeft="20sp"
+                android:textColor="@color/text_color"
+                android:id="@+id/list_item_course_identifier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                tools:text="@string/list_course_title"/>
+
+            <TextView
+                android:textColor="@color/text_color"
+                android:layout_weight="1"
+                android:layout_gravity="end"
+                android:textSize="16sp"
+                android:paddingTop="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/list_item_current_grade"
+                tools:text="@string/current_grade_label"/>
+
+        </LinearLayout>
+
         <TextView
+            android:textSize="15sp"
+            android:paddingBottom="15sp"
+            android:paddingLeft="20sp"
+            android:textColor="@color/text_color"
             android:id="@+id/list_item_course_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:padding="4dp"
-            tools:text="@string/list_course_title"/>
-
-        <TextView
-            android:id="@+id/list_item_course_identifier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
             tools:text="@string/list_course_identifier" />
 
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="#000000" />
+            android:background="@color/hint_color" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:id="@+id/list_item_current_grade"
-        tools:text="@string/current_grade_label"/>
+
 
 </RelativeLayout>

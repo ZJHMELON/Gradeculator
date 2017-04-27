@@ -6,6 +6,7 @@
 
 
     <TableLayout
+        android:id="@+id/nameLayout"
         android:paddingTop="20sp"
         android:orientation="horizontal"
         android:weightSum="9"
@@ -26,6 +27,8 @@
             />
 
         <EditText
+            android:textCursorDrawable="@null"
+            android:layout_gravity="end"
             android:cursorVisible="false"
             android:textSize="17sp"
             android:layout_marginLeft="15sp"
@@ -52,6 +55,7 @@
 
 
     <TableLayout
+        android:id="@+id/titleLayout"
         android:paddingTop="10sp"
         android:orientation="horizontal"
         android:weightSum="9"
@@ -71,6 +75,7 @@
             />
 
         <EditText
+            android:textCursorDrawable="@null"
             android:cursorVisible="false"
             android:inputType="text"
             android:textSize="17sp"
@@ -96,6 +101,7 @@
         android:background="@color/hint_color"/>
 
     <TableLayout
+        android:id="@+id/creditLayout"
         android:paddingTop="10sp"
         android:orientation="horizontal"
         android:weightSum="9"
@@ -116,6 +122,7 @@
             />
 
         <EditText
+            android:textCursorDrawable="@null"
             android:cursorVisible="false"
             android:textSize="17sp"
             android:layout_marginLeft="15sp"
