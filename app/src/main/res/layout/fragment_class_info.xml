@@ -5,83 +5,301 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:paddingRight="20sp"
+            android:textSize="16sp"
+            android:gravity="end"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/equal_weight"
+            android:textColor="@color/text_color"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/examLayout"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:paddingLeft="15sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="@string/exam_label"
-            android:layout_weight="1"/>
+            android:layout_weight="3"/>
         <EditText
-            android:layout_width="wrap_content"
+            android:paddingRight="5sp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:textSize="16sp"
+            android:hint="20"
+            android:background="@android:color/transparent"
+            android:inputType="numberDecimal"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/exam_edit_text"
-            android:layout_weight="1"/>
+            android:layout_weight="1.5"/>
+        <TextView
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="1.5"/>
+        <TextView
+            android:paddingLeft="16sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="2"/>
     </LinearLayout>
 
+    <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/hint_color"/>
+
     <LinearLayout
+        android:id="@+id/quizLayout"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:paddingLeft="15sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="@string/quiz_label"
-            android:layout_weight="1"/>
+            android:layout_weight="3"/>
         <EditText
-            android:layout_width="wrap_content"
+            android:paddingRight="5sp"
+            android:textSize="16sp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:hint="20"
+            android:background="@android:color/transparent"
+            android:inputType="numberDecimal"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/quiz_edit_text"
-            android:layout_weight="1"/>
+            android:layout_weight="1.5"/>
+        <TextView
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="1.5"/>
+        <TextView
+            android:paddingLeft="16sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="2"/>
     </LinearLayout>
 
+    <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/hint_color"/>
+
     <LinearLayout
+        android:id="@+id/assignmentLayout"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:paddingLeft="15sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="@string/assignment_label"
-            android:layout_weight="1"/>
+            android:layout_weight="3"/>
         <EditText
-            android:layout_width="wrap_content"
+            android:paddingRight="5sp"
+            android:textSize="16sp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:hint="20"
+            android:background="@android:color/transparent"
+            android:inputType="numberDecimal"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/assignment_edit_text"
-            android:layout_weight="1"/>
+            android:layout_weight="1.5"/>
+        <TextView
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="1.5"/>
+        <TextView
+            android:paddingLeft="16sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="2"/>
     </LinearLayout>
 
+    <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/hint_color"/>
+
     <LinearLayout
+        android:id="@+id/projectLayout"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:paddingLeft="15sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="@string/project_label"
-            android:layout_weight="1"/>
+            android:layout_weight="3"/>
         <EditText
-            android:layout_width="wrap_content"
+            android:paddingRight="5sp"
+            android:textSize="16sp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:hint="20"
+            android:background="@android:color/transparent"
+            android:inputType="numberDecimal"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/project_edit_text"
-            android:layout_weight="1"/>
+            android:layout_weight="1.5"/>
+        <TextView
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="1.5"/>
+        <TextView
+            android:paddingLeft="16sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="2"/>
     </LinearLayout>
 
+    <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/hint_color"/>
+
     <LinearLayout
+        android:id="@+id/extraLayout"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:paddingLeft="15sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
             android:text="@string/extra_label"
-            android:layout_weight="1"/>
+            android:layout_weight="3"/>
         <EditText
-            android:layout_width="wrap_content"
+            android:paddingRight="5sp"
+            android:textSize="16sp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:hint="0.0"
+            android:background="@android:color/transparent"
+            android:inputType="numberDecimal"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_color"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/extra_edit_text"
-            android:layout_weight="1"/>
+            android:layout_weight="1.5"/>
+        <TextView
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="1.5"/>
+        <TextView
+            android:paddingLeft="16sp"
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_weight="2"/>
     </LinearLayout>
+
+    <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/hint_color"/>
 
 </LinearLayout>

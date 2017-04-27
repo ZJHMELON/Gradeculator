@@ -10,17 +10,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import edu.umd.cs.gradeculator.model.Course;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 /**
- * Created by apple on 4/20/17.
+ * Created by kay on 4/20/17.
  */
 
 public class AddCourseFragment extends Fragment {
@@ -32,13 +36,13 @@ public class AddCourseFragment extends Fragment {
 
     private Course course;
 
+    private TableLayout nameLayout;
+    private TableLayout titleLayout;
+    private TableLayout creditLayout;
     private EditText courseNameEditText;
     private EditText courseTitleEditText;
     private EditText creditEditText;
     private Spinner grade_spinner;
-
-    private Button saveButton;
-    private Button cancelButton;
 
     public static AddCourseFragment newInstance(String courseID){
         Bundle args = new Bundle();
@@ -56,6 +60,8 @@ public class AddCourseFragment extends Fragment {
         String courseId = getArguments().getString(ARG_COURSE_ID);
         course = DependencyFactory.getCourseService(getActivity().getApplicationContext()).
                 getCourseById(courseId);
+
+        setHasOptionsMenu(true);
     }
 
 
@@ -69,55 +75,6 @@ public class AddCourseFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_save_course:
-                if(course == null){
-                    Intent saveCourseIntent = new Intent(getActivity(), MainActivity.class);
-                    startActivityForResult(saveCourseIntent, REQUEST_CODE_SAVE_STORY);
-                } else{
-                    Intent editCourseIntent = new Intent(getActivity(), MainActivity.class);
-                    startActivityForResult(editCourseIntent, REQUEST_CODE_SAVE_STORY);
-                }
-                return true;
-            case R.id.menu_item_cancel_course:
-                Intent mainIntent = new Intent(getActivity(), MainActivity.class);
-                startActivity(mainIntent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_addcourse, container, false);
-
-        courseNameEditText = (EditText)view.findViewById(R.id.course_name);
-        if(course != null){
-            courseNameEditText.setText(course.getTitle());
-        }
-        courseTitleEditText = (EditText)view.findViewById(R.id.course_title);
-        if(course != null){
-            courseTitleEditText.setText(course.getIdentifier());
-        }
-
-        creditEditText = (EditText)view.findViewById(R.id.credit);
-        if(course != null){
-            creditEditText.setText("" + course.getCredit());
-        }
-
-        grade_spinner = (Spinner)view.findViewById(R.id.grade_spinner);
-        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.grade_array, android.R.layout.simple_spinner_item);
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        grade_spinner.setAdapter(statusAdapter);
-        if (course != null) {
-            grade_spinner.setSelection(course.getGradePosition());
-        }
-
-        saveButton = (Button)view.findViewById(R.id.save_story_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 if (inputsAreValid()) {
                     if (course == null) {
                         course = new Course();
@@ -134,20 +91,104 @@ public class AddCourseFragment extends Fragment {
                     getActivity().setResult(RESULT_OK, data);
                     getActivity().finish();
                 } else{
-                    // create a toast message
+                    // invalid input, shake each invalid edit text
+                    if(courseNameEditText.getText().toString().length()<=0){
+                        nameLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        courseNameEditText.startAnimation(shake);
+                    } else{
+                        nameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+                    if(courseTitleEditText.getText().toString().length()<=0){
+                        titleLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        courseTitleEditText.startAnimation(shake);
+                    }else{
+                        titleLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+                    if(creditEditText.getText().toString().length()<=0){
+                        creditLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        creditEditText.startAnimation(shake);
+                    }else{
+                        creditLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+                    // Change it to pop up
                     Toast.makeText(getActivity(),"Invalid input",Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.menu_item_cancel_course:
+                getActivity().setResult(RESULT_CANCELED);
+                getActivity().finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_addcourse, container, false);
+
+        nameLayout = (TableLayout)view.findViewById(R.id.nameLayout);
+        titleLayout = (TableLayout)view.findViewById(R.id.titleLayout);
+        creditLayout = (TableLayout)view.findViewById(R.id.creditLayout);
+
+        courseNameEditText = (EditText)view.findViewById(R.id.course_name);
+        courseNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(courseNameEditText.hasFocus()){
+                    courseNameEditText.setCursorVisible(true);
+                    courseNameEditText.setSelection(courseNameEditText.getText().length());
                 }
             }
         });
 
-        cancelButton = (Button)view.findViewById(R.id.cancel_story_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        if(course != null){
+            courseNameEditText.setText(course.getTitle());
+        }
+        courseTitleEditText = (EditText)view.findViewById(R.id.course_title);
+        courseTitleEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View view) {
-                getActivity().setResult(RESULT_CANCELED);
-                getActivity().finish();
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(courseTitleEditText.hasFocus()){
+                    courseTitleEditText.setCursorVisible(true);
+                    courseTitleEditText.setSelection(courseTitleEditText.getText().length());
+                }
             }
         });
+
+
+        if(course != null){
+            courseTitleEditText.setText(course.getIdentifier());
+        }
+
+        creditEditText = (EditText)view.findViewById(R.id.credit);
+        creditEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(creditEditText.hasFocus()){
+                    creditEditText.setCursorVisible(true);
+                    creditEditText.setSelection(creditEditText.getText().length());
+                }
+            }
+        });
+        if(course != null){
+            creditEditText.setText("" + course.getCredit());
+        }
+
+        grade_spinner = (Spinner)view.findViewById(R.id.grade_spinner);
+        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.grade_array, R.layout.simple_spinner_item);
+        statusAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        grade_spinner.setAdapter(statusAdapter);
+        if (course != null) {
+            grade_spinner.setSelection(course.getGradePosition());
+        } else {
+            grade_spinner.setSelection(statusAdapter.getPosition("A"));
+        }
 
         return view;
 
@@ -161,7 +202,7 @@ public class AddCourseFragment extends Fragment {
         return
                 courseNameEditText.getText().toString().length() > 0 &&
                         courseTitleEditText.getText().toString().length() > 0 &&
-                        Integer.parseInt(creditEditText.getText().toString()) > 0 &&
+                        creditEditText.getText().toString().length() > 0 &&
                         grade_spinner.getSelectedItemPosition() >= 0;
     }
 }
