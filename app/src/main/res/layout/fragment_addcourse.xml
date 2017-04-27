@@ -49,6 +49,8 @@
     </TableLayout>
 
     <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/hint_color"/>
@@ -96,6 +98,8 @@
 
 
     <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/hint_color"/>
@@ -142,6 +146,8 @@
     </TableLayout>
 
     <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/hint_color"/>
@@ -182,6 +188,8 @@
     </TableLayout>
 
     <View
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/hint_color"/>

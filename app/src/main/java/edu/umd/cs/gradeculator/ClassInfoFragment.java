@@ -1,16 +1,21 @@
 package edu.umd.cs.gradeculator;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import edu.umd.cs.gradeculator.model.Course;
@@ -50,13 +55,6 @@ public class ClassInfoFragment extends Fragment {
         assignment_edit = (EditText) view.findViewById(R.id.assignment_edit_text);
         project_edit = (EditText) view.findViewById(R.id.project_edit_text);
         extra_edit = (EditText) view.findViewById(R.id.extra_edit_text);
-        if(course != null){
-            exam_edit.setText(course.getExam_weight()+"");
-            quiz_edit.setText(course.getQuiz_weight()+"");
-            assignment_edit.setText(course.getAssignment_weight()+"");
-            project_edit.setText(course.getProject_weight()+"");
-            extra_edit.setText(course.getExam_weight()+"");
-        }
         return view;
     }
 
@@ -83,36 +81,39 @@ public class ClassInfoFragment extends Fragment {
                 getActivity().finish();
                 return true;
             case R.id.class_info_menu_item_save_button:
-                double exam_double,quiz_double,assignment_double,project_double,extra_double,total;
-                exam_double=quiz_double=assignment_double=project_double=extra_double=total=0;
-                boolean valid = false;
 
-                try{
-                    exam_double = Double.parseDouble(exam_edit.getText().toString());
-                    quiz_double = Double.parseDouble(quiz_edit.getText().toString());
-                    assignment_double = Double.parseDouble(assignment_edit.getText().toString());
-                    project_double = Double.parseDouble(project_edit.getText().toString());
-                    extra_double = Double.parseDouble(extra_edit.getText().toString());
-
-                    total = exam_double + quiz_double +  assignment_double + project_double +
-                            extra_double;
-                }
-                catch(NumberFormatException e){
-                    Toast.makeText(getContext(),"Please enter numbers only!", Toast.LENGTH_SHORT).show();
-                }
-
-                if(Double.compare(total, 0.0) == -1 || Double.compare(exam_double, 0.0) == -1
-                        || Double.compare(quiz_double, 0.0) == -1 || Double.compare(assignment_double, 0.0) == -1 ||
-                         Double.compare(extra_double, 0.0) == -1 || Double.compare(project_double, 0.0) == -1){
-                    Toast.makeText(getContext(),"Please enter positive numbers only!", Toast.LENGTH_SHORT).show();
+                // Since we already limit the input to be decimal so we just need to check if the
+                // user enter or not. IMPOSSIBLE TO IMPUT NON NUMBER OR NEGATIVE NUMBER
+                if(course == null) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Opps..Something is wrong")
+                            .setMessage("Make sure the course itself is create first")
+                            .setPositiveButton(R.string.okay, null)
+                            .show();
                 }else{
-                    valid = true;
-                }
-                if(valid){
-                    if(course == null){
-                        Toast.makeText(getContext(), "Something went wrong, course is null!", Toast.LENGTH_SHORT).show();
+                    // course is already established
+                    // start extracting data
+                    double exam_double = 0.0,quiz_double = 0.0,assignment_double = 0.0,
+                            project_double = 0.0,extra_double = 0.0,total = 0.0;
+
+                    // Extracting any non-empty data non by non
+                    if(exam_edit.getText().toString().length() > 0 ){
+                        exam_double = Double.parseDouble(exam_edit.getText().toString());
                     }
-                    else {
+                    if(quiz_edit.getText().toString().length() > 0 ){
+                        quiz_double = Double.parseDouble(quiz_edit.getText().toString());
+                    }
+                    if(assignment_edit.getText().toString().length() > 0 ){
+                        assignment_double = Double.parseDouble(assignment_edit.getText().toString());
+                    }
+                    if(project_edit.getText().toString().length() > 0 ){
+                        project_double = Double.parseDouble(project_edit.getText().toString());
+                    }
+                    if(extra_edit.getText().toString().length() > 0 ){
+                        extra_double = Double.parseDouble(extra_edit.getText().toString());
+                    }
+                    total = exam_double + quiz_double + assignment_double + project_double;
+                    if(total < 100){
                         course.setAssignments_weight(assignment_double);
                         course.setExam_weight(exam_double);
                         course.setQuiz_weight(quiz_double);
@@ -122,9 +123,17 @@ public class ClassInfoFragment extends Fragment {
                         data.putExtra(COURSE_UPDATED, course);
                         getActivity().setResult(RESULT_OK, data);
                         getActivity().finish();
+                    } else{
+                        // total exceeding 100
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Opps..")
+                                .setMessage("Make sure the total weight does not exceed 100%.")
+                                .setPositiveButton(R.string.okay,null)
+                                .show();
                     }
                 }
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -133,4 +142,6 @@ public class ClassInfoFragment extends Fragment {
     public static Course getCourse(Intent data) {
         return (Course)data.getSerializableExtra(COURSE_UPDATED);
     }
+
+
 }
