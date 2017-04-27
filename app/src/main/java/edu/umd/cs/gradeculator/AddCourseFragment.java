@@ -118,8 +118,8 @@ public class AddCourseFragment extends Fragment {
 
         grade_spinner = (Spinner)view.findViewById(R.id.grade_spinner);
         ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.grade_array, android.R.layout.simple_spinner_item);
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.grade_array, R.layout.simple_spinner_item);
+        statusAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         grade_spinner.setAdapter(statusAdapter);
         if (course != null) {
             grade_spinner.setSelection(course.getGradePosition());
