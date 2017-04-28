@@ -153,6 +153,12 @@ public class CourseDirFragment extends Fragment{
                 layout.addView(temp);
             }
         }
+        else {
+            LinearLayout exam = (LinearLayout) layout.findViewById(R.id.exam_view);
+            if(exam != null){
+                layout.removeView(exam);
+            }
+        }
 
 
         if (Double.compare(course.getQuiz_weight(), 0.0) == 1) {
@@ -195,6 +201,12 @@ public class CourseDirFragment extends Fragment{
                 layout.addView(temp);
             }
         }
+        else {
+            LinearLayout quiz = (LinearLayout) layout.findViewById(R.id.quiz_view);
+            if(quiz != null){
+                layout.removeView(quiz);
+            }
+        }
         if (Double.compare(course.getAssignment_weight(), 0.0) == 1) {
             // check if we have exam already
             LinearLayout assignment = (LinearLayout) layout.findViewById(R.id.assignment_view);
@@ -233,6 +245,12 @@ public class CourseDirFragment extends Fragment{
                     }
                 });
                 layout.addView(temp);
+            }
+        }
+        else {
+            LinearLayout assignment = (LinearLayout) layout.findViewById(R.id.assignment_view);
+            if(assignment != null){
+                layout.removeView(assignment);
             }
         }
         if (Double.compare(course.getProject_weight(), 0.0) == 1) {
@@ -275,6 +293,12 @@ public class CourseDirFragment extends Fragment{
                 layout.addView(temp);
             }
         }
+        else {
+            LinearLayout project = (LinearLayout) layout.findViewById(R.id.project_view);
+            if(project != null){
+                layout.removeView(project);
+            }
+        }
         if (Double.compare(course.getExtra_weight(), 0.0) == 1) {
             // check if we have exam already
             LinearLayout extra_credit = (LinearLayout) layout.findViewById(R.id.extracredit_view);
@@ -313,6 +337,12 @@ public class CourseDirFragment extends Fragment{
                     });
                 }
                 layout.addView(temp);
+            }
+        }
+        else {
+            LinearLayout extra = (LinearLayout) layout.findViewById(R.id.extracredit_view);
+            if(extra != null){
+                layout.removeView(extra);
             }
         }
     }
