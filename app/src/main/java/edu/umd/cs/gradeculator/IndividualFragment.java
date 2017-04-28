@@ -95,19 +95,19 @@ public class IndividualFragment extends Fragment {
             CourseService ss=DependencyFactory.getCourseService(getActivity());
             Course cs=ss.getCourseById(cId);
             switch(cat){
-                case "EXAM":
+                case "Exam":
                     works=cs.getExams();
                     break;
-                case "QUIZ":
+                case "Quiz":
                     works=cs.getQuzs();
                     break;
-                case "ASSIGNMENT":
+                case "Assignment":
                     works=cs.getAssigs();
                     break;
-                case "PROJECT":
+                case "Project":
                     works=cs.getProjs();
                     break;
-                case "EXTRA":
+                case "Extra":
                     works=cs.getExtra();
                     break;
                 default:
@@ -139,6 +139,12 @@ public class IndividualFragment extends Fragment {
         if(work != null){
             weightEditText.setText(""+work.getWeight());
         }
+        if(work !=null){
+            dueDateY.setText(""+work.getDueDate().getYear());
+            dueDateM.setText(""+work.getDueDate().getMinutes());
+            dueDateD.setText(""+work.getDueDate().getDay());
+
+        }
         saveButton = (Button)view.findViewById(R.id.save_story_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,19 +171,19 @@ public class IndividualFragment extends Fragment {
                     work.setDueDate(date);
                     Intent data = new Intent();
                     switch(cat){
-                        case "EXAM":
+                        case "Exam":
                             work.setCategory(Work.Category.EXAM);
                             break;
-                        case "QUIZ":
+                        case "Quiz":
                             work.setCategory(Work.Category.QUIZ);
                             break;
-                        case "ASSIGNMENT":
+                        case "Assignment":
                             work.setCategory(Work.Category.ASSIGNMENT);
                             break;
-                        case "PROJECT":
+                        case "Project":
                             work.setCategory(Work.Category.PROJECT);
                             break;
-                        case "EXTRA":
+                        case "Extra":
                             work.setCategory(Work.Category.EXTRA);
                             break;
 
