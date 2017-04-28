@@ -59,7 +59,7 @@ public class CategoryFragment extends Fragment {
         CategoryFragment fragment = new CategoryFragment();
 
         fragment.setArguments(args);
-        return fragment;
+        return fragment; //ss
     }
 
     @Override
