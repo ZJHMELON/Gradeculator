@@ -155,6 +155,8 @@ public class CourseDirFragment extends Fragment{
                 layout.addView(temp);
             }
         }
+
+
         if (Double.compare(course.getQuiz_weight(), 0.0) == 1) {
             // check if we have exam already
             LinearLayout quiz = (LinearLayout) layout.findViewById(R.id.quiz_view);
@@ -311,8 +313,8 @@ public class CourseDirFragment extends Fragment{
                             startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXTRA));
                         }
                     });
-                    layout.addView(temp);
                 }
+                layout.addView(temp);
             }
         }
     }

@@ -73,12 +73,6 @@
         <item>C-</item>
     </string-array>
 
-    <string name="exam_label">Exam</string>
-    <string name="quiz_label">Quiz</string>
-    <string name="assignment_label">Assignment</string>
-    <string name="project_label">Project</string>
-    <string name="extra_label">Extra</string>
-
     <string name="category_back">Back</string>
     <string name="category_edit">Edit</string>
     <string name="category_add">Add</string>

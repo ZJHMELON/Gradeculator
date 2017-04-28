@@ -35,7 +35,7 @@
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:text="@string/exam_label"
+            android:text="@string/exam"
             android:layout_weight="3"/>
         <EditText
             android:paddingTop="10sp"
@@ -109,7 +109,7 @@
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:text="@string/quiz_label"
+            android:text="@string/quiz"
             android:layout_weight="3"/>
         <EditText
             android:paddingTop="10sp"
@@ -180,7 +180,7 @@
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:text="@string/assignment_label"
+            android:text="@string/assignment"
             android:layout_weight="3"/>
         <EditText
             android:paddingTop="10sp"
@@ -251,7 +251,7 @@
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:text="@string/project_label"
+            android:text="@string/project"
             android:layout_weight="3"/>
         <EditText
             android:paddingTop="10sp"
@@ -322,7 +322,7 @@
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="match_parent"
-            android:text="@string/extra_label"
+            android:text="@string/extra_credit"
             android:layout_weight="3"/>
         <EditText
             android:paddingTop="10sp"

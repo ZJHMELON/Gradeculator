@@ -20,24 +20,25 @@
 
 
             <TextView
-                android:layout_weight="7"
+                android:layout_weight="6.5"
                 android:textSize="16sp"
                 android:paddingTop="15sp"
                 android:paddingLeft="20sp"
                 android:textColor="@color/text_color"
                 android:id="@+id/category_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 tools:text="@string/category_name"/>
 
             <TextView
                 android:textColor="@color/text_color"
-                android:layout_weight="1"
-                android:layout_gravity="end"
+                android:layout_weight="1.5"
+                android:gravity="start"
+                android:layout_gravity="start"
                 android:textSize="16sp"
                 android:paddingTop="15sp"
-                android:layout_width="wrap_content"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:id="@+id/category_percentage"
@@ -56,6 +57,8 @@
             tools:text="@string/category_item" />
 
         <View
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
