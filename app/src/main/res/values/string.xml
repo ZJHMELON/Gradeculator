@@ -88,7 +88,7 @@
         • 67-69.9 = D+; 64-66.9 = D;60-63.9 = D-;\n
         • 59.9 and lower = F</string>
 
-    <string name="current_grade_label">N/A</string>
+    <string name="current_grade_label">20%</string>
 
     <string name="equal_weight">Equal Weight?</string>
 
@@ -127,5 +127,11 @@
     <string name="category_item">4 Projects</string>
 
     <string name="point_label">100</string>
+
+    <string name="assignment_name">Exam 1</string>
+    <string name="due_date">April 1</string>
+    <string name="due">Due:</string>
+    <string name="grade_title">Grade:</string>
+    <string name="grade">18%</string>
 
 </resources>
