@@ -24,6 +24,7 @@ import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
 import edu.umd.cs.gradeculator.service.CourseService;
 
+import static android.app.Activity.RESULT_OK;
 import static edu.umd.cs.gradeculator.model.Course.Grade.C;
 import static edu.umd.cs.gradeculator.model.Work.*;
 
@@ -84,9 +85,10 @@ public class CategoryFragment extends Fragment {
             if (data == null) {
                 return;
             }
+            //haha
 
-          //  Work workCreated = IndividualActivity.getWorkCreated(data);
-           // courseService.getCourseById(courseId).
+          Work workCreated = IndividualActivity.getStoryCreated(data);
+           courseService.getCourseById(courseId).add(workCreated);
            // courseService.addCourseToBacklog();
             updateUI();
         }
@@ -101,11 +103,19 @@ public class CategoryFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_back:
+            case R.id.menu_category_item_back:
 
-                //??
+                getActivity().setResult(RESULT_OK);
+                getActivity().finish();
 
                 return true;
+            case R.id.menu_category_item_add:
+
+
+                startActivityForResult(IndividualActivity.newIntent(getActivity(),categoryName),REQUEST_CODE_CREATE_WORK);
+
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

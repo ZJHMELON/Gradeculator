@@ -73,12 +73,6 @@
         <item>C-</item>
     </string-array>
 
-    <string name="exam_label">Exam</string>
-    <string name="quiz_label">Quiz</string>
-    <string name="assignment_label">Assignment</string>
-    <string name="project_label">Project</string>
-    <string name="extra_label">Extra</string>
-
     <string name="category_back">Back</string>
     <string name="category_edit">Edit</string>
     <string name="category_add">Add</string>
@@ -88,16 +82,56 @@
 
     <string name = "addCourseNote">
         Grades are calculated using the following scale:\n
-        97-100=A+; 94-96.9=A,  90-93.9=A-;\n
-        87-89.9=B+; 84-86.9=B; 80-83.9=B-;\n
-        77-79.9=C+; 74-76.9=C; 70-73.0=C-;\n
-        67-69.9=D+; 64-66.9=D;60-63.9=D-;\n
-        59.9 and lower=F</string>
+        • 97-100 = A+; 94-96.9 = A,  90-93.9 = A-;\n
+        • 87-89.9 = B+; 84-86.9 = B; 80-83.9 = B-;\n
+        • 77-79.9 = C+; 74-76.9 = C; 70-73.0 = C-;\n
+        • 67-69.9 = D+; 64-66.9 = D;60-63.9 = D-;\n
+        • 59.9 and lower = F</string>
 
-    <string name="current_grade_label">N/A</string>
+    <string name="current_grade_label">20%</string>
 
     <string name="equal_weight">Equal Weight?</string>
 
     <string name="okay">Okay</string>
+	<string-array name="status_array">
+        <item>EXAM</item>
+        <item>QUIZ</item>
+        <item>ASSIGNMENT</item>
+        <item>PROJECT</item>
+        <item>EXTRA</item>
+    </string-array>
+
+    <string name="iGradeName_label">Grade Name</string>
+    <string name="iGradeName_hint">Grade Name</string>
+    <string name="idueDate_label">Due Date</string>
+    <string name="idueDate_hint">Due Date</string>
+    <string name="itotalPoints_label">Point Possible</string>
+    <string name="itotalPoints_hint">Point Possible</string>
+    <string name="ipoint_label">Points</string>
+    <string name="ipoint_hint">Points</string>
+    <string name="istatus_label">Status</string>
+    <string name="iweight_label">Weight</string>
+    <string name="iweight_hint">Weight</string>
+
+    <string name="class_info">
+        • For category that are not exist in the course, simply leave it blank or enter a value of 0.\n• Toggle button check if the individual tasks in each category has it own weight or they are equally weighted
+    </string>
+
+    <string name="exam">Exam</string>
+    <string name="quiz">Quiz</string>
+    <string name="assignment">Assignment</string>
+    <string name="project">Project</string>
+    <string name="extra_credit">Extra Credit</string>
+
+    <string name="category_name">Project</string>
+    <string name="category_item">4 Projects</string>
+
+    <string name="point_label">100</string>
+
+    <string name="assignment_name">Exam 1</string>
+    <string name="due_date">April 1</string>
+    <string name="due">Due:</string>
+    <string name="grade_title">Grade:</string>
+    <string name="grade">18%</string>
 
 </resources>

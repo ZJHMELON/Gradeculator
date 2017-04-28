@@ -1,12 +1,13 @@
 package edu.umd.cs.gradeculator.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by howardksw1 on 4/5/17.
  */
 
-public class Work {
+public class Work implements Serializable {
     private Category category;
     private String title;
     private double weight;

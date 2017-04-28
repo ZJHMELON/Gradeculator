@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:background="@color/course_background"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/course_list">
-
-
+    android:id="@+id/catogery_lst">
 
     <LinearLayout
+        android:background="@color/course_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -27,36 +25,72 @@
                 android:paddingTop="15sp"
                 android:paddingLeft="20sp"
                 android:textColor="@color/text_color"
-                android:id="@+id/list_item_course_identifier"
+                android:id="@+id/category_name"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                tools:text="@string/list_course_title"/>
+                tools:text="@string/category_name"/>
 
             <TextView
                 android:textStyle="bold"
                 android:textColor="@color/text_color"
                 android:layout_weight="2"
-                android:layout_gravity="end"
+                android:gravity="start"
+                android:layout_gravity="start"
                 android:textSize="16sp"
                 android:paddingTop="15sp"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:id="@+id/list_item_current_grade"
+                android:id="@+id/category_percentage"
                 tools:text="@string/current_grade_label"/>
 
         </LinearLayout>
 
-        <TextView
-            android:textSize="13sp"
+
+        <LinearLayout
             android:paddingBottom="15sp"
-            android:paddingLeft="20sp"
-            android:textColor="@color/text_color"
-            android:id="@+id/list_item_course_title"
-            android:layout_width="wrap_content"
+            android:weightSum="8"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="@string/list_course_identifier" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="6"
+                android:textSize="13sp"
+                android:paddingLeft="20sp"
+                android:textColor="@color/text_color"
+                android:id="@+id/catogery_total"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                tools:text="@string/category_item" />
+
+            <TextView
+                android:paddingRight="2.5sp"
+                android:layout_weight="0.85"
+                android:gravity="start"
+                android:layout_gravity="start"
+                android:textSize="13sp"
+                android:textColor="@color/text_color"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                tools:text="@string/grade_title" />
+
+            <TextView
+                android:id="@+id/category_points"
+                android:gravity="start"
+                android:layout_gravity="start"
+                android:layout_weight="1.15"
+                android:textSize="13sp"
+                android:textColor="@color/text_color"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                tools:text="@string/grade" />
+
+
+        </LinearLayout>
+
+
 
         <View
             android:layout_marginLeft="5sp"

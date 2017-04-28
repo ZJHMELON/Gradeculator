@@ -5,8 +5,8 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:paddingTop="10sp"
-        android:paddingBottom="10sp"
+        android:paddingTop="20sp"
+        android:paddingBottom="5sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -23,27 +23,30 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/examLayout"
-        android:paddingTop="10sp"
-        android:paddingBottom="10sp"
         android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:paddingLeft="15sp"
             android:textSize="16sp"
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:text="@string/exam_label"
+            android:text="@string/exam"
             android:layout_weight="3"/>
         <EditText
-            android:paddingRight="5sp"
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:cursorVisible="false"
+            android:textCursorDrawable="@null"
             android:layout_gravity="end"
+            android:paddingRight="5sp"
             android:gravity="end"
             android:textSize="16sp"
-            android:hint="20"
+            android:hint="50.0"
             android:background="@android:color/transparent"
             android:inputType="numberDecimal"
             android:textColor="@color/text_color"
@@ -51,8 +54,10 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/exam_edit_text"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1"/>
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:layout_gravity="start"
             android:gravity="start"
             android:textSize="16sp"
@@ -60,15 +65,28 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="%"
-            android:layout_weight="1.5"/>
-        <TextView
-            android:paddingLeft="16sp"
-            android:textSize="16sp"
-            android:textColor="@color/text_color"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:text="%"
             android:layout_weight="2"/>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0sp"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:gravity="left">
+
+            <ToggleButton
+                android:id="@+id/exam_btn"
+                android:textOff=""
+                android:textOn=""
+                android:background="@drawable/toggle_selector"
+                android:textSize="15sp"
+                android:layout_height="25sp"
+                android:layout_width="44.64sp"
+                />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <View
@@ -79,27 +97,30 @@
         android:background="@color/hint_color"/>
 
     <LinearLayout
-        android:id="@+id/quizLayout"
-        android:paddingTop="10sp"
-        android:paddingBottom="10sp"
         android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:paddingLeft="15sp"
             android:textSize="16sp"
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:text="@string/quiz_label"
+            android:text="@string/quiz"
             android:layout_weight="3"/>
         <EditText
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:cursorVisible="false"
+            android:textCursorDrawable="@null"
             android:paddingRight="5sp"
             android:textSize="16sp"
             android:layout_gravity="end"
             android:gravity="end"
-            android:hint="20"
+            android:hint="10.0"
             android:background="@android:color/transparent"
             android:inputType="numberDecimal"
             android:textColor="@color/text_color"
@@ -107,8 +128,10 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/quiz_edit_text"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1"/>
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:layout_gravity="start"
             android:gravity="start"
             android:textSize="16sp"
@@ -116,15 +139,25 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="%"
-            android:layout_weight="1.5"/>
-        <TextView
-            android:paddingLeft="16sp"
-            android:textSize="16sp"
-            android:textColor="@color/text_color"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:text="%"
             android:layout_weight="2"/>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0sp"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:gravity="left">
+
+            <ToggleButton
+                android:id="@+id/quiz_btn"
+                android:textOff=""
+                android:textOn=""
+                android:background="@drawable/toggle_selector"
+                android:textSize="15sp"
+                android:layout_height="25sp"
+                android:layout_width="44.64sp"
+                />
+
+        </LinearLayout>
     </LinearLayout>
 
     <View
@@ -135,27 +168,30 @@
         android:background="@color/hint_color"/>
 
     <LinearLayout
-        android:id="@+id/assignmentLayout"
-        android:paddingTop="10sp"
-        android:paddingBottom="10sp"
         android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:paddingLeft="15sp"
             android:textSize="16sp"
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:text="@string/assignment_label"
+            android:text="@string/assignment"
             android:layout_weight="3"/>
         <EditText
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:cursorVisible="false"
+            android:textCursorDrawable="@null"
             android:paddingRight="5sp"
             android:textSize="16sp"
             android:layout_gravity="end"
             android:gravity="end"
-            android:hint="20"
+            android:hint="20.0"
             android:background="@android:color/transparent"
             android:inputType="numberDecimal"
             android:textColor="@color/text_color"
@@ -163,8 +199,10 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/assignment_edit_text"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1"/>
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:layout_gravity="start"
             android:gravity="start"
             android:textSize="16sp"
@@ -172,15 +210,25 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="%"
-            android:layout_weight="1.5"/>
-        <TextView
-            android:paddingLeft="16sp"
-            android:textSize="16sp"
-            android:textColor="@color/text_color"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:text="%"
             android:layout_weight="2"/>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0sp"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:gravity="left">
+
+            <ToggleButton
+                android:id="@+id/assignment_btn"
+                android:textOff=""
+                android:textOn=""
+                android:background="@drawable/toggle_selector"
+                android:textSize="15sp"
+                android:layout_height="25sp"
+                android:layout_width="44.64sp"
+                />
+
+        </LinearLayout>
     </LinearLayout>
 
     <View
@@ -191,27 +239,30 @@
         android:background="@color/hint_color"/>
 
     <LinearLayout
-        android:id="@+id/projectLayout"
-        android:paddingTop="10sp"
-        android:paddingBottom="10sp"
         android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:paddingLeft="15sp"
             android:textSize="16sp"
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:text="@string/project_label"
+            android:text="@string/project"
             android:layout_weight="3"/>
         <EditText
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:cursorVisible="false"
+            android:textCursorDrawable="@null"
             android:paddingRight="5sp"
             android:textSize="16sp"
             android:layout_gravity="end"
             android:gravity="end"
-            android:hint="20"
+            android:hint="20.0"
             android:background="@android:color/transparent"
             android:inputType="numberDecimal"
             android:textColor="@color/text_color"
@@ -219,8 +270,10 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/project_edit_text"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1"/>
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:layout_gravity="start"
             android:gravity="start"
             android:textSize="16sp"
@@ -228,15 +281,25 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="%"
-            android:layout_weight="1.5"/>
-        <TextView
-            android:paddingLeft="16sp"
-            android:textSize="16sp"
-            android:textColor="@color/text_color"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:text="%"
             android:layout_weight="2"/>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0sp"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:gravity="left">
+
+            <ToggleButton
+                android:id="@+id/project_btn"
+                android:textOff=""
+                android:textOn=""
+                android:background="@drawable/toggle_selector"
+                android:textSize="15sp"
+                android:layout_height="25sp"
+                android:layout_width="44.64sp"
+                />
+
+        </LinearLayout>
     </LinearLayout>
 
     <View
@@ -247,22 +310,25 @@
         android:background="@color/hint_color"/>
 
     <LinearLayout
-        android:id="@+id/extraLayout"
-        android:paddingTop="10sp"
-        android:paddingBottom="10sp"
         android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:paddingLeft="15sp"
             android:textSize="16sp"
             android:textColor="@color/text_color"
             android:layout_width="0sp"
             android:layout_height="match_parent"
-            android:text="@string/extra_label"
+            android:text="@string/extra_credit"
             android:layout_weight="3"/>
         <EditText
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:cursorVisible="false"
+            android:textCursorDrawable="@null"
             android:paddingRight="5sp"
             android:textSize="16sp"
             android:layout_gravity="end"
@@ -275,8 +341,10 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:id="@+id/extra_edit_text"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1"/>
         <TextView
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:layout_gravity="start"
             android:gravity="start"
             android:textSize="16sp"
@@ -284,15 +352,25 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:text="%"
-            android:layout_weight="1.5"/>
-        <TextView
-            android:paddingLeft="16sp"
-            android:textSize="16sp"
-            android:textColor="@color/text_color"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:text="%"
             android:layout_weight="2"/>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0sp"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:gravity="left">
+
+            <ToggleButton
+                android:id="@+id/extra_btn"
+                android:textOff=""
+                android:textOn=""
+                android:background="@drawable/toggle_selector"
+                android:textSize="15sp"
+                android:layout_height="25sp"
+                android:layout_width="44.64sp"
+                />
+
+        </LinearLayout>
     </LinearLayout>
 
     <View
@@ -301,5 +379,19 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/hint_color"/>
+
+    <TextView
+        android:textColor="@color/text_color"
+        android:text="@string/class_info"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:paddingTop="15sp"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+
+
 
 </LinearLayout>

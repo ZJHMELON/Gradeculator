@@ -1,89 +1,332 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/individual_story"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="edu.umd.cs.agileandroid.MainActivity">
+        android:layout_height="match_parent">
 
-        <TextView
+
+        <TableLayout
+            android:id="@+id/assignNameLayout"
+            android:paddingTop="20sp"
+            android:orientation="horizontal"
+            android:weightSum="9"
+            android:layout_width ="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            >
+
+            <TableRow>
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:text="@string/GradeName_label"
+                    android:paddingLeft="15sp"
+                    android:textSize="16sp"
+                    android:layout_weight="4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    />
+
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_gravity="end"
+                    android:cursorVisible="false"
+                    android:textSize="17sp"
+                    android:layout_marginLeft="15sp"
+                    android:layout_marginRight="25sp"
+                    android:gravity="right"
+                    android:inputType="text"
+                    android:id="@+id/igradeName"
+                    android:layout_weight="5"
+                    android:layout_width ="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint = "@string/GradeName_hint"
+                    android:textColor="@color/text_color"
+                    android:textColorHint="@color/hint_color"
+                    android:background="@android:color/transparent"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <View
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hint_color"/>
+
+        <TableLayout
+            android:id="@+id/dueLayout"
+            android:paddingTop="20sp"
+            android:orientation="horizontal"
+            android:weightSum="8"
+            android:layout_width ="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            >
+
+            <TableRow>
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:text="@string/dueDate_label"
+                    android:paddingLeft="15sp"
+                    android:textSize="16sp"
+                    android:layout_weight="4.4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    />
+
+                <Spinner
+                    android:layout_weight="1.2"
+                    android:id="@+id/ispinnerdueDateMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:layout_weight="1.2"
+                    android:id="@+id/ispinnerdueDateDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <Spinner
+                    android:layout_weight="1.2"
+                    android:id="@+id/ispinnerdueDateYear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </TableRow>
+        </TableLayout>
+
+        <View
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hint_color"/>
+
+        <TableLayout
+            android:id="@+id/total_point_layout"
+            android:paddingTop="20sp"
+            android:orientation="horizontal"
+            android:weightSum="9"
+            android:layout_width ="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            >
+
+            <TableRow>
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:text="@string/itotalPoints_label"
+                    android:paddingLeft="15sp"
+                    android:textSize="16sp"
+                    android:layout_weight="4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    />
+
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_gravity="end"
+                    android:cursorVisible="false"
+                    android:textSize="17sp"
+                    android:layout_marginLeft="15sp"
+                    android:layout_marginRight="25sp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"
+                    android:id="@+id/itotalPoints"
+                    android:layout_weight="5"
+                    android:layout_width ="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint = "@string/point_label"
+                    android:textColor="@color/text_color"
+                    android:textColorHint="@color/hint_color"
+                    android:background="@android:color/transparent"
+                    />
+            </TableRow>
+        </TableLayout>
+
+
+        <View
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hint_color"/>
+
+
+        <TableLayout
+            android:paddingTop="20sp"
+            android:orientation="horizontal"
+            android:weightSum="9"
+            android:layout_width ="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp">
+
+            <TableRow>
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:text="@string/status_label"
+                    android:layout_weight="4"
+                    android:layout_width ="0dp"
+                    android:paddingLeft="15sp"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content"
+                    />
+
+                <Spinner
+                    android:layout_weight="5"
+                    android:textColor="@drawable/spinner_selector"
+                    android:background="@android:color/transparent"
+                    android:textSize="17sp"
+                    android:layout_marginRight="25sp"
+                    android:layout_width ="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ispinner"
+                    android:drawSelectorOnTop="true"
+                    android:clickable="true"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <View
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hint_color"/>
+
+
+        <TableLayout
+            android:id="@+id/pointLayout"
+            android:paddingTop="20sp"
+            android:orientation="horizontal"
+            android:weightSum="9"
+            android:layout_width ="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            >
+
+            <TableRow>
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:text="@string/totalPoints_label"
+                    android:paddingLeft="15sp"
+                    android:textSize="16sp"
+                    android:layout_weight="4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    />
+
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_gravity="end"
+                    android:cursorVisible="false"
+                    android:textSize="17sp"
+                    android:layout_marginLeft="15sp"
+                    android:layout_marginRight="25sp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"
+                    android:id="@+id/ipoint"
+                    android:layout_weight="5"
+                    android:layout_width ="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint = "@string/point_label"
+                    android:textColor="@color/text_color"
+                    android:textColorHint="@color/hint_color"
+                    android:background="@android:color/transparent"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <View
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hint_color"/>
+
+        <View
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hint_color"/>
+
+        <TableLayout
+            android:id="@+id/weightLayout"
+            android:paddingTop="20sp"
+            android:orientation="horizontal"
+            android:weightSum="9"
+            android:layout_width ="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            >
+
+            <TableRow>
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:text="@string/weight_label"
+                    android:paddingLeft="15sp"
+                    android:textSize="16sp"
+                    android:layout_weight="4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    />
+
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_gravity="end"
+                    android:cursorVisible="false"
+                    android:textSize="17sp"
+                    android:layout_marginLeft="15sp"
+                    android:layout_marginRight="25sp"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"
+                    android:id="@+id/iweight"
+                    android:layout_weight="5"
+                    android:layout_width ="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint = "@string/weight_hint"
+                    android:textColor="@color/text_color"
+                    android:textColorHint="@color/hint_color"
+                    android:background="@android:color/transparent"
+                    />
+            </TableRow>
+
+        </TableLayout>
+
+        <View
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hint_color"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/GradeName_label"/>
+            android:gravity="center">
 
-        <EditText
-            android:id="@+id/gradeName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/GradeName_hint"/>
+            <Button
+                android:id="@+id/save_story_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_button"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dueDate_label"/>
+            <Button
+                android:id="@+id/cancel_story_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_button"/>
 
-        <EditText
-            android:id="@+id/dueDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/dueDate_hint"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/points_label"/>
-
-        <EditText
-            android:id="@+id/totalPoints"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="@string/totalPoints_hint"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/grade_label"/>
-
-        <EditText
-            android:id="@+id/point"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="@string/point_hint"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/status_label"/>
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/weight_label"/>
-
-        <EditText
-            android:id="@+id/weight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="@string/weight_hint"/>
+        </LinearLayout>
 
     </LinearLayout>
 

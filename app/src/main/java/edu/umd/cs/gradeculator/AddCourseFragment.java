@@ -99,6 +99,8 @@ public class AddCourseFragment extends Fragment {
                     } else{
                         nameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
+
+
                     if(courseTitleEditText.getText().toString().length()<=0){
                         titleLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
@@ -106,6 +108,8 @@ public class AddCourseFragment extends Fragment {
                     }else{
                         titleLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
+
+
                     if(creditEditText.getText().toString().length()<=0){
                         creditLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
@@ -113,8 +117,6 @@ public class AddCourseFragment extends Fragment {
                     }else{
                         creditLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
-                    // Change it to pop up
-                    Toast.makeText(getActivity(),"Invalid input",Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.menu_item_cancel_course:
@@ -187,6 +189,7 @@ public class AddCourseFragment extends Fragment {
         if (course != null) {
             grade_spinner.setSelection(course.getGradePosition());
         } else {
+            // set deafult
             grade_spinner.setSelection(statusAdapter.getPosition("A"));
         }
 
