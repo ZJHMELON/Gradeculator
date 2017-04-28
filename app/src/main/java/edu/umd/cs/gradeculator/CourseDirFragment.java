@@ -34,6 +34,7 @@ public class CourseDirFragment extends Fragment{
     private LinearLayout layout;
     private CourseService courseService;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,8 @@ public class CourseDirFragment extends Fragment{
         View view = inflater.inflate(R.layout.course_dir, container, false);
         layout = (LinearLayout) view.findViewById(R.id.layout_course_dir);
         updateUI();
+
+
         return view;
     }
 
@@ -90,7 +93,6 @@ public class CourseDirFragment extends Fragment{
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD_WEIGHT) {
                final Course c = ClassInfoActivity.getCourse(data);
-//                Log.d("what",c.toString());
                 course.setExam_weight(c.getExam_weight());
                 course.setAssignments_weight(c.getAssignment_weight());
                 course.setQuiz_weight(c.getQuiz_weight());
@@ -105,8 +107,6 @@ public class CourseDirFragment extends Fragment{
                 course.setIdentifier(c.getIdentifier());
                 course.setCredit(c.getCredit());
                 course.setDesire_grade(c.getDesire_grade_inLetter(c.getDesire_grade()));
-                Log.d("what",c.getTitle());
-                Log.d("what",course.getTitle());
             }
         }
     }
@@ -176,4 +176,8 @@ public class CourseDirFragment extends Fragment{
         return (Course)data.getSerializableExtra(COURSE_UPDATED);
     }
 
+    public void onBackPressed() {
+        getActivity().setResult(RESULT_OK);
+        getActivity().finish();
+    }
 }
