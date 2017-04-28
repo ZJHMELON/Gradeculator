@@ -118,6 +118,7 @@
     <string name="istatus_label">Status</string>
     <string name="iweight_label">Weight</string>
     <string name="iweight_hint">Weight</string>
+<<<<<<< HEAD
 
     <string name="class_info">
         • For category that are not exist in the course, simply leave it blank or enter a value of 0.\n• Toggle button check if the individual tasks in each category has it own weight or they are equally weighted
@@ -131,5 +132,7 @@
 
     <string name="category_name">Project</string>
     <string name="category_item">4 Projects</string>
+=======
+>>>>>>> 96fff5f1ae1bf06f29c98f0f9043a27c89352f90
 
 </resources>
