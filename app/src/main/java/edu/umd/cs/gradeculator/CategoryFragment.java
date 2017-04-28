@@ -84,6 +84,7 @@ public class CategoryFragment extends Fragment {
             if (data == null) {
                 return;
             }
+            //haha
 
           //  Work workCreated = IndividualActivity.getWorkCreated(data);
            // courseService.getCourseById(courseId).
