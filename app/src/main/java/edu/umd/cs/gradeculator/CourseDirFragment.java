@@ -1,5 +1,6 @@
 package edu.umd.cs.gradeculator;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -112,63 +114,141 @@ public class CourseDirFragment extends Fragment{
     }
 
     private void updateUI() {
-        TextView temp;
         Log.d("asadasd",course.getExam_weight()+"hello");
         if(Double.compare(course.getExam_weight(),0.0) == 1){
-            temp = new TextView(getActivity());
-            temp.setText("EXAM");
-            temp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.EXAM));
-                }
-            });
-
-            layout.addView(temp);
+            // check if we have exam already
+            LinearLayout exam = (LinearLayout) layout.findViewById(R.id.exam_view);
+            if(exam != null){
+                TextView percentage = (TextView) exam.findViewById(R.id.exam_percentage);
+                percentage.setText(String.valueOf(course.getExam_weight()));
+                // already exist, just change
+            } else{
+                //add to view
+                LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                View temp = inflater.inflate(R.layout.list_item_course_dir, null);
+                TextView category = (TextView) temp.findViewById(R.id.category_name);
+                temp.setId(R.id.exam_view);
+                category.setText(R.string.exam);
+                TextView percentage = (TextView) temp.findViewById(R.id.category_percentage);
+                percentage.setId(R.id.exam_percentage);
+                percentage.setText(String.valueOf(course.getExam_weight()));
+                temp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.EXAM));
+                    }
+                });
+                layout.addView(temp);
+            }
         }
         if(Double.compare(course.getQuiz_weight(),0.0) == 1){
-            temp = new TextView(getActivity());
-            temp.setText("QUIZ");
-            temp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.QUIZ));
-                }
-            });
-            layout.addView(temp);
+            // check if we have exam already
+            LinearLayout quiz = (LinearLayout) layout.findViewById(R.id.quiz_view);
+            if(quiz != null){
+                TextView percentage = (TextView) quiz.findViewById(R.id.quiz_percentage);
+                percentage.setText(String.valueOf(course.getQuiz_weight()));
+                // already exist, just change
+            } else{
+                //add to view
+                LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                View temp = inflater.inflate(R.layout.list_item_course_dir, null);
+                TextView category = (TextView) temp.findViewById(R.id.category_name);
+                temp.setId(R.id.quiz_view);
+                category.setText(R.string.quiz);
+                TextView percentage = (TextView) temp.findViewById(R.id.category_percentage);
+                percentage.setId(R.id.quiz_percentage);
+                percentage.setText(String.valueOf(course.getQuiz_weight()));
+                temp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.QUIZ));
+                    }
+                });
+                layout.addView(temp);
+            }
         }
         if(Double.compare(course.getAssignment_weight(),0.0) == 1){
-            temp = new TextView(getActivity());
-            temp.setText("Assignment");
-            temp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.ASSIGNMENT));
-                }
-            });
-            layout.addView(temp);
+            // check if we have exam already
+            LinearLayout assignment = (LinearLayout) layout.findViewById(R.id.assignment_view);
+            if(assignment != null){
+                TextView percentage = (TextView) assignment.findViewById(R.id.assignment_percentage);
+                percentage.setText(String.valueOf(course.getAssignment_weight()));
+                // already exist, just change
+            } else{
+                //add to view
+                LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                View temp = inflater.inflate(R.layout.list_item_course_dir, null);
+                TextView category = (TextView) temp.findViewById(R.id.category_name);
+                temp.setId(R.id.assignment_view);
+                category.setText(R.string.assignment);
+                TextView percentage = (TextView) temp.findViewById(R.id.category_percentage);
+                percentage.setId(R.id.assignment_percentage);
+                percentage.setText(String.valueOf(course.getAssignment_weight()));
+                temp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.ASSIGNMENT));
+                    }
+                });
+                layout.addView(temp);
+            }
         }
         if(Double.compare(course.getProject_weight(),0.0) == 1){
-            temp = new TextView(getActivity());
-            temp.setText("Project");
-            temp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.PROJECT));
-                }
-            });
-            layout.addView(temp);
+            // check if we have exam already
+            LinearLayout project = (LinearLayout) layout.findViewById(R.id.project_view);
+            if(project != null){
+                TextView percentage = (TextView) project.findViewById(R.id.project_percentage);
+                percentage.setText(String.valueOf(course.getProject_weight()));
+                // already exist, just change
+            } else{
+                //add to view
+                LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                View temp = inflater.inflate(R.layout.list_item_course_dir, null);
+                TextView category = (TextView) temp.findViewById(R.id.category_name);
+                temp.setId(R.id.project_view);
+                category.setText(R.string.project);
+                TextView percentage = (TextView) temp.findViewById(R.id.category_percentage);
+                percentage.setId(R.id.project_percentage);
+                percentage.setText(String.valueOf(course.getProject_weight()));
+                temp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.PROJECT));
+                    }
+                });
+                layout.addView(temp);
+            }
         }
         if(Double.compare(course.getExtra_weight(),0.0) == 1){
-            temp = new TextView(getActivity());
-            temp.setText("Extra");
-            temp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.EXTRA));
-                }
-            });
-            layout.addView(temp);
+            // check if we have exam already
+            LinearLayout extra_credit = (LinearLayout) layout.findViewById(R.id.extracredit_view);
+            if(extra_credit != null){
+                TextView percentage = (TextView) extra_credit.findViewById(R.id.extracredit_percentage);
+                percentage.setText(String.valueOf(course.getExtra_weight()));
+                // already exist, just change
+            } else{
+                //add to view
+                LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                View temp = inflater.inflate(R.layout.list_item_course_dir, null);
+                TextView category = (TextView) temp.findViewById(R.id.category_name);
+                temp.setId(R.id.extracredit_view);
+                category.setText(R.string.extra_credit);
+                TextView percentage = (TextView) temp.findViewById(R.id.category_percentage);
+                percentage.setId(R.id.extracredit_percentage);
+                percentage.setText(String.valueOf(course.getExtra_weight()));
+                temp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(CategoryActivity.newIntent(getActivity(),course.getId(), Work.Category.EXTRA));
+                    }
+                });
+                layout.addView(temp);
+            }
         }
     }
 

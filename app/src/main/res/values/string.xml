@@ -88,16 +88,29 @@
 
     <string name = "addCourseNote">
         Grades are calculated using the following scale:\n
-        97-100=A+; 94-96.9=A,  90-93.9=A-;\n
-        87-89.9=B+; 84-86.9=B; 80-83.9=B-;\n
-        77-79.9=C+; 74-76.9=C; 70-73.0=C-;\n
-        67-69.9=D+; 64-66.9=D;60-63.9=D-;\n
-        59.9 and lower=F</string>
+        • 97-100 = A+; 94-96.9 = A,  90-93.9 = A-;\n
+        • 87-89.9 = B+; 84-86.9 = B; 80-83.9 = B-;\n
+        • 77-79.9 = C+; 74-76.9 = C; 70-73.0 = C-;\n
+        • 67-69.9 = D+; 64-66.9 = D;60-63.9 = D-;\n
+        • 59.9 and lower = F</string>
 
     <string name="current_grade_label">N/A</string>
 
     <string name="equal_weight">Equal Weight?</string>
 
     <string name="okay">Okay</string>
+
+    <string name="class_info">
+        • For category that are not exist in the course, simply leave it blank or enter a value of 0.\n• Toggle button check if the individual tasks in each category has it own weight or they are equally weighted
+    </string>
+
+    <string name="exam">Exam</string>
+    <string name="quiz">Quiz</string>
+    <string name="assignment">Assignment</string>
+    <string name="project">Project</string>
+    <string name="extra_credit">Extra Credit</string>
+
+    <string name="category_name">Project</string>
+    <string name="category_item">4 Projects</string>
 
 </resources>
