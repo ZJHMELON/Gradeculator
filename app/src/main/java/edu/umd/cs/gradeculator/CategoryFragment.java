@@ -87,10 +87,10 @@ public class CategoryFragment extends Fragment {
             }
             //haha
 
-          //  Work workCreated = IndividualActivity.getWorkCreated(data);
-           // courseService.getCourseById(courseId).
+          Work workCreated = IndividualActivity.getStoryCreated(data);
+           courseService.getCourseById(courseId).add(workCreated);
            // courseService.addCourseToBacklog();
-            //updateUI();
+            updateUI();
         }
     }
 
