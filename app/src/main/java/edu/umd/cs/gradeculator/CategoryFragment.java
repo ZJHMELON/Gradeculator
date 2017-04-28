@@ -19,14 +19,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
 import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_OK;
-import static edu.umd.cs.gradeculator.model.Course.Grade.C;
-import static edu.umd.cs.gradeculator.model.Work.*;
+import static edu.umd.cs.gradeculator.model.Work.Category;
 
 /**
  * Created by weng2 on 4/12/2017.

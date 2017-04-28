@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -114,7 +113,6 @@ public class CourseDirFragment extends Fragment{
     }
 
     private void updateUI() {
-        Log.d("asadasd", course.getExam_weight() + "hello");
         if (Double.compare(course.getExam_weight(), 0.0) == 1) {
             // check if we have exam already
             LinearLayout exam = (LinearLayout) layout.findViewById(R.id.exam_view);
