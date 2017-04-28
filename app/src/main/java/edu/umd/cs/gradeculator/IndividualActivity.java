@@ -19,7 +19,7 @@ public class IndividualActivity extends SingleFragmentActivity {
         return IndividualFragment.newInstance(storyId);
     }
 
-    public static Intent newIntent(Context context, String storyId) {
+    public static Intent newIntent(Context context, String storyId) {  // change storyId to workId?
         Intent intent = new Intent(context, IndividualActivity.class);
         intent.putExtra(EXTRA_STORY_ID, storyId);
         return intent;

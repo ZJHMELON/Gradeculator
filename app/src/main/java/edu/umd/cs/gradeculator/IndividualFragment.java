@@ -60,7 +60,7 @@ public class IndividualFragment extends Fragment {
         if(work != null){
             gradeNameEditText.setText(work.getTitle());
         }
-
+        // these array adapters are causing  IndexOutOfBoundsException: Invalid index 116, size is 2
         dueDateSpinnerMonth = (Spinner) view.findViewById(R.id.ispinnerdueDateMonth);
         Integer[] month = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12};
         ArrayAdapter<Integer> adapterM = new ArrayAdapter<Integer>(getContext(), android.R.layout.simple_spinner_dropdown_item, month);
