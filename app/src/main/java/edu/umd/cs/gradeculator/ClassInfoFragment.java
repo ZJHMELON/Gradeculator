@@ -132,6 +132,9 @@ public class ClassInfoFragment extends Fragment {
                 }
             }
         });
+        if(course.getExam_weight() > 0){
+            exam_edit.setText("" + course.getExam_weight());
+        }
 
 
         quiz_edit = (EditText) view.findViewById(R.id.quiz_edit_text);
@@ -144,6 +147,9 @@ public class ClassInfoFragment extends Fragment {
                 }
             }
         });
+        if(course.getQuiz_weight() > 0){
+            quiz_edit.setText("" + course.getQuiz_weight());
+        }
 
         assignment_edit = (EditText) view.findViewById(R.id.assignment_edit_text);
         assignment_edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -155,6 +161,10 @@ public class ClassInfoFragment extends Fragment {
                 }
             }
         });
+        if(course.getAssignment_weight() > 0){
+            assignment_edit.setText("" + course.getAssignment_weight());
+        }
+
 
         project_edit = (EditText) view.findViewById(R.id.project_edit_text);
         project_edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -166,6 +176,9 @@ public class ClassInfoFragment extends Fragment {
                 }
             }
         });
+        if(course.getProject_weight() > 0){
+            project_edit.setText("" + course.getProject_weight());
+        }
 
         extra_edit = (EditText) view.findViewById(R.id.extra_edit_text);
         extra_edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -177,6 +190,9 @@ public class ClassInfoFragment extends Fragment {
                 }
             }
         });
+        if(course.getExam_weight() > 0){
+            extra_edit.setText("" + course.getExam_weight());
+        }
 
         return view;
     }
