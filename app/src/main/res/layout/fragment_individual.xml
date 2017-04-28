@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,7 +23,7 @@
             android:text="@string/GradeName_label"/>
 
         <EditText
-            android:id="@+id/gradeName"
+            android:id="@+id/igradeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/GradeName_hint"/>
@@ -33,19 +33,29 @@
             android:layout_height="wrap_content"
             android:text="@string/dueDate_label"/>
 
-        <EditText
-            android:id="@+id/dueDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/dueDate_hint"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/points_label"/>
+            <Spinner
+                android:id="@+id/ispinnerdueDateMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/ispinnerdueDateDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Spinner
+                android:id="@+id/ispinnerdueDateYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
         <EditText
-            android:id="@+id/totalPoints"
+            android:id="@+id/itotalPoints"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -54,10 +64,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/grade_label"/>
+            android:text="@string/point_label"/>
 
         <EditText
-            android:id="@+id/point"
+            android:id="@+id/ipoint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -69,7 +79,7 @@
             android:text="@string/status_label"/>
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/ispinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -79,11 +89,31 @@
             android:text="@string/weight_label"/>
 
         <EditText
-            android:id="@+id/weight"
+            android:id="@+id/iweight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:hint="@string/weight_hint"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/save_story_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_button"/>
+
+            <Button
+                android:id="@+id/cancel_story_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_button"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

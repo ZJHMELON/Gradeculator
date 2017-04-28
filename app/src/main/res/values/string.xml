@@ -99,5 +99,24 @@
     <string name="equal_weight">Equal Weight?</string>
 
     <string name="okay">Okay</string>
+	<string-array name="status_array">
+        <item>EXAM</item>
+        <item>QUIZ</item>
+        <item>ASSIGNMENT</item>
+        <item>PROJECT</item>
+        <item>EXTRA</item>
+    </string-array>
+
+    <string name="iGradeName_label">Grade Name</string>
+    <string name="iGradeName_hint">Grade Name</string>
+    <string name="idueDate_label">Due Date</string>
+    <string name="idueDate_hint">Due Date</string>
+    <string name="itotalPoints_label">Point Possible</string>
+    <string name="itotalPoints_hint">Point Possible</string>
+    <string name="ipoint_label">Points</string>
+    <string name="ipoint_hint">Points</string>
+    <string name="istatus_label">Status</string>
+    <string name="iweight_label">Weight</string>
+    <string name="iweight_hint">Weight</string>
 
 </resources>
