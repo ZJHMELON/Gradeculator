@@ -341,13 +341,13 @@ public class CourseDirFragment extends Fragment{
                     item.setText(String.valueOf(course.getExtra().size()) + " Extra Credit Assignment");
                 } else {
                     item.setText(String.valueOf(course.getExtra().size()) + " Extra Credit Assignments");
-                    temp.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXTRA));
-                        }
-                    });
                 }
+                temp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXTRA));
+                    }
+                });
                 layout.addView(temp);
             }
         }
