@@ -9,6 +9,21 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:datePickerStyle">@style/datepicker</item>
+    </style>
+
+
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@color/dark_2nd_blue</item>
+        <item name="android:textColorPrimary">@color/text_color</item>
+        <item name="android:textColorSecondary">@color/text_color</item>
+        <item name="android:colorForegroundInverse">@color/text_color</item>
+        <item name="android:textColorPrimaryInverse">@color/dark_1st_blue</item>
+        <item name="android:textColorSecondaryInverse">@color/dark_1st_blue</item>
+        <item name="colorPrimary">@color/dark_1st_blue</item>
+        <item name="colorPrimaryDark">@color/dark_2nd_blue</item>
+        <item name="colorAccent">@color/dark_3rd_blue</item>
+
     </style>
 
     <style name="customActionBar" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Menu">
