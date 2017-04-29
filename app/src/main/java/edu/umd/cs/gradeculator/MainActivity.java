@@ -15,5 +15,4 @@ public class MainActivity extends SingleFragmentActivity {
         Intent intent = new Intent(context, MainActivity.class);
         return intent;
     }
-
 }

@@ -7,15 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,6 +25,7 @@ import java.util.Collections;
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
 import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
+
 
 /**
  * Created by howardksw1 on 4/21/17.
@@ -50,7 +50,6 @@ public class MainFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         courseService = DependencyFactory.getCourseService(getActivity());
     }
 
@@ -59,8 +58,25 @@ public class MainFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // make it take up the whole space
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.getContentInsetEnd();
+        toolbar.setPadding(0, 0, 0, 0);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
         courseRecyclerView = (RecyclerView) view.findViewById(R.id.course_recycler_view);
         courseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        toolbar.findViewById(R.id.toolbar_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
+                startActivityForResult(createCourseIntent, REQUEST_CODE_CREATE_COURSE);
+            }
+        });
 
         updateUI();
 
@@ -105,23 +121,6 @@ public class MainFragment extends Fragment{
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_create_course:
-                Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
-                startActivityForResult(createCourseIntent, REQUEST_CODE_CREATE_COURSE);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     private class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView courseTitle;

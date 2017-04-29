@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/menu_item_save_course"
-        android:icon="@android:drawable/ic_menu_save"
+        android:icon="@drawable/save"
         android:title="@string/save_course_button"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_item_cancel_course"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:icon="@drawable/cancel"
         android:title="@string/cancel_course_button"
         app:showAsAction="always" />
 </menu>

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +71,17 @@ public class IndividualFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_individual, container, false);
+        // make it take up the whole space
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.getContentInsetEnd();
+        toolbar.setPadding(0, 0, 0, 0);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+
+
         dueDateY = (TextView) view.findViewById(R.id.dueDateY);
         dueDateM = (TextView) view.findViewById(R.id.dueDateM);
         dueDateD = (TextView) view.findViewById(R.id.dueDateD);
@@ -145,10 +158,19 @@ public class IndividualFragment extends Fragment {
             dueDateD.setText(""+work.getDueDate().getDay());
 
         }
-        saveButton = (Button)view.findViewById(R.id.save_story_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+
+
+        toolbar.findViewById(R.id.toolbar_cancel_individual).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                getActivity().setResult(RESULT_CANCELED);
+                getActivity().finish();
+            }
+        });
+
+        toolbar.findViewById(R.id.toolbar_save_individual).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (inputsAreValid()) {
                     if (work == null) {
                         work = new Work(EXTRA_WORK_CREATED);
@@ -207,14 +229,6 @@ public class IndividualFragment extends Fragment {
             }
         });
 
-        cancelButton = (Button)view.findViewById(R.id.cancel_story_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().setResult(RESULT_CANCELED);
-                getActivity().finish();
-            }
-        });
 
         return view;
     }

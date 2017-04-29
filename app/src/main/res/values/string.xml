@@ -154,5 +154,6 @@
     <string name="grade">18%</string>
 
     <string name="reminder_notification">AgileAndroid Reminder</string>
+    <string name="course">Courses</string>
 
 </resources>

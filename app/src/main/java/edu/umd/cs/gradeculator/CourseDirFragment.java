@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +35,7 @@ public class CourseDirFragment extends Fragment{
     private Course course;
     private LinearLayout layout;
     private CourseService courseService;
+    private TextView course_name;
 
 
     @Override
@@ -41,15 +44,50 @@ public class CourseDirFragment extends Fragment{
 
         String courseId = getArguments().getString(ARG_COURSE_ID);
         course = DependencyFactory.getCourseService(getActivity()).getCourseById(courseId);
-        setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.course_dir, container, false);
+        View view = inflater.inflate(R.layout.fragment_course_dir, container, false);
         layout = (LinearLayout) view.findViewById(R.id.layout_course_dir);
+
+        // make it take up the whole space
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.getContentInsetEnd();
+        toolbar.setPadding(0, 0, 0, 0);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+        TextView text = (TextView) toolbar.findViewById(R.id.toolbar_course_name);
+        text.setText(course.getIdentifier());
+
         updateUI();
+
+        toolbar.findViewById(R.id.toolbar_course_name).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(AddCourseActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_EDIT_COURSE);
+            }
+        });
+
+        toolbar.findViewById(R.id.toolbar_edit_weight).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(ClassInfoActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_ADD_WEIGHT);
+                getActivity().finish();
+            }
+        });
+
+        toolbar.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().setResult(RESULT_OK);
+                getActivity().finish();
+            }
+        });
 
 
         return view;
@@ -62,30 +100,6 @@ public class CourseDirFragment extends Fragment{
         CourseDirFragment fragment = new CourseDirFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.course_dir_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.course_dir_back_button:
-                getActivity().setResult(RESULT_OK);
-                getActivity().finish();
-             return true;
-            case R.id.course_dir_edit_button:
-                startActivityForResult(AddCourseActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_EDIT_COURSE);
-                return true;
-            case R.id.course_dir_add_button:
-                startActivityForResult(ClassInfoActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_ADD_WEIGHT);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override

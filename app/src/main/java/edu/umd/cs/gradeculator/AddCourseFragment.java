@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +20,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import edu.umd.cs.gradeculator.model.Course;
 import static android.app.Activity.RESULT_CANCELED;
@@ -61,77 +66,22 @@ public class AddCourseFragment extends Fragment {
         course = DependencyFactory.getCourseService(getActivity().getApplicationContext()).
                 getCourseById(courseId);
 
-        setHasOptionsMenu(true);
     }
 
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_addcourse, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_save_course:
-                if (inputsAreValid()) {
-                    if (course == null) {
-                        course = new Course();
-                    }
-
-                    course.setTitle(courseNameEditText.getText().toString());
-                    course.setIdentifier(courseTitleEditText.getText().toString());
-                    course.setCredit(Integer.parseInt(creditEditText.getText().toString()));
-                    course.setGrade(grade_spinner.getSelectedItemPosition());
-                    course.setDesire_grade(course.getGrade());
-
-                    Intent data = new Intent();
-                    data.putExtra(EXTRA_COURSE_CREATED, course);
-                    getActivity().setResult(RESULT_OK, data);
-                    getActivity().finish();
-                } else{
-                    // invalid input, shake each invalid edit text
-                    if(courseNameEditText.getText().toString().length()<=0){
-                        nameLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
-                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
-                        courseNameEditText.startAnimation(shake);
-                    } else{
-                        nameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                    }
-
-
-                    if(courseTitleEditText.getText().toString().length()<=0){
-                        titleLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
-                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
-                        courseTitleEditText.startAnimation(shake);
-                    }else{
-                        titleLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                    }
-
-
-                    if(creditEditText.getText().toString().length()<=0){
-                        creditLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
-                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
-                        creditEditText.startAnimation(shake);
-                    }else{
-                        creditLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                    }
-                }
-                return true;
-            case R.id.menu_item_cancel_course:
-                getActivity().setResult(RESULT_CANCELED);
-                getActivity().finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_addcourse, container, false);
+
+        // make it take up the whole space
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.getContentInsetEnd();
+        toolbar.setPadding(0, 0, 0, 0);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
 
         nameLayout = (TableLayout)view.findViewById(R.id.nameLayout);
         titleLayout = (TableLayout)view.findViewById(R.id.titleLayout);
@@ -192,6 +142,65 @@ public class AddCourseFragment extends Fragment {
             // set deafult
             grade_spinner.setSelection(statusAdapter.getPosition("A"));
         }
+
+        toolbar.findViewById(R.id.toolbar_save_addcourse).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (inputsAreValid()) {
+                    if (course == null) {
+                        course = new Course();
+                    }
+
+                    course.setTitle(courseNameEditText.getText().toString());
+                    course.setIdentifier(courseTitleEditText.getText().toString());
+                    course.setCredit(Integer.parseInt(creditEditText.getText().toString()));
+                    course.setGrade(grade_spinner.getSelectedItemPosition());
+                    course.setDesire_grade(course.getGrade());
+
+                    Intent data = new Intent();
+                    data.putExtra(EXTRA_COURSE_CREATED, course);
+                    getActivity().setResult(RESULT_OK, data);
+                    getActivity().finish();
+                } else{
+                    // invalid input, shake each invalid edit text
+                    if(courseNameEditText.getText().toString().length()<=0){
+                        nameLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        courseNameEditText.startAnimation(shake);
+                    } else{
+                        nameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+
+                    if(courseTitleEditText.getText().toString().length()<=0){
+                        titleLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        courseTitleEditText.startAnimation(shake);
+                    }else{
+                        titleLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+
+                    if(creditEditText.getText().toString().length()<=0){
+                        creditLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        creditEditText.startAnimation(shake);
+                    }else{
+                        creditLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+                }
+            }
+        });
+
+
+        toolbar.findViewById(R.id.toolbar_cancel_addcourse).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().setResult(RESULT_CANCELED);
+                getActivity().finish();
+            }
+        });
+
 
         return view;
 
