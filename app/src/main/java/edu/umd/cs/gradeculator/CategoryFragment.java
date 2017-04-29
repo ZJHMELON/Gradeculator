@@ -19,14 +19,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
 import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_OK;
-import static edu.umd.cs.gradeculator.model.Course.Grade.C;
-import static edu.umd.cs.gradeculator.model.Work.*;
+import static edu.umd.cs.gradeculator.model.Work.Category;
 
 /**
  * Created by weng2 on 4/12/2017.
@@ -59,7 +57,7 @@ public class CategoryFragment extends Fragment {
         CategoryFragment fragment = new CategoryFragment();
 
         fragment.setArguments(args);
-        return fragment;
+        return fragment; //ss
     }
 
     @Override
@@ -87,8 +85,8 @@ public class CategoryFragment extends Fragment {
             }
             //haha
 
-          Work workCreated = IndividualActivity.getStoryCreated(data);
-           courseService.getCourseById(courseId).add(workCreated);
+ //         Work workCreated = IndividualActivity.getStoryCreated(data);
+   //        courseService.getCourseById(courseId).add(workCreated);
            // courseService.addCourseToBacklog();
             updateUI();
         }
@@ -112,7 +110,7 @@ public class CategoryFragment extends Fragment {
             case R.id.menu_category_item_add:
 
 
-                startActivityForResult(IndividualActivity.newIntent(getActivity(),categoryName),REQUEST_CODE_CREATE_WORK);
+                startActivityForResult(IndividualActivity.newIntent(getActivity(),null,categoryName,courseId),REQUEST_CODE_CREATE_WORK);
 
                 return true;
 
@@ -224,6 +222,8 @@ public class CategoryFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
+
+            startActivityForResult(IndividualActivity.newIntent(getActivity(),work.getTitle(),categoryName,courseId),REQUEST_CODE_CREATE_WORK);
 //????
 //            Intent intent = IndividualActivity.newIntent(getActivity(), work.getTitle());
 //
