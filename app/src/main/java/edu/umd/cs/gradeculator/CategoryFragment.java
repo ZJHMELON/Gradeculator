@@ -10,9 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -217,10 +214,10 @@ public class CategoryFragment extends Fragment {
         public void bindWork(Work work) {
             this.work = work;
 
-            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            SimpleDateFormat df = new SimpleDateFormat("MM/dd");
 
             nameTextView.setText(work.getTitle());
-            dueTextView.setText("" + work.getDueDate()); //????
+            dueTextView.setText("" + df.format(work.getDueDate())); //????
             possibleTextView.setText("" + work.getPossible_points());
             pointsTextView.setText("" + work.getEarned_points());
         }
