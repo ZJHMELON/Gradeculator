@@ -44,8 +44,6 @@ public class IndividualFragment extends Fragment {
     private String cId;
     private ArrayList<Work> works;
 
-    private Button saveButton;
-    private Button cancelButton;
     private static TextView dueDateY;
     private static TextView dueDateM;
     private static TextView dueDateD;

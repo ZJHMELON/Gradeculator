@@ -169,20 +169,20 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-//        TextView center_title = (TextView) toolbar.findViewById(R.id.toolbar_title_individual);
-//        if (category != null) {
-//            if (category == Category.EXAM) {
-//                center_title.setText("Exam");
-//            } else if (category == Category.QUIZ) {
-//                center_title.setText("Quizzes");
-//            } else if (category == Category.PROJECT) {
-//                center_title.setText("Projects");
-//            } else if (category == Category.ASSIGNMENT) {
-//                center_title.setText("Assignments");
-//            } else if (category == Category.EXTRA) {
-//                center_title.setText("Extra Credit");
-//            }
-//        }
+        TextView center_title = (TextView) toolbar.findViewById(R.id.category_title);
+        if (category != null) {
+            if (category == Category.EXAM) {
+                center_title.setText("Exams");
+            } else if (category == Category.QUIZ) {
+                center_title.setText("Quizzes");
+            } else if (category == Category.PROJECT) {
+                center_title.setText("Projects");
+            } else if (category == Category.ASSIGNMENT) {
+                center_title.setText("Assignments");
+            } else if (category == Category.EXTRA) {
+                center_title.setText("Extra Credits");
+            }
+        }
 
 
 

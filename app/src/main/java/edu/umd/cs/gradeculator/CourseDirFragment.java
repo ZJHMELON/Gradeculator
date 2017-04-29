@@ -77,7 +77,6 @@ public class CourseDirFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 startActivityForResult(ClassInfoActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_ADD_WEIGHT);
-                getActivity().finish();
             }
         });
 

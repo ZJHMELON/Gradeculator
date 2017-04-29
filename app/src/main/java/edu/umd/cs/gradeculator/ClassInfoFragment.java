@@ -247,6 +247,7 @@ public class ClassInfoFragment extends Fragment {
                         course.setQuiz_weight(quiz_double);
                         course.setExtra_weight(extra_double);
                         course.setProject_weight(project_double);
+
                         Intent data = new Intent();
                         data.putExtra(COURSE_UPDATED, course);
                         getActivity().setResult(RESULT_OK, data);
