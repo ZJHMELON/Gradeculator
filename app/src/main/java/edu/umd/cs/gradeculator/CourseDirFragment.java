@@ -8,9 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -61,8 +58,8 @@ public class CourseDirFragment extends Fragment{
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
-        TextView text = (TextView) toolbar.findViewById(R.id.toolbar_course_name);
-        text.setText(course.getIdentifier());
+        course_name= (TextView) toolbar.findViewById(R.id.toolbar_course_name);
+        course_name.setText(course.getIdentifier());
 
         updateUI();
 
@@ -120,6 +117,8 @@ public class CourseDirFragment extends Fragment{
                 course.setIdentifier(c.getIdentifier());
                 course.setCredit(c.getCredit());
                 course.setDesire_grade(c.getDesire_grade_inLetter(c.getDesire_grade()));
+                course_name.setText(c.getIdentifier());
+                updateUI();
             }
         }
     }
