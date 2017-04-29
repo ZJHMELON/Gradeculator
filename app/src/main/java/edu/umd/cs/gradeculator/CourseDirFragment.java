@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
-import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -29,9 +28,13 @@ public class CourseDirFragment extends Fragment{
     private static final String COURSE_UPDATED = "CourseUpdated";
     private final int REQUEST_CODE_ADD_WEIGHT = 5;
     private final int REQUEST_CODE_EDIT_COURSE = 1;
+    private final int REQUEST_CODE_EXAM = 6;
+    private final int REQUEST_CODE_QUIZ = 7;
+    private final int REQUEST_CODE_ASSIGNMENT = 8;
+    private final int REQUEST_CODE_PROJECT = 9;
+    private final int REQUEST_CODE_EXTRA = 10;
     private Course course;
     private LinearLayout layout;
-    private CourseService courseService;
     private TextView course_name;
 
 
@@ -120,6 +123,14 @@ public class CourseDirFragment extends Fragment{
                 course_name.setText(c.getIdentifier());
                 updateUI();
             }
+
+            if (requestCode == REQUEST_CODE_EXAM ||
+                    requestCode == REQUEST_CODE_QUIZ ||
+                    requestCode == REQUEST_CODE_PROJECT ||
+                    requestCode == REQUEST_CODE_ASSIGNMENT ||
+                    requestCode == REQUEST_CODE_EXTRA) {
+                updateUI();
+            }
         }
     }
 
@@ -158,7 +169,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXAM));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.EXAM), REQUEST_CODE_EXAM);
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXAM));
                     }
                 });
                 layout.addView(temp);
@@ -206,7 +219,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.QUIZ));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.QUIZ), REQUEST_CODE_QUIZ);
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.QUIZ));
                     }
                 });
                 layout.addView(temp);
@@ -252,7 +267,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.ASSIGNMENT));
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.ASSIGNMENT));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.ASSIGNMENT), REQUEST_CODE_ASSIGNMENT);
                     }
                 });
                 layout.addView(temp);
@@ -298,7 +315,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.PROJECT));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.PROJECT), REQUEST_CODE_PROJECT);
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.PROJECT));
                     }
                 });
                 layout.addView(temp);
@@ -344,7 +363,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXTRA));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.EXTRA), REQUEST_CODE_EXTRA);
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXTRA));
                     }
                 });
                 layout.addView(temp);

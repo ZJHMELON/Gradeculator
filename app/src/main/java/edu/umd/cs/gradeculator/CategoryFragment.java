@@ -180,9 +180,6 @@ public class CategoryFragment extends Fragment {
                 center_title.setText("Extra Credits");
             }
         }
-
-
-
         updateUI();
 
         return view;
@@ -217,7 +214,7 @@ public class CategoryFragment extends Fragment {
             SimpleDateFormat df = new SimpleDateFormat("MM/dd");
 
             nameTextView.setText(work.getTitle());
-            dueTextView.setText("" + df.format(work.getDueDate())); //????
+            dueTextView.setText("" + df.format(work.getDueDate())); // fixed
             possibleTextView.setText("" + work.getPossible_points());
             pointsTextView.setText("" + work.getEarned_points());
         }
@@ -263,6 +260,11 @@ public class CategoryFragment extends Fragment {
         public int getItemCount() {
             return works.size();
         }
+    }
+
+    public void onBackPressed() {
+        getActivity().setResult(RESULT_OK);
+        getActivity().finish();
     }
 }
 

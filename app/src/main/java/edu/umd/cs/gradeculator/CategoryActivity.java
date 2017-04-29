@@ -2,9 +2,7 @@ package edu.umd.cs.gradeculator;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 
 import edu.umd.cs.gradeculator.model.Work;
 
@@ -12,6 +10,7 @@ public class CategoryActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_COURSE_ID = "COURSE_ID";
     private static final String EXTRA_CATEGORY_NAME = "CATEGORY_NAME";
+    private Fragment fragment;
 
     @Override
     protected Fragment createFragment() {
@@ -19,7 +18,8 @@ public class CategoryActivity extends SingleFragmentActivity {
         String courseId = getIntent().getStringExtra(EXTRA_COURSE_ID);
         Work.Category category = (Work.Category) getIntent().getSerializableExtra(EXTRA_CATEGORY_NAME);
 
-        return CategoryFragment.newInstance( courseId,category);
+        fragment = CategoryFragment.newInstance( courseId,category);
+        return fragment;
     }
 
 
@@ -30,6 +30,12 @@ public class CategoryActivity extends SingleFragmentActivity {
         intent.putExtra(EXTRA_CATEGORY_NAME, category);
 
         return intent;
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((CategoryFragment) fragment).onBackPressed();
+        super.onBackPressed();
     }
 
 }
