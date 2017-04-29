@@ -5,7 +5,6 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
@@ -16,7 +15,7 @@ import edu.umd.cs.gradeculator.service.CourseService;
 
 public class InMemoryCourseService implements CourseService {
     private Context context;
-    private List<Course> courses;
+    private ArrayList<Course> courses;
 
     public InMemoryCourseService(Context context) {
         this.context = context;
@@ -47,16 +46,8 @@ public class InMemoryCourseService implements CourseService {
     }
 
     @Override
-    public List<Course> getAllCourses() {
-        List<Course> prioritizedStories = new ArrayList<Course>(courses);
-
-        // Test UI - hard code courses
-//        for(int i = 1; i < 11; i++) {
-//            String name = "course " + Integer.toString(i);
-//            prioritizedStories.add(new Course(name,name, Course.Grade.A, 100));
-//        }
-
-
+    public ArrayList<Course> getAllCourses() {
+        ArrayList<Course> prioritizedStories = new ArrayList<Course>(courses);
         Collections.sort(prioritizedStories, new Comparator<Course>() {
             @Override
             public int compare(Course course1, Course course2) {
@@ -69,9 +60,12 @@ public class InMemoryCourseService implements CourseService {
 
     @Override
     public boolean remove_course(int position) {
-        Course to_delete = getCourseById(courses.get(position).getId());
+        courses = getAllCourses();
+        Course to_delete = courses.get(position);
+
         if (to_delete != null) {
             courses.remove(to_delete);
+            courses.trimToSize();
             return true;
         }
         return false;

@@ -20,8 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
@@ -34,7 +34,7 @@ import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
 // hihihihihi test 101
 public class MainFragment extends Fragment{
 
-    private List<Course> all_course;
+    private ArrayList<Course> all_course;
     private ItemTouchHelper mItemTouchHelper;
     private final String TAG = getClass().getSimpleName();
     private CourseService courseService;
@@ -150,7 +150,6 @@ public class MainFragment extends Fragment{
 
         @Override
         public void onClick(View view) {
-//            Toast.makeText(getActivity(), course.getTitle() + "is selected", Toast.LENGTH_SHORT).show();
             Intent intent = CourseDirActivity.newIntent(getActivity(), course.getId());
 
             startActivityForResult(intent, REQUEST_CODE_EDIT_COURSE);
@@ -158,14 +157,13 @@ public class MainFragment extends Fragment{
     }
 
     private class CourseAdapter extends RecyclerView.Adapter<CourseHolder> implements ItemTouchHelperAdapter {
-        private List<Course> courses;
 
-        public CourseAdapter(List<Course> courses) {
-            this.courses = courses;
+        public CourseAdapter(ArrayList<Course> courses) {
+            all_course = courses;
         }
 
-        public void setCourses(List<Course> courses) {
-            this.courses = courses;
+        public void setCourses(ArrayList<Course> courses) {
+            all_course = courses;
         }
 
         @Override
@@ -177,24 +175,24 @@ public class MainFragment extends Fragment{
 
         @Override
         public void onBindViewHolder(CourseHolder holder, int position) {
-            Course course = courses.get(position);
+            Course course = all_course.get(position);
             holder.bindCourse(course);
         }
 
         @Override
         public int getItemCount() {
-            return courses.size();
+            return all_course.size();
         }
 
         @Override
         public boolean onItemMove(int fromPosition, int toPosition) {
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
-                    Collections.swap(courses, i, i + 1);
+                    Collections.swap(all_course, i, i + 1);
                 }
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
-                    Collections.swap(courses, i, i - 1);
+                    Collections.swap(all_course, i, i - 1);
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
@@ -203,7 +201,6 @@ public class MainFragment extends Fragment{
 
         @Override
         public void onItemDismiss(int position) {
-            courses.remove(position);
             DependencyFactory.getCourseService(getActivity()).remove_course(position);
             notifyItemRemoved(position);
         }
@@ -213,11 +210,9 @@ public class MainFragment extends Fragment{
     public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         private final ItemTouchHelperAdapter mAdapter;
-//        private List<Course> courses = null;
 
         public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
             mAdapter = adapter;
-//            courses = DependencyFactory.getCourseService(getActivity()).getAllCourses();
         }
 
         @Override
@@ -254,12 +249,12 @@ public class MainFragment extends Fragment{
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
                             mAdapter.onItemDismiss(position);
+                            updateUI();
                         }
                     })
                     .setNegativeButton(R.string.cancel_remove, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // do nothing
-                            updateUI();
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
