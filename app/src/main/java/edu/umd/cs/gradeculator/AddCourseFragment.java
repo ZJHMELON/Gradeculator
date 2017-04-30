@@ -151,9 +151,10 @@ public class AddCourseFragment extends Fragment {
                         course = new Course();
                     }
 
-                    course.setTitle(courseNameEditText.getText().toString());
-                    course.setIdentifier(courseTitleEditText.getText().toString());
-                    course.setCredit(Integer.parseInt(creditEditText.getText().toString()));
+
+                    course.setTitle(courseNameEditText.getText().toString().trim().replaceAll(" +", " "));
+                    course.setIdentifier(courseTitleEditText.getText().toString().trim().replaceAll(" +", " "));
+                    course.setCredit(Integer.parseInt(creditEditText.getText().toString().trim().replaceAll(" +", " ")));
                     course.setGrade(grade_spinner.getSelectedItemPosition());
                     course.setDesire_grade(course.getGrade());
 
@@ -163,7 +164,7 @@ public class AddCourseFragment extends Fragment {
                     getActivity().finish();
                 } else{
                     // invalid input, shake each invalid edit text
-                    if(courseNameEditText.getText().toString().length()<=0){
+                    if(courseNameEditText.getText().toString().trim().length()<=0){
                         nameLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
                         courseNameEditText.startAnimation(shake);
@@ -172,7 +173,7 @@ public class AddCourseFragment extends Fragment {
                     }
 
 
-                    if(courseTitleEditText.getText().toString().length()<=0){
+                    if(courseTitleEditText.getText().toString().trim().length()<=0){
                         titleLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
                         courseTitleEditText.startAnimation(shake);
@@ -181,7 +182,7 @@ public class AddCourseFragment extends Fragment {
                     }
 
 
-                    if(creditEditText.getText().toString().length()<=0){
+                    if(creditEditText.getText().toString().trim().length()<=0){
                         creditLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
                         creditEditText.startAnimation(shake);
@@ -212,9 +213,9 @@ public class AddCourseFragment extends Fragment {
 
     private boolean inputsAreValid() {
         return
-                courseNameEditText.getText().toString().length() > 0 &&
-                        courseTitleEditText.getText().toString().length() > 0 &&
-                        creditEditText.getText().toString().length() > 0 &&
+                courseNameEditText.getText().toString().trim().length() > 0 &&
+                        courseTitleEditText.getText().toString().trim().length() > 0 &&
+                        creditEditText.getText().toString().trim().length() > 0 &&
                         grade_spinner.getSelectedItemPosition() >= 0;
     }
 }

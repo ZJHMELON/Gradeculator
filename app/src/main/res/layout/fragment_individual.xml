@@ -7,7 +7,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/individual_page">
 
 
         <android.support.v7.widget.Toolbar
@@ -120,7 +121,7 @@
                     android:textCursorDrawable="@null"
                     android:layout_gravity="end"
                     android:cursorVisible="false"
-                    android:textSize="17sp"
+                    android:textSize="16sp"
                     android:layout_marginLeft="15sp"
                     android:layout_marginRight="25sp"
                     android:gravity="right"
@@ -148,7 +149,7 @@
             android:id="@+id/dueLayout"
             android:paddingTop="20sp"
             android:orientation="horizontal"
-            android:weightSum="8"
+            android:weightSum="9"
             android:layout_width ="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10sp"
@@ -160,34 +161,40 @@
                     android:text="@string/dueDate_label"
                     android:paddingLeft="15sp"
                     android:textSize="16sp"
-                    android:layout_weight="2"
+                    android:layout_weight="4"
                     android:layout_height="wrap_content"
                     />
 
-                <TextView
-                    android:layout_weight="1.2"
+                <LinearLayout
+                    android:gravity="end"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="25sp"
                     android:layout_height="wrap_content"
-                    android:text="Y"/>
-                <TextView
-                    android:id="@+id/dueDateY"
-                    android:layout_weight="1.2"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_weight="1.2"
-                    android:layout_height="wrap_content"
-                    android:text="M"/>
-                <TextView
-                    android:id="@+id/dueDateM"
-                    android:layout_weight="1.2"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_weight="1.2"
-                    android:layout_height="wrap_content"
-                    android:text="D"/>
-                <TextView
-                    android:id="@+id/dueDateD"
-                    android:layout_weight="1.2"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="0sp"
+                    android:layout_weight="5" >
+                    <TextView
+                        android:textSize="16sp"
+                        android:textColor="@color/hint_color"
+                        android:id="@+id/dueDateM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="01/"/>
+                    <TextView
+                        android:textSize="16sp"
+                        android:textColor="@color/hint_color"
+                        android:id="@+id/dueDateD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20/"/>
+                    <TextView
+                        android:textSize="16sp"
+                        android:textColor="@color/hint_color"
+                        android:id="@+id/dueDateY"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2017"/>
+
+                </LinearLayout>
 
 
             </TableRow>
@@ -225,7 +232,7 @@
                     android:textCursorDrawable="@null"
                     android:layout_gravity="end"
                     android:cursorVisible="false"
-                    android:textSize="17sp"
+                    android:textSize="16sp"
                     android:layout_marginLeft="15sp"
                     android:layout_marginRight="25sp"
                     android:gravity="right"
@@ -252,6 +259,7 @@
 
 
         <TableLayout
+            android:id="@+id/complete_layout"
             android:paddingTop="20sp"
             android:orientation="horizontal"
             android:weightSum="9"
@@ -270,22 +278,22 @@
                     android:layout_height="wrap_content"
                     />
 
-                <Spinner
-                    android:layout_weight="5"
-                    android:textColor="@drawable/spinner_selector"
-                    android:background="@android:color/transparent"
-                    android:textSize="17sp"
+                <ToggleButton
+                    android:layout_marginLeft="15sp"
                     android:layout_marginRight="25sp"
-                    android:layout_width ="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ispinner"
-                    android:drawSelectorOnTop="true"
-                    android:clickable="true"
+                    android:id="@+id/complete_btn"
+                    android:textOff=""
+                    android:textOn=""
+                    android:background="@drawable/toggle_selector"
+                    android:textSize="15sp"
+                    android:layout_height="25sp"
+                    android:layout_width="44.64sp"
                     />
             </TableRow>
         </TableLayout>
 
         <View
+            android:id="@+id/complete_line"
             android:layout_marginLeft="5sp"
             android:layout_marginRight="5sp"
             android:layout_width="match_parent"
@@ -294,7 +302,7 @@
 
 
         <TableLayout
-            android:id="@+id/pointLayout"
+            android:id="@+id/gradeLayout"
             android:paddingTop="20sp"
             android:orientation="horizontal"
             android:weightSum="9"
@@ -318,7 +326,7 @@
                     android:textCursorDrawable="@null"
                     android:layout_gravity="end"
                     android:cursorVisible="false"
-                    android:textSize="17sp"
+                    android:textSize="16sp"
                     android:layout_marginLeft="15sp"
                     android:layout_marginRight="25sp"
                     android:gravity="right"
@@ -334,13 +342,6 @@
                     />
             </TableRow>
         </TableLayout>
-
-        <View
-            android:layout_marginLeft="5sp"
-            android:layout_marginRight="5sp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/hint_color"/>
 
         <View
             android:layout_marginLeft="5sp"
@@ -370,29 +371,52 @@
                     android:layout_height="wrap_content"
                     />
 
-                <EditText
-                    android:textCursorDrawable="@null"
+
+                <LinearLayout
+                    android:gravity="end"
                     android:layout_gravity="end"
-                    android:cursorVisible="false"
-                    android:textSize="17sp"
-                    android:layout_marginLeft="15sp"
                     android:layout_marginRight="25sp"
-                    android:gravity="right"
-                    android:inputType="numberDecimal"
-                    android:id="@+id/iweight"
-                    android:layout_weight="5"
-                    android:layout_width ="0dp"
                     android:layout_height="wrap_content"
-                    android:hint = "@string/weight_hint"
-                    android:textColor="@color/text_color"
-                    android:textColorHint="@color/hint_color"
-                    android:background="@android:color/transparent"
-                    />
+                    android:layout_width="0sp"
+                    android:layout_weight="5" >
+
+                    <EditText
+                        android:textCursorDrawable="@null"
+                        android:layout_gravity="end"
+                        android:cursorVisible="false"
+                        android:textSize="16sp"
+                        android:gravity="right"
+                        android:inputType="numberDecimal"
+                        android:id="@+id/iweight"
+                        android:layout_width ="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint = "@string/weight_hint"
+                        android:textColor="@color/text_color"
+                        android:textColorHint="@color/hint_color"
+                        android:background="@android:color/transparent"
+                        />
+                    <TextView
+                        android:text="%"
+                        android:textCursorDrawable="@null"
+                        android:layout_gravity="end"
+                        android:cursorVisible="false"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="2sp"
+                        android:gravity="right"
+                        android:inputType="numberDecimal"
+                        android:layout_width ="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color"
+                        android:background="@android:color/transparent"
+                        />
+
+                </LinearLayout>
             </TableRow>
 
         </TableLayout>
 
         <View
+            android:id="@+id/weight_line"
             android:layout_marginLeft="5sp"
             android:layout_marginRight="5sp"
             android:layout_width="match_parent"

@@ -12,10 +12,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,6 +49,15 @@ public class IndividualFragment extends Fragment {
     private EditText weightEditText;
     private String cId;
     private ArrayList<Work> works;
+    private TableLayout assignNameLayout;
+    private TableLayout dueLayout;
+    private TableLayout totalPointLayout;
+    private TableLayout gradeLayout;
+    private TableLayout weightLayout;
+    private ToggleButton complete_btn;
+    private LinearLayout layout;
+    private View complete_line;
+    private View weight_line;
 
     private static TextView dueDateY;
     private static TextView dueDateM;
@@ -69,6 +84,7 @@ public class IndividualFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_individual, container, false);
+        layout = (LinearLayout) view.findViewById(R.id.individual_page);
         // make it take up the whole space
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setContentInsetsAbsolute(0, 0);
@@ -78,10 +94,42 @@ public class IndividualFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
+        assignNameLayout = (TableLayout)view.findViewById(R.id.assignNameLayout);
+        dueLayout = (TableLayout)view.findViewById(R.id.dueLayout);
+        totalPointLayout = (TableLayout)view.findViewById(R.id.total_point_layout);
+        gradeLayout = (TableLayout)view.findViewById(R.id.gradeLayout);
+        weightLayout = (TableLayout)view.findViewById(R.id.weightLayout);
+        complete_btn = (ToggleButton) view.findViewById(R.id.complete_btn);
+        complete_line = view.findViewById(R.id.complete_line);
+        weight_line = view.findViewById(R.id.weight_line);
+
+        // default not completed
+        complete_btn.setChecked(false);
+        layout.removeView(gradeLayout);
+        layout.removeView(complete_line);
+
+        complete_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled, enter weight
+                    layout.removeView(weightLayout);
+                    layout.removeView(weight_line);
+                    layout.addView(gradeLayout);
+                    layout.addView(complete_line);
+                    layout.addView(weightLayout);
+                    layout.addView(weight_line);
+                } else {
+                    // The toggle is disabled
+                    layout.removeView(gradeLayout);
+                    layout.removeView(complete_line);
+                }
+            }
+        });
 
         dueDateY = (TextView) view.findViewById(R.id.dueDateY);
         dueDateM = (TextView) view.findViewById(R.id.dueDateM);
         dueDateD = (TextView) view.findViewById(R.id.dueDateD);
+
 
         dueDateY.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +221,7 @@ public class IndividualFragment extends Fragment {
                         work = new Work(EXTRA_WORK_CREATED);
                     }
 
-                    work.setTitle(gradeNameEditText.getText().toString());
+                    work.setTitle(gradeNameEditText.getText().toString().trim().replaceAll(" +", " "));
                     Date date = new Date();
                     work.setDueDate(date);
                     work.setPossible_points(Double.parseDouble(totalPointsEditText.getText().toString()));
@@ -222,6 +270,53 @@ public class IndividualFragment extends Fragment {
                     data.putExtra(EXTRA_WORK_CREATED, work);
                     getActivity().setResult(RESULT_OK, data);
                     getActivity().finish();
+                } else{
+
+                    // invalid input, shake each invalid edit text
+                    if(gradeNameEditText.getText().toString().trim().length()<=0){
+                        assignNameLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        gradeNameEditText.startAnimation(shake);
+                    } else{
+                        assignNameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+                    if(gradeNameEditText.getText().toString().trim().length()<=0){
+                        gradeLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        gradeNameEditText.startAnimation(shake);
+                    } else{
+                        gradeLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+                    if(totalPointsEditText.getText().toString().trim().length()<=0){
+                        totalPointLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        totalPointsEditText.startAnimation(shake);
+                    } else{
+                        totalPointLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+                    if(weightEditText.getText().toString().trim().length()<=0){
+                        weightLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        weightEditText.startAnimation(shake);
+                    } else{
+                        weightLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+                    if(dueDateM.getCurrentTextColor() == getResources().getColor(R.color.hint_color)||
+                            dueDateY.getText().toString().length() == getResources().getColor(R.color.hint_color) ||
+                            dueDateD.getText().toString().length() == getResources().getColor(R.color.hint_color)){
+                        dueLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        dueDateM.startAnimation(shake);
+                        dueDateD.startAnimation(shake);
+                        dueDateY.startAnimation(shake);
+                    } else{
+                        dueLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
                 }
             }
         });
@@ -236,11 +331,13 @@ public class IndividualFragment extends Fragment {
 
     private boolean inputsAreValid() {
         return
-                gradeNameEditText.getText().toString().length() > 0 &&
-                        totalPointsEditText.getText().toString().length() > 0 &&
+                gradeNameEditText.getText().toString().trim().length() > 0 &&
                         totalPointsEditText.getText().toString().length() > 0 &&
                         PointsEditText.getText().toString().length() > 0 &&
-                        weightEditText.getText().toString().length() > 0;
+                        weightEditText.getText().toString().length() > 0 &&
+                        dueDateM.getText().toString().length() > 0 &&
+                        dueDateY.getText().toString().length() > 0 &&
+                        dueDateD.getText().toString().length() > 0;
     }
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
@@ -260,8 +357,20 @@ public class IndividualFragment extends Fragment {
         }
         public void onDateSet(DatePicker view, int year, int month, int day) {
             dueDateY.setText(year+"");
-            dueDateM.setText(month+"");
-            dueDateD.setText(day+"");
+            month += 1;
+            if(month < 10){
+                dueDateM.setText("0"+month+"/");
+            } else{
+                dueDateM.setText(month+"/");
+            }
+            if(day < 10){
+                dueDateD.setText("0"+day+"/");
+            } else{
+                dueDateD.setText(day+"/");
+            }
+            dueDateY.setTextColor(getResources().getColor(R.color.text_color));
+            dueDateM.setTextColor(getResources().getColor(R.color.text_color));
+            dueDateD.setTextColor(getResources().getColor(R.color.text_color));
         }
     }
 }
