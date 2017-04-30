@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,6 +53,7 @@ public class ClassInfoFragment extends Fragment {
 
         String courseId = getArguments().getString(ARG_COURSE_ID);
         course = DependencyFactory.getCourseService(getActivity().getApplicationContext()).getCourseById(courseId);
+        Log.d("hello", courseId);
     }
 
     @Nullable
@@ -87,8 +89,11 @@ public class ClassInfoFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled, equal weight
+                    course.setEqual_weight_exam(true);
+                    Log.d("hi","here");
                 } else {
                     // The toggle is disabled
+                    course.setEqual_weight_exam(false);
                 }
             }
         });
@@ -98,8 +103,10 @@ public class ClassInfoFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled, equal weight
+                    course.setEqual_weight_quiz(true);
                 } else {
                     // The toggle is disabled
+                    course.setEqual_weight_quiz(false);
                 }
             }
         });
@@ -108,8 +115,10 @@ public class ClassInfoFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled, equal weight
+                    course.setEqual_weight_assignment(true);
                 } else {
                     // The toggle is disabled
+                    course.setEqual_weight_assignment(false);
                 }
             }
         });
@@ -118,8 +127,10 @@ public class ClassInfoFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled, equal weight
+                    course.setEqual_weight_project(true);
                 } else {
                     // The toggle is disabled
+                    course.setEqual_weight_project(false);
                 }
             }
         });
@@ -128,8 +139,10 @@ public class ClassInfoFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled, equal weight
+                    course.setEqual_weight_extra(true);
                 } else {
                     // The toggle is disabled
+                    course.setEqual_weight_extra(false);
                 }
             }
         });

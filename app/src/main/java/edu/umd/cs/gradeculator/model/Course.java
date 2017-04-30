@@ -25,6 +25,7 @@ public class Course implements Serializable {
 	private double current_grade;
 	private double desire_grade;
 	private int credit;
+	private boolean equal_weight_exam,equal_weight_quiz,equal_weight_assignment,equal_weight_project,equal_weight_extra;
 
 	private boolean setGrade = false;
 	// check if we set grade yet, only after seting grade we can fill in desired grade
@@ -37,6 +38,7 @@ public class Course implements Serializable {
 		assignments = new ArrayList<>();
 		extra = new ArrayList<>();
 		exam_weight = quiz_weight = assignment_weight = project_weight = extra_weight = 0.0;
+		equal_weight_assignment = equal_weight_quiz = equal_weight_exam =equal_weight_project=equal_weight_extra = true;
 	}
 
 	public Course(String title, String identifier, Grade grade, int credit) {
@@ -52,6 +54,47 @@ public class Course implements Serializable {
 		extra = new ArrayList<>();
 		setDesire_grade(grade);
 		exam_weight = quiz_weight = assignment_weight = project_weight = extra_weight = 0.0;
+		equal_weight_assignment = equal_weight_quiz = equal_weight_exam =equal_weight_project=equal_weight_extra = true;
+	}
+
+	public void setEqual_weight_exam(boolean a){
+		equal_weight_exam=a;
+	}
+
+	public void setEqual_weight_quiz(boolean a){
+		equal_weight_quiz=a;
+	}
+
+	public void setEqual_weight_assignment(boolean a){
+		equal_weight_assignment=a;
+	}
+
+	public void setEqual_weight_project(boolean a){
+		equal_weight_project=a;
+	}
+
+	public void setEqual_weight_extra(boolean a){
+		equal_weight_extra=a;
+	}
+
+	public boolean getEqual_weight_exam(){
+			return equal_weight_exam;
+	}
+
+	public boolean getEqual_weight_quiz(){
+		return equal_weight_quiz;
+	}
+
+	public boolean getEqual_weight_assignment(){
+		return equal_weight_assignment;
+	}
+
+	public boolean getEqual_weight_project(){
+		return equal_weight_project;
+	}
+
+	public boolean getEqual_weight_extra(){
+		return equal_weight_extra;
 	}
 
 	public double getExam_weight() {

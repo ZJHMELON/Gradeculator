@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.util.Log.d;
 
 public class IndividualFragment extends Fragment {
     private static final String EXTRA_WORK_CREATED = "WorkCreated";
@@ -58,6 +60,7 @@ public class IndividualFragment extends Fragment {
     private LinearLayout layout;
     private View complete_line;
     private View weight_line;
+    private boolean equal_weight, finished;
 
     private static TextView dueDateY;
     private static TextView dueDateM;
@@ -79,12 +82,19 @@ public class IndividualFragment extends Fragment {
         cId = getArguments().getString(ARG_COURSE_ID);
         cat = getArguments().getString(ARG_CAT);
         title = getArguments().getString(ARG_WORK_TITLE);
+        equal_weight = true;
+        finished = false;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_individual, container, false);
         layout = (LinearLayout) view.findViewById(R.id.individual_page);
+
+        //gets the course
+        CourseService ss=DependencyFactory.getCourseService(getActivity());
+        Course cs=ss.getCourseById(cId);
+
         // make it take up the whole space
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setContentInsetsAbsolute(0, 0);
@@ -103,28 +113,25 @@ public class IndividualFragment extends Fragment {
         complete_line = view.findViewById(R.id.complete_line);
         weight_line = view.findViewById(R.id.weight_line);
 
+
         // default not completed
         complete_btn.setChecked(false);
-        layout.removeView(gradeLayout);
-        layout.removeView(complete_line);
+        gradeLayout.setVisibility(View.GONE);
 
         complete_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled, enter weight
-                    layout.removeView(weightLayout);
-                    layout.removeView(weight_line);
-                    layout.addView(gradeLayout);
-                    layout.addView(complete_line);
-                    layout.addView(weightLayout);
-                    layout.addView(weight_line);
+                    gradeLayout.setVisibility(View.VISIBLE);
+                    finished = false;
                 } else {
                     // The toggle is disabled
-                    layout.removeView(gradeLayout);
-                    layout.removeView(complete_line);
+                    gradeLayout.setVisibility(View.GONE);
+                    finished = true;
                 }
             }
         });
+
 
         dueDateY = (TextView) view.findViewById(R.id.dueDateY);
         dueDateM = (TextView) view.findViewById(R.id.dueDateM);
@@ -149,9 +156,9 @@ public class IndividualFragment extends Fragment {
                 showDatePickerDialog(v);
             }
         });
+
+
         if (title!=null){
-            CourseService ss=DependencyFactory.getCourseService(getActivity());
-            Course cs=ss.getCourseById(cId);
             switch(cat){
                 case "Exam":
                     works=cs.getExams();
@@ -204,7 +211,74 @@ public class IndividualFragment extends Fragment {
 
         }
 
+        //Check weheater need to display weight layout or not
+        if (cat!=null) {
+            switch (cat) {
+                case "Exam":
+                    if (cs.getEqual_weight_exam()) {
+                        weightLayout.setVisibility(View.GONE);
+                        weight_line.setVisibility(View.GONE);
+                        equal_weight = true ;
+                    }
+                    else{
+                        weightLayout.setVisibility(View.VISIBLE);
+                        weight_line.setVisibility(View.VISIBLE);
+                        equal_weight = false;
+                    }
+                    break;
+                case "Quiz":
+                    if (cs.getEqual_weight_quiz()) {
+                        weightLayout.setVisibility(View.GONE);
+                        weight_line.setVisibility(View.GONE);
+                        equal_weight = true;
+                    }
+                    else{
+                        weightLayout.setVisibility(View.VISIBLE);
+                        weight_line.setVisibility(View.VISIBLE);
+                        equal_weight = false;
+                    }
+                    break;
+                case "Assignment":
+                    if (cs.getEqual_weight_assignment()) {
+                        weightLayout.setVisibility(View.GONE);
+                        weight_line.setVisibility(View.GONE);
+                        equal_weight = true;
+                    }
+                    else{
+                        weightLayout.setVisibility(View.VISIBLE);
+                        weight_line.setVisibility(View.VISIBLE);
+                        equal_weight =false;
+                    }
+                    break;
+                case "Project":
+                    if (cs.getEqual_weight_project()) {
+                        weightLayout.setVisibility(View.GONE);
+                        weight_line.setVisibility(View.GONE);
+                        equal_weight =true;
+                    }
+                    else{
+                        weightLayout.setVisibility(View.VISIBLE);
+                        weight_line.setVisibility(View.VISIBLE);
+                        equal_weight =false;
+                    }
+                    break;
+                case "Extra":
+                    if (cs.getEqual_weight_extra()) {
+                        weightLayout.setVisibility(View.GONE);
+                        weight_line.setVisibility(View.GONE);
+                        equal_weight =true;
+                    }
+                    else{
+                        weightLayout.setVisibility(View.VISIBLE);
+                        weight_line.setVisibility(View.VISIBLE);
+                        equal_weight =false;
+                    }
+                    break;
+                default:
 
+            }
+        }
+        
         toolbar.findViewById(R.id.toolbar_cancel_individual).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,16 +299,23 @@ public class IndividualFragment extends Fragment {
                     Date date = new Date();
                     work.setDueDate(date);
                     work.setPossible_points(Double.parseDouble(totalPointsEditText.getText().toString()));
-                    work.setEarned_points(Double.parseDouble(PointsEditText.getText().toString()));
 
-                    work.setWeight(Double.parseDouble(weightEditText.getText().toString()));
+                    if(finished) {
+                        //only set earned points when the assignment is finished
+                        work.setEarned_points(Double.parseDouble(PointsEditText.getText().toString()));
+                    }
+
+                    if(!equal_weight) {
+                        // only set weight if the weight is not equally
+                        work.setWeight(Double.parseDouble(weightEditText.getText().toString()));
+                    }
                     date=new Date();
                     date.setHours(11);
                     date.setMinutes(59);
                     date.setSeconds(59);
                     date.setYear(Integer.parseInt(dueDateY.getText().toString()));
-                    date.setMonth(Integer.parseInt(dueDateM.getText().toString()));
-                    date.setDate(Integer.parseInt(dueDateD.getText().toString()));
+                    date.setMonth(Integer.parseInt(dueDateM.getText().toString().substring(0,1)));
+                    date.setDate(Integer.parseInt(dueDateD.getText().toString().substring(0,1)));
                     work.setDueDate(date);
                     Intent data = new Intent();
                     switch(cat){
@@ -255,8 +336,8 @@ public class IndividualFragment extends Fragment {
                             break;
 
                     }
-                    ss=DependencyFactory.getCourseService(getActivity());
-                    Course cs =ss.getCourseById(cId);
+                    CourseService sss=DependencyFactory.getCourseService(getActivity());
+                    Course cs =sss.getCourseById(cId);
                     if(title==null){
                         cs.add(work);
                     }else{
@@ -330,14 +411,37 @@ public class IndividualFragment extends Fragment {
     }
 
     private boolean inputsAreValid() {
-        return
-                gradeNameEditText.getText().toString().trim().length() > 0 &&
-                        totalPointsEditText.getText().toString().length() > 0 &&
-                        PointsEditText.getText().toString().length() > 0 &&
-                        weightEditText.getText().toString().length() > 0 &&
-                        dueDateM.getText().toString().length() > 0 &&
-                        dueDateY.getText().toString().length() > 0 &&
-                        dueDateD.getText().toString().length() > 0;
+       if(equal_weight && finished) {
+            //the assignment is finished and equally weighted
+            return
+                    gradeNameEditText.getText().toString().trim().length() > 0 &&
+                            totalPointsEditText.getText().toString().length() > 0 &&
+                            PointsEditText.getText().toString().length() > 0 &&
+                            dueDateM.getText().toString().length() > 0 &&
+                            dueDateY.getText().toString().length() > 0 &&
+                            dueDateD.getText().toString().length() > 0;
+
+        }
+        else if (!equal_weight && finished){
+           //the assignment is finished and NOT equally weighted
+           return
+                   gradeNameEditText.getText().toString().trim().length() > 0 &&
+                           totalPointsEditText.getText().toString().length() > 0 &&
+                           PointsEditText.getText().toString().length() > 0 &&
+                           weightEditText.getText().toString().length() > 0 &&
+                           dueDateM.getText().toString().length() > 0 &&
+                           dueDateY.getText().toString().length() > 0 &&
+                           dueDateD.getText().toString().length() > 0;
+       }
+       else{
+           //the assignment is not finished or equally weighted
+           return
+                   gradeNameEditText.getText().toString().trim().length() > 0 &&
+                           totalPointsEditText.getText().toString().length() > 0 &&
+                           dueDateM.getText().toString().length() > 0 &&
+                           dueDateY.getText().toString().length() > 0 &&
+                           dueDateD.getText().toString().length() > 0;
+       }
     }
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
