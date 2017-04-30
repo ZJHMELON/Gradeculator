@@ -1,20 +1,35 @@
 package edu.umd.cs.gradeculator;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
+import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
+import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -22,23 +37,37 @@ import static android.app.Activity.RESULT_OK;
 public class IndividualFragment extends Fragment {
     private static final String EXTRA_WORK_CREATED = "WorkCreated";
     private static final String ARG_WORK_TITLE = "WorkTitle";
+    private static final String ARG_COURSE_ID= "CourseId";
+    private static final String ARG_CAT="Cat";
     private Work work;
-
+    private CourseService ss;
+    private String cat;
+    private String title;
     private EditText gradeNameEditText;
-    private Spinner dueDateSpinnerMonth;
-    private Spinner dueDateSpinnerDay;
-    private Spinner dueDateSpinnerYear;
     private EditText totalPointsEditText;
     private EditText PointsEditText;
-    private Spinner statusSpinner;
     private EditText weightEditText;
+    private String cId;
+    private ArrayList<Work> works;
+    private TableLayout assignNameLayout;
+    private TableLayout dueLayout;
+    private TableLayout totalPointLayout;
+    private TableLayout gradeLayout;
+    private TableLayout weightLayout;
+    private ToggleButton complete_btn;
+    private LinearLayout layout;
+    private View complete_line;
+    private View weight_line;
 
-    private Button saveButton;
-    private Button cancelButton;
+    private static TextView dueDateY;
+    private static TextView dueDateM;
+    private static TextView dueDateD;
 
-    public static IndividualFragment newInstance(String workTitle) {
+    public static IndividualFragment newInstance(String workTitle,String category,String courseId) {
         Bundle args = new Bundle();
         args.putString(ARG_WORK_TITLE, workTitle);
+        args.putString(ARG_COURSE_ID,courseId);
+        args.putString(ARG_CAT,category);
         IndividualFragment fragment = new IndividualFragment();
         fragment.setArguments(args);
         return fragment;
@@ -47,37 +76,113 @@ public class IndividualFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String workTitle = getArguments().getString(ARG_WORK_TITLE);
-        work = new Work(workTitle);
+        cId = getArguments().getString(ARG_COURSE_ID);
+        cat = getArguments().getString(ARG_CAT);
+        title = getArguments().getString(ARG_WORK_TITLE);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_individual, container, false);
-        Date date = new Date();
+        layout = (LinearLayout) view.findViewById(R.id.individual_page);
+        // make it take up the whole space
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.getContentInsetEnd();
+        toolbar.setPadding(0, 0, 0, 0);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+        assignNameLayout = (TableLayout)view.findViewById(R.id.assignNameLayout);
+        dueLayout = (TableLayout)view.findViewById(R.id.dueLayout);
+        totalPointLayout = (TableLayout)view.findViewById(R.id.total_point_layout);
+        gradeLayout = (TableLayout)view.findViewById(R.id.gradeLayout);
+        weightLayout = (TableLayout)view.findViewById(R.id.weightLayout);
+        complete_btn = (ToggleButton) view.findViewById(R.id.complete_btn);
+        complete_line = view.findViewById(R.id.complete_line);
+        weight_line = view.findViewById(R.id.weight_line);
+
+        // default not completed
+        complete_btn.setChecked(false);
+        layout.removeView(gradeLayout);
+        layout.removeView(complete_line);
+
+        complete_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled, enter weight
+                    layout.removeView(weightLayout);
+                    layout.removeView(weight_line);
+                    layout.addView(gradeLayout);
+                    layout.addView(complete_line);
+                    layout.addView(weightLayout);
+                    layout.addView(weight_line);
+                } else {
+                    // The toggle is disabled
+                    layout.removeView(gradeLayout);
+                    layout.removeView(complete_line);
+                }
+            }
+        });
+
+        dueDateY = (TextView) view.findViewById(R.id.dueDateY);
+        dueDateM = (TextView) view.findViewById(R.id.dueDateM);
+        dueDateD = (TextView) view.findViewById(R.id.dueDateD);
+
+
+        dueDateY.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(v);
+            }
+        });
+        dueDateM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(v);
+            }
+        });
+        dueDateD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(v);
+            }
+        });
+        if (title!=null){
+            CourseService ss=DependencyFactory.getCourseService(getActivity());
+            Course cs=ss.getCourseById(cId);
+            switch(cat){
+                case "Exam":
+                    works=cs.getExams();
+                    break;
+                case "Quiz":
+                    works=cs.getQuzs();
+                    break;
+                case "Assignment":
+                    works=cs.getAssigs();
+                    break;
+                case "Project":
+                    works=cs.getProjs();
+                    break;
+                case "Extra":
+                    works=cs.getExtra();
+                    break;
+                default:
+                    works=new ArrayList<Work>();
+            }
+            for(Work cWrok:works){
+                if(cWrok.getTitle().equals(title)){
+                    work=cWrok;
+                }
+            }
+        }
+
         gradeNameEditText = (EditText) view.findViewById(R.id.igradeName);
         if(work != null){
             gradeNameEditText.setText(work.getTitle());
         }
         // these array adapters are causing  IndexOutOfBoundsException: Invalid index 116, size is 2
-        dueDateSpinnerMonth = (Spinner) view.findViewById(R.id.ispinnerdueDateMonth);
-        Integer[] month = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12};
-        ArrayAdapter<Integer> adapterM = new ArrayAdapter<Integer>(getContext(), android.R.layout.simple_spinner_dropdown_item, month);
-        dueDateSpinnerMonth.setAdapter(adapterM);
-        dueDateSpinnerMonth.setSelection(date.getMonth()-1);
-
-        dueDateSpinnerDay = (Spinner) view.findViewById(R.id.ispinnerdueDateDay);
-        Integer[] day = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
-        ArrayAdapter<Integer> adapterD = new ArrayAdapter<Integer>(getContext(), android.R.layout.simple_spinner_dropdown_item, day);
-        dueDateSpinnerDay.setAdapter(adapterD);
-        dueDateSpinnerDay.setSelection(date.getDay()-1);
-
-        dueDateSpinnerYear = (Spinner) view.findViewById(R.id.ispinnerdueDateYear);
-        Integer[] year = new Integer[]{2017,2018};
-        ArrayAdapter<Integer> adapterY = new ArrayAdapter<Integer>(getContext(),android.R.layout.simple_spinner_dropdown_item, year);
-        dueDateSpinnerYear.setAdapter(adapterY);
-        dueDateSpinnerYear.setSelection(date.getYear()-1);
 
         totalPointsEditText = (EditText) view.findViewById(R.id.itotalPoints);
         if(work != null){
@@ -88,71 +193,134 @@ public class IndividualFragment extends Fragment {
         if(work != null){
             PointsEditText.setText(""+work.getEarned_points());
         }
-
-        statusSpinner = (Spinner) view.findViewById(R.id.ispinner);
-        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.status_array, android.R.layout.simple_spinner_item);
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(statusAdapter);
-        if (work != null) {
-            statusSpinner.setAdapter(statusAdapter);
-        }
-
         weightEditText = (EditText) view.findViewById(R.id.iweight);
         if(work != null){
             weightEditText.setText(""+work.getWeight());
         }
+        if(work !=null){
+            dueDateY.setText(""+work.getDueDate().getYear());
+            dueDateM.setText(""+work.getDueDate().getMinutes());
+            dueDateD.setText(""+work.getDueDate().getDay());
 
-        saveButton = (Button)view.findViewById(R.id.save_story_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        }
+
+
+        toolbar.findViewById(R.id.toolbar_cancel_individual).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                getActivity().setResult(RESULT_CANCELED);
+                getActivity().finish();
+            }
+        });
+
+        toolbar.findViewById(R.id.toolbar_save_individual).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (inputsAreValid()) {
                     if (work == null) {
                         work = new Work(EXTRA_WORK_CREATED);
                     }
 
-                    work.setTitle(gradeNameEditText.getText().toString());
+                    work.setTitle(gradeNameEditText.getText().toString().trim().replaceAll(" +", " "));
                     Date date = new Date();
-                    date.setMonth(dueDateSpinnerMonth.getSelectedItemPosition());
-                    date.setDate(dueDateSpinnerDay.getSelectedItemPosition());
-                    date.setYear(dueDateSpinnerYear.getSelectedItemPosition());
                     work.setDueDate(date);
                     work.setPossible_points(Double.parseDouble(totalPointsEditText.getText().toString()));
                     work.setEarned_points(Double.parseDouble(PointsEditText.getText().toString()));
-                    switch (statusSpinner.getSelectedItem().toString()){
-                        case "EXAM":
+
+                    work.setWeight(Double.parseDouble(weightEditText.getText().toString()));
+                    date=new Date();
+                    date.setHours(11);
+                    date.setMinutes(59);
+                    date.setSeconds(59);
+                    date.setYear(Integer.parseInt(dueDateY.getText().toString()));
+                    date.setMonth(Integer.parseInt(dueDateM.getText().toString()));
+                    date.setDate(Integer.parseInt(dueDateD.getText().toString()));
+                    work.setDueDate(date);
+                    Intent data = new Intent();
+                    switch(cat){
+                        case "Exam":
                             work.setCategory(Work.Category.EXAM);
                             break;
-                        case "QUIZ":
+                        case "Quiz":
                             work.setCategory(Work.Category.QUIZ);
                             break;
-                        case "ASSIGNMENT":
+                        case "Assignment":
                             work.setCategory(Work.Category.ASSIGNMENT);
                             break;
-                        case "PROJECT":
+                        case "Project":
                             work.setCategory(Work.Category.PROJECT);
                             break;
-                        case "EXTRA":
+                        case "Extra":
                             work.setCategory(Work.Category.EXTRA);
                             break;
+
                     }
-                    work.setWeight(Double.parseDouble(weightEditText.getText().toString()));
-                    Intent data = new Intent();
+                    ss=DependencyFactory.getCourseService(getActivity());
+                    Course cs =ss.getCourseById(cId);
+                    if(title==null){
+                        cs.add(work);
+                    }else{
+                        for(Work cWork:works){
+                            if(cWork.getTitle().equals(title)){
+                                cWork=work;
+                            }
+                        }
+                    }
+
                     data.putExtra(EXTRA_WORK_CREATED, work);
                     getActivity().setResult(RESULT_OK, data);
                     getActivity().finish();
+                } else{
+
+                    // invalid input, shake each invalid edit text
+                    if(gradeNameEditText.getText().toString().trim().length()<=0){
+                        assignNameLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        gradeNameEditText.startAnimation(shake);
+                    } else{
+                        assignNameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+                    if(gradeNameEditText.getText().toString().trim().length()<=0){
+                        gradeLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        gradeNameEditText.startAnimation(shake);
+                    } else{
+                        gradeLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+                    if(totalPointsEditText.getText().toString().trim().length()<=0){
+                        totalPointLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        totalPointsEditText.startAnimation(shake);
+                    } else{
+                        totalPointLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+                    if(weightEditText.getText().toString().trim().length()<=0){
+                        weightLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        weightEditText.startAnimation(shake);
+                    } else{
+                        weightLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
+                    if(dueDateM.getCurrentTextColor() == getResources().getColor(R.color.hint_color)||
+                            dueDateY.getText().toString().length() == getResources().getColor(R.color.hint_color) ||
+                            dueDateD.getText().toString().length() == getResources().getColor(R.color.hint_color)){
+                        dueLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        dueDateM.startAnimation(shake);
+                        dueDateD.startAnimation(shake);
+                        dueDateY.startAnimation(shake);
+                    } else{
+                        dueLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+
                 }
             }
         });
 
-        cancelButton = (Button)view.findViewById(R.id.cancel_story_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().setResult(RESULT_CANCELED);
-                getActivity().finish();
-            }
-        });
 
         return view;
     }
@@ -163,15 +331,46 @@ public class IndividualFragment extends Fragment {
 
     private boolean inputsAreValid() {
         return
-                gradeNameEditText.getText().toString().length() > 0 &&
-                        totalPointsEditText.getText().toString().length() > 0 &&
-                        dueDateSpinnerMonth.getSelectedItemPosition() >= 0 &&
-                        dueDateSpinnerDay.getSelectedItemPosition() >= 0 &&
-                        dueDateSpinnerYear.getSelectedItemPosition() >= 0 &&
+                gradeNameEditText.getText().toString().trim().length() > 0 &&
                         totalPointsEditText.getText().toString().length() > 0 &&
                         PointsEditText.getText().toString().length() > 0 &&
                         weightEditText.getText().toString().length() > 0 &&
-                        statusSpinner.getSelectedItemPosition() >= 0;
+                        dueDateM.getText().toString().length() > 0 &&
+                        dueDateY.getText().toString().length() > 0 &&
+                        dueDateD.getText().toString().length() > 0;
     }
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "Date");
+    }
+    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
 
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), R.style.datepicker, this, year, month, day);
+        }
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            dueDateY.setText(year+"");
+            month += 1;
+            if(month < 10){
+                dueDateM.setText("0"+month+"/");
+            } else{
+                dueDateM.setText(month+"/");
+            }
+            if(day < 10){
+                dueDateD.setText("0"+day+"/");
+            } else{
+                dueDateD.setText(day+"/");
+            }
+            dueDateY.setTextColor(getResources().getColor(R.color.text_color));
+            dueDateM.setTextColor(getResources().getColor(R.color.text_color));
+            dueDateD.setTextColor(getResources().getColor(R.color.text_color));
+        }
+    }
 }

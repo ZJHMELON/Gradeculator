@@ -7,25 +7,25 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
 import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
+
 
 /**
  * Created by howardksw1 on 4/21/17.
@@ -34,7 +34,7 @@ import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
 // hihihihihi test 101
 public class MainFragment extends Fragment{
 
-    private List<Course> all_course;
+    private ArrayList<Course> all_course;
     private ItemTouchHelper mItemTouchHelper;
     private final String TAG = getClass().getSimpleName();
     private CourseService courseService;
@@ -50,7 +50,6 @@ public class MainFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         courseService = DependencyFactory.getCourseService(getActivity());
     }
 
@@ -59,8 +58,25 @@ public class MainFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // make it take up the whole space
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.getContentInsetEnd();
+        toolbar.setPadding(0, 0, 0, 0);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
         courseRecyclerView = (RecyclerView) view.findViewById(R.id.course_recycler_view);
         courseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        toolbar.findViewById(R.id.toolbar_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
+                startActivityForResult(createCourseIntent, REQUEST_CODE_CREATE_COURSE);
+            }
+        });
 
         updateUI();
 
@@ -105,23 +121,6 @@ public class MainFragment extends Fragment{
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_create_course:
-                Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
-                startActivityForResult(createCourseIntent, REQUEST_CODE_CREATE_COURSE);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     private class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView courseTitle;
@@ -150,7 +149,6 @@ public class MainFragment extends Fragment{
 
         @Override
         public void onClick(View view) {
-//            Toast.makeText(getActivity(), course.getTitle() + "is selected", Toast.LENGTH_SHORT).show();
             Intent intent = CourseDirActivity.newIntent(getActivity(), course.getId());
 
             startActivityForResult(intent, REQUEST_CODE_EDIT_COURSE);
@@ -158,14 +156,13 @@ public class MainFragment extends Fragment{
     }
 
     private class CourseAdapter extends RecyclerView.Adapter<CourseHolder> implements ItemTouchHelperAdapter {
-        private List<Course> courses;
 
-        public CourseAdapter(List<Course> courses) {
-            this.courses = courses;
+        public CourseAdapter(ArrayList<Course> courses) {
+            all_course = courses;
         }
 
-        public void setCourses(List<Course> courses) {
-            this.courses = courses;
+        public void setCourses(ArrayList<Course> courses) {
+            all_course = courses;
         }
 
         @Override
@@ -177,24 +174,24 @@ public class MainFragment extends Fragment{
 
         @Override
         public void onBindViewHolder(CourseHolder holder, int position) {
-            Course course = courses.get(position);
+            Course course = all_course.get(position);
             holder.bindCourse(course);
         }
 
         @Override
         public int getItemCount() {
-            return courses.size();
+            return all_course.size();
         }
 
         @Override
         public boolean onItemMove(int fromPosition, int toPosition) {
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
-                    Collections.swap(courses, i, i + 1);
+                    Collections.swap(all_course, i, i + 1);
                 }
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
-                    Collections.swap(courses, i, i - 1);
+                    Collections.swap(all_course, i, i - 1);
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
@@ -203,7 +200,6 @@ public class MainFragment extends Fragment{
 
         @Override
         public void onItemDismiss(int position) {
-            courses.remove(position);
             DependencyFactory.getCourseService(getActivity()).remove_course(position);
             notifyItemRemoved(position);
         }
@@ -213,11 +209,9 @@ public class MainFragment extends Fragment{
     public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         private final ItemTouchHelperAdapter mAdapter;
-//        private List<Course> courses = null;
 
         public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
             mAdapter = adapter;
-//            courses = DependencyFactory.getCourseService(getActivity()).getAllCourses();
         }
 
         @Override
@@ -254,12 +248,12 @@ public class MainFragment extends Fragment{
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
                             mAdapter.onItemDismiss(position);
+                            updateUI();
                         }
                     })
                     .setNegativeButton(R.string.cancel_remove, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // do nothing
-                            updateUI();
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)

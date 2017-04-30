@@ -2,7 +2,9 @@ package edu.umd.cs.gradeculator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 
 import edu.umd.cs.gradeculator.model.Course;
 
@@ -13,13 +15,14 @@ import edu.umd.cs.gradeculator.model.Course;
 public class CourseDirActivity extends SingleFragmentActivity{
 
     private final String TAG = getClass().getSimpleName();
-
     private static final String COURSE_ID = "COURSE_ID";
+    private Fragment fragment;
 
     @Override
     protected Fragment createFragment() {
         String courseId = getIntent().getStringExtra(COURSE_ID);
-        return CourseDirFragment.newInstance(courseId);
+        fragment = CourseDirFragment.newInstance(courseId);
+        return fragment;
     }
 
     public static Intent newIntent(Context context, String classId) {
@@ -32,4 +35,9 @@ public class CourseDirActivity extends SingleFragmentActivity{
         return CourseDirFragment.getCourse(data);
     }
 
+    @Override
+    public void onBackPressed() {
+        ((CourseDirFragment) fragment).onBackPressed();
+        super.onBackPressed();
+    }
 }

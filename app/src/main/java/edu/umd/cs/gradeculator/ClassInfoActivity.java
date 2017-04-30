@@ -2,7 +2,9 @@ package edu.umd.cs.gradeculator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 
 import edu.umd.cs.gradeculator.model.Course;
 
@@ -30,4 +32,6 @@ public class ClassInfoActivity extends SingleFragmentActivity {
     public static Course getCourse(Intent data) {
         return ClassInfoFragment.getCourse(data);
     }
+
+
 }

@@ -1,6 +1,6 @@
 package edu.umd.cs.gradeculator.service;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import edu.umd.cs.gradeculator.model.Course;
 
@@ -11,6 +11,6 @@ import edu.umd.cs.gradeculator.model.Course;
 public interface CourseService {
     public void addCourseToBacklog(Course course);
     public Course getCourseById(String id);
-    public List<Course> getAllCourses();
+    public ArrayList<Course> getAllCourses();
     public boolean remove_course(int position);
 }

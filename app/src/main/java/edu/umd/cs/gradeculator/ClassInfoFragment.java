@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,13 +52,23 @@ public class ClassInfoFragment extends Fragment {
 
         String courseId = getArguments().getString(ARG_COURSE_ID);
         course = DependencyFactory.getCourseService(getActivity().getApplicationContext()).getCourseById(courseId);
-        setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_class_info, container, false);
+
+        // make it take up the whole space
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.getContentInsetEnd();
+        toolbar.setPadding(0, 0, 0, 0);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         exam_btn = (ToggleButton) view.findViewById(R.id.exam_btn);
         quiz_btn = (ToggleButton) view.findViewById(R.id.quiz_btn);
@@ -191,35 +203,12 @@ public class ClassInfoFragment extends Fragment {
             }
         });
         if(course.getExam_weight() > 0){
-            extra_edit.setText("" + course.getExam_weight());
+            extra_edit.setText("" + course.getExtra_weight());
         }
 
-        return view;
-    }
-
-    public static ClassInfoFragment newInstance(String classId) {
-        Bundle args = new Bundle();
-        args.putString(ARG_COURSE_ID, classId);
-
-        ClassInfoFragment fragment = new ClassInfoFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_class_info, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.class_info_menu_item_cancel_button:
-                getActivity().setResult(RESULT_CANCELED);
-                getActivity().finish();
-                return true;
-            case R.id.class_info_menu_item_save_button:
+        toolbar.findViewById(R.id.toolbar_save_classinfo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
                 // Since we already limit the input to be decimal so we just need to check if the
                 // user enter or not. IMPOSSIBLE TO IMPUT NON NUMBER OR NEGATIVE NUMBER
@@ -252,30 +241,48 @@ public class ClassInfoFragment extends Fragment {
                         extra_double = Double.parseDouble(extra_edit.getText().toString());
                     }
                     total = exam_double + quiz_double + assignment_double + project_double;
-                    if(total > 100){
-                        // total exceeding 100
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle("Opps..")
-                                .setMessage("Make sure the total weight does not exceed 100%.")
-                                .setPositiveButton(R.string.okay,null)
-                                .show();
-                    } else{
+                    if(Double.compare(total, 100.0) == 0){
                         course.setAssignments_weight(assignment_double);
                         course.setExam_weight(exam_double);
                         course.setQuiz_weight(quiz_double);
                         course.setExtra_weight(extra_double);
                         course.setProject_weight(project_double);
+
                         Intent data = new Intent();
                         data.putExtra(COURSE_UPDATED, course);
                         getActivity().setResult(RESULT_OK, data);
                         getActivity().finish();
+                    } else{
+                        // total exceeding 100
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Opps..")
+                                .setMessage("Make sure the total weight sum up to 100%.")
+                                .setPositiveButton(R.string.okay,null)
+                                .show();
                     }
                 }
-                return true;
+            }
+        });
 
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+
+        toolbar.findViewById(R.id.toolbar_cancel_classinfo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().setResult(RESULT_CANCELED);
+                getActivity().finish();
+            }
+        });
+
+        return view;
+    }
+
+    public static ClassInfoFragment newInstance(String classId) {
+        Bundle args = new Bundle();
+        args.putString(ARG_COURSE_ID, classId);
+
+        ClassInfoFragment fragment = new ClassInfoFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     public static Course getCourse(Intent data) {

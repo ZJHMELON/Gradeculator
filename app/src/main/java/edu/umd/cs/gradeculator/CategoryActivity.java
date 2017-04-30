@@ -10,6 +10,7 @@ public class CategoryActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_COURSE_ID = "COURSE_ID";
     private static final String EXTRA_CATEGORY_NAME = "CATEGORY_NAME";
+    private Fragment fragment;
 
     @Override
     protected Fragment createFragment() {
@@ -17,7 +18,8 @@ public class CategoryActivity extends SingleFragmentActivity {
         String courseId = getIntent().getStringExtra(EXTRA_COURSE_ID);
         Work.Category category = (Work.Category) getIntent().getSerializableExtra(EXTRA_CATEGORY_NAME);
 
-        return CategoryFragment.newInstance( courseId,category);
+        fragment = CategoryFragment.newInstance( courseId,category);
+        return fragment;
     }
 
 
@@ -30,6 +32,10 @@ public class CategoryActivity extends SingleFragmentActivity {
         return intent;
     }
 
-
+    @Override
+    public void onBackPressed() {
+        ((CategoryFragment) fragment).onBackPressed();
+        super.onBackPressed();
+    }
 
 }

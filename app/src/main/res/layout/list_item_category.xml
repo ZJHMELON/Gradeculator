@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:orientation="vertical"
     android:background="@color/course_background"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/course_list">
-
 
 
     <LinearLayout
@@ -57,17 +57,17 @@
             android:orientation="horizontal">
 
             <TextView
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:layout_weight="1"
                 android:paddingLeft="20sp"
                 android:textColor="@color/text_color"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
-                tools:text="@string/due" />
+                android:text="@string/due" />
 
             <TextView
                 android:layout_weight="5"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textColor="@color/text_color"
                 android:id="@+id/list_item_category_due"
                 android:layout_width="0sp"
@@ -79,18 +79,18 @@
                 android:layout_weight="0.85"
                 android:gravity="start"
                 android:layout_gravity="start"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textColor="@color/text_color"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
-                tools:text="@string/grade_title" />
+                android:text="@string/grade_title" />
 
             <TextView
                 android:id="@+id/list_item_category_points"
                 android:gravity="start"
                 android:layout_gravity="start"
                 android:layout_weight="1.15"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textColor="@color/text_color"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"

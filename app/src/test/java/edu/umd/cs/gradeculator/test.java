@@ -1,18 +1,17 @@
 package edu.umd.cs.gradeculator;
 
-import static org.junit.Assert.*;
+import android.content.Context;
 
-import java.util.List;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Date;
-import javax.naming.Context;
-
-import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Date;
+import java.util.List;
+
+import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
 import edu.umd.cs.gradeculator.service.impl.InMemoryCourseService;
+
+import static org.junit.Assert.assertEquals;
 
 public class test {
 
@@ -54,31 +53,31 @@ public class test {
 		a4.setWeight(0.25);
 		a5.setWeight(0.01);
 		
-		Course nCourse1 = new Course("Code God", "CMSC999", 60);
+		Course nCourse1 = new Course("Code God", "CMSC999", Course.Grade.A, 60);
 		nCourse1.add(a1);
 		nCourse1.add(a2);
 		nCourse1.add(a3);
 		nCourse1.add(a4);
 		nCourse1.add(a5);
-		Course nCourse2 = new Course("Code noob", "CMSC000", 70);
+		Course nCourse2 = new Course("Code noob", "CMSC000", Course.Grade.A,70);
 		nCourse2.add(a1);
 		nCourse2.add(a2);
 		nCourse2.add(a3);
 		nCourse2.add(a4);
 		nCourse2.add(a5);
-		Course nCourse3 = new Course("Code it", "CMSC222", 80);
+		Course nCourse3 = new Course("Code it", "CMSC222", Course.Grade.A,80);
 		nCourse3.add(a1);
 		nCourse3.add(a2);
 		nCourse3.add(a3);
 		nCourse3.add(a4);
 		nCourse3.add(a5);
-		Course nCourse4 = new Course("Code death", "CMSC444", 90);
+		Course nCourse4 = new Course("Code death", "CMSC444",Course.Grade.A, 90);
 		nCourse4.add(a1);
 		nCourse4.add(a2);
 		nCourse4.add(a3);
 		nCourse4.add(a4);
 		nCourse4.add(a5);
-		Course nCourse5 = new Course("Code more", "CMSC666", 100);
+		Course nCourse5 = new Course("Code more", "CMSC666", Course.Grade.A,100);
 		nCourse5.add(a1);
 		nCourse5.add(a2);
 		nCourse5.add(a3);
@@ -110,7 +109,7 @@ public class test {
 		for(int i=0;i<b.getAllCourses().size();i++){
 			assertEquals(css.get(i).getTitle(),cs[i]);
 		}
-		nCourse1.remove(Category.EXAM, "ex2");
+		nCourse1.remove(Work.Category.EXAM, "ex2");
 		System.out.print(nCourse1);
 	}
 

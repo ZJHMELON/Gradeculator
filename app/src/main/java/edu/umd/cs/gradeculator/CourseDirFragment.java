@@ -5,20 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
-import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -32,9 +28,15 @@ public class CourseDirFragment extends Fragment{
     private static final String COURSE_UPDATED = "CourseUpdated";
     private final int REQUEST_CODE_ADD_WEIGHT = 5;
     private final int REQUEST_CODE_EDIT_COURSE = 1;
+    private final int REQUEST_CODE_EXAM = 6;
+    private final int REQUEST_CODE_QUIZ = 7;
+    private final int REQUEST_CODE_ASSIGNMENT = 8;
+    private final int REQUEST_CODE_PROJECT = 9;
+    private final int REQUEST_CODE_EXTRA = 10;
     private Course course;
     private LinearLayout layout;
-    private CourseService courseService;
+    private TextView course_name;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,15 +44,51 @@ public class CourseDirFragment extends Fragment{
 
         String courseId = getArguments().getString(ARG_COURSE_ID);
         course = DependencyFactory.getCourseService(getActivity()).getCourseById(courseId);
-        setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.course_dir, container, false);
+        View view = inflater.inflate(R.layout.fragment_course_dir, container, false);
         layout = (LinearLayout) view.findViewById(R.id.layout_course_dir);
+
+        // make it take up the whole space
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.getContentInsetEnd();
+        toolbar.setPadding(0, 0, 0, 0);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+        course_name= (TextView) toolbar.findViewById(R.id.toolbar_course_name);
+        course_name.setText(course.getIdentifier());
+
         updateUI();
+
+        toolbar.findViewById(R.id.toolbar_course_name).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(AddCourseActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_EDIT_COURSE);
+            }
+        });
+
+        toolbar.findViewById(R.id.toolbar_edit_weight).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(ClassInfoActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_ADD_WEIGHT);
+            }
+        });
+
+        toolbar.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().setResult(RESULT_OK);
+                getActivity().finish();
+            }
+        });
+
+
         return view;
     }
 
@@ -64,35 +102,10 @@ public class CourseDirFragment extends Fragment{
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.course_dir_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.course_dir_back_button:
-                getActivity().setResult(RESULT_OK);
-                getActivity().finish();
-             return true;
-            case R.id.course_dir_edit_button:
-                startActivityForResult(AddCourseActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_EDIT_COURSE);
-                return true;
-            case R.id.course_dir_add_button:
-                startActivityForResult(ClassInfoActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_ADD_WEIGHT);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD_WEIGHT) {
                final Course c = ClassInfoActivity.getCourse(data);
-//                Log.d("what",c.toString());
                 course.setExam_weight(c.getExam_weight());
                 course.setAssignments_weight(c.getAssignment_weight());
                 course.setQuiz_weight(c.getQuiz_weight());
@@ -107,14 +120,21 @@ public class CourseDirFragment extends Fragment{
                 course.setIdentifier(c.getIdentifier());
                 course.setCredit(c.getCredit());
                 course.setDesire_grade(c.getDesire_grade_inLetter(c.getDesire_grade()));
-                Log.d("what",c.getTitle());
-                Log.d("what",course.getTitle());
+                course_name.setText(c.getIdentifier());
+                updateUI();
+            }
+
+            if (requestCode == REQUEST_CODE_EXAM ||
+                    requestCode == REQUEST_CODE_QUIZ ||
+                    requestCode == REQUEST_CODE_PROJECT ||
+                    requestCode == REQUEST_CODE_ASSIGNMENT ||
+                    requestCode == REQUEST_CODE_EXTRA) {
+                updateUI();
             }
         }
     }
 
     private void updateUI() {
-        Log.d("asadasd", course.getExam_weight() + "hello");
         if (Double.compare(course.getExam_weight(), 0.0) == 1) {
             // check if we have exam already
             LinearLayout exam = (LinearLayout) layout.findViewById(R.id.exam_view);
@@ -149,7 +169,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXAM));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.EXAM), REQUEST_CODE_EXAM);
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXAM));
                     }
                 });
                 layout.addView(temp);
@@ -197,7 +219,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.QUIZ));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.QUIZ), REQUEST_CODE_QUIZ);
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.QUIZ));
                     }
                 });
                 layout.addView(temp);
@@ -243,7 +267,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.ASSIGNMENT));
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.ASSIGNMENT));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.ASSIGNMENT), REQUEST_CODE_ASSIGNMENT);
                     }
                 });
                 layout.addView(temp);
@@ -289,7 +315,9 @@ public class CourseDirFragment extends Fragment{
                 temp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.PROJECT));
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.PROJECT), REQUEST_CODE_PROJECT);
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.PROJECT));
                     }
                 });
                 layout.addView(temp);
@@ -331,13 +359,15 @@ public class CourseDirFragment extends Fragment{
                     item.setText(String.valueOf(course.getExtra().size()) + " Extra Credit Assignment");
                 } else {
                     item.setText(String.valueOf(course.getExtra().size()) + " Extra Credit Assignments");
-                    temp.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXTRA));
-                        }
-                    });
                 }
+                temp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivityForResult(CategoryActivity.newIntent(getActivity(),
+                                course.getId(), Work.Category.EXTRA), REQUEST_CODE_EXTRA);
+//                        startActivity(CategoryActivity.newIntent(getActivity(), course.getId(), Work.Category.EXTRA));
+                    }
+                });
                 layout.addView(temp);
             }
         }
@@ -353,4 +383,8 @@ public class CourseDirFragment extends Fragment{
         return (Course)data.getSerializableExtra(COURSE_UPDATED);
     }
 
+    public void onBackPressed() {
+        getActivity().setResult(RESULT_OK);
+        getActivity().finish();
+    }
 }
