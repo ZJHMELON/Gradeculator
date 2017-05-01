@@ -177,7 +177,8 @@
                         android:id="@+id/dueDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/dueDate_hint"/>
+                        android:hint="@string/dueDate_hint"
+                        android:textColorHint="@color/hint_color"/>
 
                 </LinearLayout>
 

@@ -376,6 +376,13 @@ public class IndividualFragment extends Fragment {
                     } else{
                         weightLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
+                    if(due_date.getText().toString().trim().length()<=0){
+                        dueLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                        due_date.startAnimation(shake);
+                    } else{
+                        dueLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
 /*
                     if(dueDateM.getCurrentTextColor() == getResources().getColor(R.color.hint_color)||
                             dueDateY.getText().toString().length() == getResources().getColor(R.color.hint_color) ||
@@ -407,7 +414,8 @@ public class IndividualFragment extends Fragment {
             return
                     gradeNameEditText.getText().toString().trim().length() > 0 &&
                             totalPointsEditText.getText().toString().length() > 0 &&
-                            PointsEditText.getText().toString().length() > 0;
+                            PointsEditText.getText().toString().length() > 0 &&
+                            due_date.getText().toString().length() > 0;
 
         }
         else if (!equal_weight && finished){
@@ -416,13 +424,15 @@ public class IndividualFragment extends Fragment {
                    gradeNameEditText.getText().toString().trim().length() > 0 &&
                            totalPointsEditText.getText().toString().length() > 0 &&
                            PointsEditText.getText().toString().length() > 0 &&
-                           weightEditText.getText().toString().length() > 0;
+                           weightEditText.getText().toString().length() > 0 &&
+                           due_date.getText().toString().length() > 0;
        }
        else{
            //the assignment is not finished or equally weighted
            return
                    gradeNameEditText.getText().toString().trim().length() > 0 &&
-                           totalPointsEditText.getText().toString().length() > 0;
+                           totalPointsEditText.getText().toString().length() > 0 &&
+                                   due_date.getText().toString().length() > 0;
        }
     }
 
