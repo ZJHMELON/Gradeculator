@@ -79,11 +79,11 @@ public class ClassInfoFragment extends Fragment {
         extra_btn = (ToggleButton) view.findViewById(R.id.extra_btn);
 
         // default equal weight
-        exam_btn.setChecked(true);
-        quiz_btn.setChecked(true);
-        assignment_btn.setChecked(true);
-        project_btn.setChecked(true);
-        extra_btn.setChecked(true);
+        exam_btn.setChecked(course.getEqual_weight_exam());
+        quiz_btn.setChecked(course.getEqual_weight_quiz());
+        assignment_btn.setChecked(course.getEqual_weight_assignment());
+        project_btn.setChecked(course.getEqual_weight_project());
+        extra_btn.setChecked(course.getEqual_weight_extra());
 
         exam_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

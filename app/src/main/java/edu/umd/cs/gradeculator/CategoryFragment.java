@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -217,6 +218,7 @@ public class CategoryFragment extends Fragment {
             dueTextView.setText("" + df.format(work.getDueDate())); // fixed
             possibleTextView.setText("" + work.getPossible_points());
             pointsTextView.setText("" + work.getEarned_points());
+
         }
 
 

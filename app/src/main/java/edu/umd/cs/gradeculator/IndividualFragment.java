@@ -88,7 +88,6 @@ public class IndividualFragment extends Fragment {
         cat = getArguments().getString(ARG_CAT);
         title = getArguments().getString(ARG_WORK_TITLE);
         equal_weight = true;
-        finished = false;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -120,8 +119,7 @@ public class IndividualFragment extends Fragment {
         complete_btn = (ToggleButton) view.findViewById(R.id.complete_btn);
         complete_line = view.findViewById(R.id.complete_line);
         weight_line = view.findViewById(R.id.weight_line);
-
-
+        
         // default not completed
         complete_btn.setChecked(false);
         gradeLayout.setVisibility(View.GONE);
@@ -131,11 +129,11 @@ public class IndividualFragment extends Fragment {
                 if (isChecked) {
                     // The toggle is enabled, enter weight
                     gradeLayout.setVisibility(View.VISIBLE);
-                    finished = false;
+                    work.setCompleteness(true); //null
                 } else {
                     // The toggle is disabled
                     gradeLayout.setVisibility(View.GONE);
-                    finished = true;
+                    work.setCompleteness(false);
                 }
             }
         });
@@ -269,6 +267,23 @@ public class IndividualFragment extends Fragment {
             }
         }
 
+        if (work == null) {
+            work = new Work(EXTRA_WORK_CREATED);
+        }
+
+        if(work!=null) {
+            if (work.getCompleteness()) {
+                complete_btn.setChecked(true);
+                gradeLayout.setVisibility(View.VISIBLE);
+            } else {
+                complete_btn.setChecked(false);
+                gradeLayout.setVisibility(View.GONE);
+            }
+        } else {
+            complete_btn.setChecked(false);
+            gradeLayout.setVisibility(View.GONE);
+        }
+
         toolbar.findViewById(R.id.toolbar_cancel_individual).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,9 +296,6 @@ public class IndividualFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (inputsAreValid()) {
-                    if (work == null) {
-                        work = new Work(EXTRA_WORK_CREATED);
-                    }
 
                     work.setTitle(gradeNameEditText.getText().toString().trim().replaceAll(" +", " "));
 
@@ -297,7 +309,7 @@ public class IndividualFragment extends Fragment {
                     }
                     work.setPossible_points(Double.parseDouble(totalPointsEditText.getText().toString()));
 
-                    if(finished) {
+                    if(work.getCompleteness()) {
                         //only set earned points when the assignment is finished
                         work.setEarned_points(Double.parseDouble(PointsEditText.getText().toString()));
                     }
@@ -306,7 +318,6 @@ public class IndividualFragment extends Fragment {
                         // only set weight if the weight is not equally
                         work.setWeight(Double.parseDouble(weightEditText.getText().toString()));
                     }
-
 
                     Intent data = new Intent();
                     switch(cat){
@@ -409,7 +420,7 @@ public class IndividualFragment extends Fragment {
     }
 
     private boolean inputsAreValid() {
-       if(equal_weight && finished) {
+       if(equal_weight && work.getCompleteness()) {
             //the assignment is finished and equally weighted
             return
                     gradeNameEditText.getText().toString().trim().length() > 0 &&
@@ -418,7 +429,7 @@ public class IndividualFragment extends Fragment {
                             due_date.getText().toString().length() > 0;
 
         }
-        else if (!equal_weight && finished){
+        else if (!equal_weight && work.getCompleteness()){
            //the assignment is finished and NOT equally weighted
            return
                    gradeNameEditText.getText().toString().trim().length() > 0 &&

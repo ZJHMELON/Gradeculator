@@ -63,7 +63,7 @@ public class Work implements Serializable {
     // getter of possible points
     public double getPossible_points() { return possible_points; }
 
-    public void setCompleteness() { this.completeness = true;}
+    public void setCompleteness(boolean completeness) { this.completeness = completeness;}
 
     public boolean getCompleteness() { return completeness; }
 
