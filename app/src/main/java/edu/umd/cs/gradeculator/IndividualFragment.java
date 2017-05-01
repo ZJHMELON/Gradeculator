@@ -24,9 +24,12 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
@@ -35,6 +38,7 @@ import edu.umd.cs.gradeculator.service.CourseService;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.util.Log.d;
+import static android.util.Log.v;
 
 public class IndividualFragment extends Fragment {
     private static final String EXTRA_WORK_CREATED = "WorkCreated";
@@ -62,9 +66,10 @@ public class IndividualFragment extends Fragment {
     private View weight_line;
     private boolean equal_weight, finished;
 
-    private static TextView dueDateY;
-    private static TextView dueDateM;
-    private static TextView dueDateD;
+    private TextView due_date;
+    private String date;
+    private DatePickerDialog datePicker;
+    private SimpleDateFormat sdf;
 
     public static IndividualFragment newInstance(String workTitle,String category,String courseId) {
         Bundle args = new Bundle();
@@ -90,6 +95,9 @@ public class IndividualFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_individual, container, false);
         layout = (LinearLayout) view.findViewById(R.id.individual_page);
+
+        String myFormat = "MM/dd/yy"; //the format for the date
+        sdf = new SimpleDateFormat(myFormat); // formatter
 
         //gets the course
         CourseService ss=DependencyFactory.getCourseService(getActivity());
@@ -132,31 +140,15 @@ public class IndividualFragment extends Fragment {
             }
         });
 
+        due_date = (TextView) view.findViewById(R.id.dueDate);
+        final Calendar c = Calendar.getInstance();
 
-        dueDateY = (TextView) view.findViewById(R.id.dueDateY);
-        dueDateM = (TextView) view.findViewById(R.id.dueDateM);
-        dueDateD = (TextView) view.findViewById(R.id.dueDateD);
-
-
-        dueDateY.setOnClickListener(new View.OnClickListener() {
+        due_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog(v);
             }
         });
-        dueDateM.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(v);
-            }
-        });
-        dueDateD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(v);
-            }
-        });
-
 
         if (title!=null){
             switch(cat){
@@ -205,13 +197,11 @@ public class IndividualFragment extends Fragment {
             weightEditText.setText(""+work.getWeight());
         }
         if(work !=null){
-            dueDateY.setText(""+work.getDueDate().getYear());
-            dueDateM.setText(""+work.getDueDate().getMinutes());
-            dueDateD.setText(""+work.getDueDate().getDay());
-
+            //initialize the due date textview if there's one
+            due_date.setText(sdf.format(work.getDueDate().getTime()));
         }
 
-        //Check weheater need to display weight layout or not
+        //Check whether need to display weight layout or not
         if (cat!=null) {
             switch (cat) {
                 case "Exam":
@@ -278,7 +268,7 @@ public class IndividualFragment extends Fragment {
 
             }
         }
-        
+
         toolbar.findViewById(R.id.toolbar_cancel_individual).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -296,8 +286,15 @@ public class IndividualFragment extends Fragment {
                     }
 
                     work.setTitle(gradeNameEditText.getText().toString().trim().replaceAll(" +", " "));
-                    Date date = new Date();
-                    work.setDueDate(date);
+
+                    try {
+                        if(date != null) {
+                            //the date will only change if the user select a different date
+                            work.setDueDate(sdf.parse(date));
+                        }
+                    }catch(ParseException e){
+                        //format error
+                    }
                     work.setPossible_points(Double.parseDouble(totalPointsEditText.getText().toString()));
 
                     if(finished) {
@@ -309,14 +306,8 @@ public class IndividualFragment extends Fragment {
                         // only set weight if the weight is not equally
                         work.setWeight(Double.parseDouble(weightEditText.getText().toString()));
                     }
-                    date=new Date();
-                    date.setHours(11);
-                    date.setMinutes(59);
-                    date.setSeconds(59);
-                    date.setYear(Integer.parseInt(dueDateY.getText().toString()));
-                    date.setMonth(Integer.parseInt(dueDateM.getText().toString().substring(0,1)));
-                    date.setDate(Integer.parseInt(dueDateD.getText().toString().substring(0,1)));
-                    work.setDueDate(date);
+
+
                     Intent data = new Intent();
                     switch(cat){
                         case "Exam":
@@ -385,7 +376,7 @@ public class IndividualFragment extends Fragment {
                     } else{
                         weightLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
-
+/*
                     if(dueDateM.getCurrentTextColor() == getResources().getColor(R.color.hint_color)||
                             dueDateY.getText().toString().length() == getResources().getColor(R.color.hint_color) ||
                             dueDateD.getText().toString().length() == getResources().getColor(R.color.hint_color)){
@@ -397,7 +388,7 @@ public class IndividualFragment extends Fragment {
                     } else{
                         dueLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
-
+*/
                 }
             }
         });
@@ -416,10 +407,7 @@ public class IndividualFragment extends Fragment {
             return
                     gradeNameEditText.getText().toString().trim().length() > 0 &&
                             totalPointsEditText.getText().toString().length() > 0 &&
-                            PointsEditText.getText().toString().length() > 0 &&
-                            dueDateM.getText().toString().length() > 0 &&
-                            dueDateY.getText().toString().length() > 0 &&
-                            dueDateD.getText().toString().length() > 0;
+                            PointsEditText.getText().toString().length() > 0;
 
         }
         else if (!equal_weight && finished){
@@ -428,26 +416,22 @@ public class IndividualFragment extends Fragment {
                    gradeNameEditText.getText().toString().trim().length() > 0 &&
                            totalPointsEditText.getText().toString().length() > 0 &&
                            PointsEditText.getText().toString().length() > 0 &&
-                           weightEditText.getText().toString().length() > 0 &&
-                           dueDateM.getText().toString().length() > 0 &&
-                           dueDateY.getText().toString().length() > 0 &&
-                           dueDateD.getText().toString().length() > 0;
+                           weightEditText.getText().toString().length() > 0;
        }
        else{
            //the assignment is not finished or equally weighted
            return
                    gradeNameEditText.getText().toString().trim().length() > 0 &&
-                           totalPointsEditText.getText().toString().length() > 0 &&
-                           dueDateM.getText().toString().length() > 0 &&
-                           dueDateY.getText().toString().length() > 0 &&
-                           dueDateD.getText().toString().length() > 0;
+                           totalPointsEditText.getText().toString().length() > 0;
        }
     }
+
+
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "Date");
     }
-    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+    public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
@@ -457,24 +441,13 @@ public class IndividualFragment extends Fragment {
             int day = c.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), R.style.datepicker, this, year, month, day);
+            datePicker = new DatePickerDialog(getActivity(), R.style.datepicker, this, year, month, day);
+            return datePicker;
         }
+
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            dueDateY.setText(year+"");
-            month += 1;
-            if(month < 10){
-                dueDateM.setText("0"+month+"/");
-            } else{
-                dueDateM.setText(month+"/");
-            }
-            if(day < 10){
-                dueDateD.setText("0"+day+"/");
-            } else{
-                dueDateD.setText(day+"/");
-            }
-            dueDateY.setTextColor(getResources().getColor(R.color.text_color));
-            dueDateM.setTextColor(getResources().getColor(R.color.text_color));
-            dueDateD.setTextColor(getResources().getColor(R.color.text_color));
+            date = month + 1 + "/" + day + "/" + year;
+            due_date.setText(month + 1 + "/" + day + "/" + year);
         }
     }
 }
