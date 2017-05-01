@@ -119,7 +119,7 @@ public class IndividualFragment extends Fragment {
         complete_btn = (ToggleButton) view.findViewById(R.id.complete_btn);
         complete_line = view.findViewById(R.id.complete_line);
         weight_line = view.findViewById(R.id.weight_line);
-        
+
         // default not completed
         complete_btn.setChecked(false);
         gradeLayout.setVisibility(View.GONE);
@@ -307,11 +307,15 @@ public class IndividualFragment extends Fragment {
                     }catch(ParseException e){
                         //format error
                     }
-                    work.setPossible_points(Double.parseDouble(totalPointsEditText.getText().toString()));
+                    work.setPossible_points(Math.round(Double.parseDouble(
+                            totalPointsEditText.getText().toString()) * 10.0) / 10.0);
 
                     if(work.getCompleteness()) {
                         //only set earned points when the assignment is finished
-                        work.setEarned_points(Double.parseDouble(PointsEditText.getText().toString()));
+                        work.setEarned_points(Math.round(Double.parseDouble(
+                                PointsEditText.getText().toString()) * 10.0) / 10.0);
+                    } else {
+                        work.setEarned_points(0.0);
                     }
 
                     if(!equal_weight) {
@@ -364,13 +368,14 @@ public class IndividualFragment extends Fragment {
                         assignNameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
 
-                    if(gradeNameEditText.getText().toString().trim().length()<=0){
-                        gradeLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                    if(due_date.getText().toString().trim().length()<=0){
+                        dueLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
-                        gradeNameEditText.startAnimation(shake);
+                        due_date.startAnimation(shake);
                     } else{
-                        gradeLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                        dueLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
+
 
                     if(totalPointsEditText.getText().toString().trim().length()<=0){
                         totalPointLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
@@ -380,6 +385,18 @@ public class IndividualFragment extends Fragment {
                         totalPointLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
 
+                    if(work.getCompleteness()) {
+                        if (PointsEditText.getText().toString().trim().length()<=0 ||
+                                Double.parseDouble(PointsEditText.getText().toString().trim()) >
+                                Double.parseDouble(totalPointsEditText.getText().toString().trim())) {
+                            gradeLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
+                            Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
+                            PointsEditText.startAnimation(shake);
+                        } else {
+                            gradeLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                        }
+                    }
+
                     if(weightEditText.getText().toString().trim().length()<=0){
                         weightLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
@@ -387,13 +404,7 @@ public class IndividualFragment extends Fragment {
                     } else{
                         weightLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
-                    if(due_date.getText().toString().trim().length()<=0){
-                        dueLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
-                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
-                        due_date.startAnimation(shake);
-                    } else{
-                        dueLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                    }
+
 /*
                     if(dueDateM.getCurrentTextColor() == getResources().getColor(R.color.hint_color)||
                             dueDateY.getText().toString().length() == getResources().getColor(R.color.hint_color) ||
@@ -426,6 +437,10 @@ public class IndividualFragment extends Fragment {
                     gradeNameEditText.getText().toString().trim().length() > 0 &&
                             totalPointsEditText.getText().toString().length() > 0 &&
                             PointsEditText.getText().toString().length() > 0 &&
+                            Double.parseDouble(PointsEditText.getText().toString().trim()) <=
+                                    Double.parseDouble(totalPointsEditText.getText().toString().trim()) &&
+//                            PointsEditText.getText().toString().length() <=
+//                                    totalPointsEditText.getText().toString().length() &&
                             due_date.getText().toString().length() > 0;
 
         }
@@ -435,6 +450,10 @@ public class IndividualFragment extends Fragment {
                    gradeNameEditText.getText().toString().trim().length() > 0 &&
                            totalPointsEditText.getText().toString().length() > 0 &&
                            PointsEditText.getText().toString().length() > 0 &&
+                           Double.parseDouble(PointsEditText.getText().toString().trim()) <=
+                                   Double.parseDouble(totalPointsEditText.getText().toString().trim()) &&
+//                           PointsEditText.getText().toString().length() <=
+//                                   totalPointsEditText.getText().toString().length() &&
                            weightEditText.getText().toString().length() > 0 &&
                            due_date.getText().toString().length() > 0;
        }
