@@ -39,6 +39,11 @@ public class SQLiteCourseService implements CourseService{
             double extra_weight= getDouble(getColumnIndex(CourseTable.Columns.EXTRA_WEIGHT));
             double current_grade = getDouble(getColumnIndex(CourseTable.Columns.CURRENT_GRADE));
             double desired_grade = getDouble(getColumnIndex(CourseTable.Columns.DESIRED_GRADE));
+            String equal_weight_exam = getString(getColumnIndex(CourseTable.Columns.EQUAL_WEIGHT_EXAM));
+            String equal_weight_assignment = getString(getColumnIndex(CourseTable.Columns.EQUAL_WEIGHT_ASSIGNMENT));
+            String equal_weight_quiz = getString(getColumnIndex(CourseTable.Columns.EQUAL_WEIGHT_QUIZ));
+            String equal_weight_project = getString(getColumnIndex(CourseTable.Columns.EQUAL_WEIGHT_PROJECT));
+            String equal_weight_extra = getString(getColumnIndex(CourseTable.Columns.EQUAL_WEIGHT_EXTRA));
             double desired_letter_grade;
             int credits = getInt(getColumnIndex(CourseTable.Columns.CREDITS));
 
@@ -54,6 +59,11 @@ public class SQLiteCourseService implements CourseService{
             course.setCurrent_grade(current_grade);
             course.setDesire_grade(course.getDesire_grade_inLetter(desired_grade));
             course.setCredit(credits);
+            course.setEqual_weight_exam(Boolean.valueOf(equal_weight_exam));
+            course.setEqual_weight_assignment(Boolean.valueOf(equal_weight_assignment));
+            course.setEqual_weight_quiz(Boolean.valueOf(equal_weight_quiz));
+            course.setEqual_weight_project(Boolean.valueOf(equal_weight_project));
+            course.setEqual_weight_extra(Boolean.valueOf(equal_weight_extra));
 
             return course;
         }
@@ -182,6 +192,11 @@ public class SQLiteCourseService implements CourseService{
         contentValues.put(CourseTable.Columns.DESIRED_LETTER_GRADE,
                 course.getDesire_grade_inLetter(course.getDesire_grade()).toString());
         contentValues.put(CourseTable.Columns.CREDITS, course.getCredit());
+        contentValues.put(CourseTable.Columns.EQUAL_WEIGHT_EXAM, course.getEqual_weight_exam().toString());
+        contentValues.put(CourseTable.Columns.EQUAL_WEIGHT_ASSIGNMENT, course.getEqual_weight_assignment().toString());
+        contentValues.put(CourseTable.Columns.EQUAL_WEIGHT_QUIZ, course.getEqual_weight_quiz().toString());
+        contentValues.put(CourseTable.Columns.EQUAL_WEIGHT_PROJECT, course.getEqual_weight_project().toString());
+        contentValues.put(CourseTable.Columns.EQUAL_WEIGHT_EXTRA, course.getEqual_weight_extra().toString());
 
         return contentValues;
     }

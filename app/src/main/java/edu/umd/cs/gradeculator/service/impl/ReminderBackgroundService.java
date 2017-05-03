@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.umd.cs.gradeculator.DependencyFactory;
@@ -47,7 +46,7 @@ public class ReminderBackgroundService extends IntentService {
         ArrayList<Course> courses = courseService.getAllCourses();
         int notificationId = 0;
         for(Course ele: courses){
-           if( ele.getCurrent_grade()< ele.getDesire_grade()) {
+           if( ele.getOverAll()< ele.getDesire_grade()) {
                notificationId++;
 
                String courseTitle = ele.getTitle();
@@ -60,7 +59,8 @@ public class ReminderBackgroundService extends IntentService {
                        .setTicker(getResources().getString(R.string.reminder_notification))
                        .setSmallIcon(android.R.drawable.ic_menu_agenda)
                        .setContentTitle(getResources().getString(R.string.reminder_notification))
-                       .setContentText(courseTitle+R.string.reminder_notification_content)
+                       .setContentText(courseTitle + " " +
+                               getResources().getString(R.string.reminder_notification_content))
                        .setContentIntent(mContentIntent)
                        .setAutoCancel(true);
 
@@ -89,7 +89,7 @@ public class ReminderBackgroundService extends IntentService {
 
     public static void setReminderAlarm(Context context, int intervalInMinutes){
 
-        long interval =  (intervalInMinutes*60000) / 6;
+        long interval =  (intervalInMinutes*60000) / 60;
 
         Intent reminderIntent = ReminderBackgroundService.newIntent(context);
         alarmPendingIntent = PendingIntent.getService(context,REMINDER_REQUEST,reminderIntent,PendingIntent.FLAG_UPDATE_CURRENT);

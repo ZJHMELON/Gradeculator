@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -162,9 +163,9 @@ MainFragment extends Fragment{
 
             courseTitle.setText(course.getTitle());
             courseIdentifier.setText(course.getIdentifier());
-            if(Double.compare(course.getCurrent_grade(), 0.0) == 1) {
-                currentGrade.setText(Double.toString(course.getCurrent_grade()));
-            }
+            course.setCurrent_grade(course.getOverAll());
+            DecimalFormat df = new DecimalFormat("#.##");
+            currentGrade.setText(df.format(course.getCurrent_grade()));
         }
 
         @Override

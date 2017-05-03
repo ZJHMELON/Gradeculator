@@ -21,6 +21,11 @@ public class GradeculatorDbSchema {
             public static final String DESIRED_GRADE = "DESIRED_GRADE";
             public static final String DESIRED_LETTER_GRADE = "DESIRED_LETTER_GRADE";
             public static final String CREDITS = "CREDITS";
+            public static final String EQUAL_WEIGHT_EXAM = "EQUAL_WEIGHT_EXAM";
+            public static final String EQUAL_WEIGHT_ASSIGNMENT = "EQUAL_WEIGHT_ASSIGNMENT";
+            public static final String EQUAL_WEIGHT_PROJECT = "EQUAL_WEIGHT_PROJECT";
+            public static final String EQUAL_WEIGHT_QUIZ = "EQUAL_WEIGHT_QUIZ";
+            public static final String EQUAL_WEIGHT_EXTRA = "EQUAL_WEIGHT_EXTRA";
 
         }
     }

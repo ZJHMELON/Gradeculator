@@ -27,7 +27,12 @@ public class GradeculatorCourseDbHelper extends SQLiteOpenHelper {
             CourseTable.Columns.CURRENT_GRADE + ", " +
             CourseTable.Columns.DESIRED_GRADE + ", " +
             CourseTable.Columns.DESIRED_LETTER_GRADE + ", " +
-            CourseTable.Columns.CREDITS +
+            CourseTable.Columns.CREDITS + ", " +
+            CourseTable.Columns.EQUAL_WEIGHT_EXAM + ", " +
+            CourseTable.Columns.EQUAL_WEIGHT_ASSIGNMENT + ", " +
+            CourseTable.Columns.EQUAL_WEIGHT_PROJECT + ", " +
+            CourseTable.Columns.EQUAL_WEIGHT_QUIZ + ", " +
+            CourseTable.Columns.EQUAL_WEIGHT_EXTRA +
             ")";
 
     private static final String SQL_CREATE_WORK = "create table " + WorkTable.NAME + "(" +
@@ -41,9 +46,9 @@ public class GradeculatorCourseDbHelper extends SQLiteOpenHelper {
             WorkTable.Columns.CURRENT_GRADE + ", " +
             WorkTable.Columns.COMPLETENESS + ", " +
             WorkTable.Columns.DUE_DATE +
-            " FOREIGN KEY ("+ WorkTable.Columns.ID +
+            ", FOREIGN KEY ("+ WorkTable.Columns.ID +
             ") REFERENCES " + CourseTable.NAME + "(" + CourseTable.Columns.ID +
-            ")";
+            "))";
 
     public GradeculatorCourseDbHelper(Context context) {
         super(context, DB_NAME, null, VERSION);

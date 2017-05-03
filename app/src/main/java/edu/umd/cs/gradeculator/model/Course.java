@@ -3,9 +3,18 @@ package edu.umd.cs.gradeculator.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
+
 import edu.umd.cs.gradeculator.model.Work.Category;
 
-import static edu.umd.cs.gradeculator.model.Course.Grade.*;
+import static edu.umd.cs.gradeculator.model.Course.Grade.A;
+import static edu.umd.cs.gradeculator.model.Course.Grade.A_MINUS;
+import static edu.umd.cs.gradeculator.model.Course.Grade.A_PLUS;
+import static edu.umd.cs.gradeculator.model.Course.Grade.B;
+import static edu.umd.cs.gradeculator.model.Course.Grade.B_MINUS;
+import static edu.umd.cs.gradeculator.model.Course.Grade.B_PLUS;
+import static edu.umd.cs.gradeculator.model.Course.Grade.C;
+import static edu.umd.cs.gradeculator.model.Course.Grade.C_MINUS;
+import static edu.umd.cs.gradeculator.model.Course.Grade.C_PLUS;
 import static edu.umd.cs.gradeculator.model.Work.Category.ASSIGNMENT;
 import static edu.umd.cs.gradeculator.model.Work.Category.EXAM;
 import static edu.umd.cs.gradeculator.model.Work.Category.EXTRA;
@@ -35,7 +44,8 @@ public class Course implements Serializable {
 	private double current_grade;
 	private double desire_grade;
 	private int credit;
-	private boolean equal_weight_exam,equal_weight_quiz,equal_weight_assignment,equal_weight_project,equal_weight_extra;
+	private Boolean equal_weight_exam,equal_weight_quiz,equal_weight_assignment,
+			equal_weight_project,equal_weight_extra;
 
 	private boolean setGrade = false;
 	// check if we set grade yet, only after seting grade we can fill in desired grade
@@ -87,23 +97,23 @@ public class Course implements Serializable {
 		equal_weight_extra=a;
 	}
 
-	public boolean getEqual_weight_exam(){
+	public Boolean getEqual_weight_exam(){
 			return equal_weight_exam;
 	}
 
-	public boolean getEqual_weight_quiz(){
+	public Boolean getEqual_weight_quiz(){
 		return equal_weight_quiz;
 	}
 
-	public boolean getEqual_weight_assignment(){
+	public Boolean getEqual_weight_assignment(){
 		return equal_weight_assignment;
 	}
 
-	public boolean getEqual_weight_project(){
+	public Boolean getEqual_weight_project(){
 		return equal_weight_project;
 	}
 
-	public boolean getEqual_weight_extra(){
+	public Boolean getEqual_weight_extra(){
 		return equal_weight_extra;
 	}
 
@@ -450,34 +460,42 @@ public class Course implements Serializable {
 		double sum = 0;
 		double tempGrade = 0;
 		double allGrade = 0;
+		int count=0;
 		Boolean ifEqualW=null;
 		ArrayList<Work> sumList=new ArrayList<Work>();
 		switch (cate) {
 			case ASSIGNMENT:
-				sumList=getExams();
-				ifEqualW=assignmentsEw;
+				sumList=getAssigs();
+				ifEqualW=equal_weight_assignment;
 				break;
 			case EXAM:
-				sumList=getAssigs();
-				ifEqualW=examEw;
+				sumList=getExams();
+				ifEqualW=equal_weight_exam;
 				break;
 			case PROJECT:
 				sumList=getProjs();
-				ifEqualW=projectEw;
+				ifEqualW=equal_weight_project;
 				break;
 			case QUIZ:
 				sumList=getQuzs();
-				ifEqualW=quizEw;
+				ifEqualW=equal_weight_quiz;
 				break;
 			case EXTRA:
 				sumList=getExtra();
-				ifEqualW=extraEw;
+				ifEqualW=equal_weight_extra;
 				break;
 		}
-
+		for (Work work : sumList){
+			if(work.getGrade()>=0){
+				count++;
+			}
+		}
+		if(count==0){
+			return totalweight;
+		}
 		if (ifEqualW) {
 			for (Work work : sumList) {
-				if(work.getGrade()>0){
+				if(work.getGrade()>=0){
 					tempGrade+=work.getGrade();
 					allGrade+=1;
 				}
@@ -485,12 +503,12 @@ public class Course implements Serializable {
 			return (tempGrade/allGrade)*totalweight;
 		}else{
 			for(Work work : sumList){
-				if(work.getGrade()>0){
+				if(work.getGrade()>=0){
 					tempGrade+=(work.getGrade()*work.getWeight());
-					allGrade=work.getWeight();
+					allGrade+=work.getWeight();
 				}
 			}
-			return tempGrade/allGrade;
+			return tempGrade/allGrade*totalweight;
 		}
 
 	}
@@ -502,9 +520,6 @@ public class Course implements Serializable {
 
 	public enum Grade {
 		A_PLUS, A, A_MINUS, B_PLUS, B, B_MINUS, C_PLUS, C, C_MINUS ;
-	}
-	public double getOverall(){
-		return 50.0;
 	}
 }
 

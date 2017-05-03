@@ -155,7 +155,7 @@
 
     <string name="reminder_notification">Gradeculator Friendly Reminder</string>
     <string name="course">Courses</string>
-    <string name="reminder_notification_content"> has dropped below your desired grade. You need to work harder!</string>
+    <string name="reminder_notification_content">is below your expectation!</string>
 
 
 </resources>
