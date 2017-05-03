@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
-import android.nfc.Tag;
 import android.util.Log;
 
 import java.text.ParseException;
@@ -47,7 +46,7 @@ public class SQLiteWorkService {
             work.setWeight(weight);
             work.setEarned_points(earned_point);
             work.setPossible_points(possible_point);
-            if(completeness.equals("true")) {
+            if(completeness.equals("true") || completeness.equals("True")) {
                 work.setCompleteness();
             }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
