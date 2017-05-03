@@ -26,8 +26,9 @@ public class Work implements Serializable {
         if(completeness){
             grade=earned_points/possible_points;
             return grade;
+        }else{
+            return -1;
         }
-        return -1;
     }
 
     // getter of title
