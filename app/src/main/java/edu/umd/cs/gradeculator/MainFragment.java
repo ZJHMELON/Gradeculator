@@ -116,6 +116,7 @@ public class MainFragment extends Fragment{
             courseService.addCourseToBacklog(courseCreated);
             updateUI();
         }
+
         if(requestCode == REQUEST_CODE_EDIT_COURSE) {
             updateUI();
         }

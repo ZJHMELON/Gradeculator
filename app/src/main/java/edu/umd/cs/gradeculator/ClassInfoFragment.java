@@ -1,29 +1,22 @@
 package edu.umd.cs.gradeculator;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.umd.cs.gradeculator.model.Course;
+import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -46,14 +39,15 @@ public class ClassInfoFragment extends Fragment {
     private ToggleButton assignment_btn;
     private ToggleButton project_btn;
     private ToggleButton extra_btn;
+    private CourseService cs;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         String courseId = getArguments().getString(ARG_COURSE_ID);
-        course = DependencyFactory.getCourseService(getActivity().getApplicationContext()).getCourseById(courseId);
-        Log.d("hello", courseId);
+        cs = DependencyFactory.getCourseService(getActivity());
+        course = DependencyFactory.getCourseService(getActivity()).getCourseById(courseId);
     }
 
     @Nullable

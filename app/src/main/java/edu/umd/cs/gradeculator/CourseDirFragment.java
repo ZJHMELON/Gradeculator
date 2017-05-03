@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
+import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -36,6 +37,8 @@ public class CourseDirFragment extends Fragment{
     private Course course;
     private LinearLayout layout;
     private TextView course_name;
+    private String current_course_id;
+    private CourseService cs;
 
 
     @Override
@@ -43,7 +46,10 @@ public class CourseDirFragment extends Fragment{
         super.onCreate(savedInstanceState);
 
         String courseId = getArguments().getString(ARG_COURSE_ID);
-        course = DependencyFactory.getCourseService(getActivity()).getCourseById(courseId);
+
+        cs = DependencyFactory.getCourseService(getActivity());
+        course = cs.getCourseById(courseId);
+        current_course_id = courseId;
     }
 
     @Nullable
@@ -106,6 +112,7 @@ public class CourseDirFragment extends Fragment{
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD_WEIGHT) {
                final Course c = ClassInfoActivity.getCourse(data);
+                cs.addCourseToBacklog(c);
                 course.setExam_weight(c.getExam_weight());
                 course.setAssignments_weight(c.getAssignment_weight());
                 course.setQuiz_weight(c.getQuiz_weight());
@@ -116,6 +123,7 @@ public class CourseDirFragment extends Fragment{
 
             if(requestCode == REQUEST_CODE_EDIT_COURSE) {
                 final Course c = AddCourseActivity.getCourseCreated(data);
+                cs.addCourseToBacklog(c);
                 course.setTitle(c.getTitle());
                 course.setIdentifier(c.getIdentifier());
                 course.setCredit(c.getCredit());
@@ -135,6 +143,8 @@ public class CourseDirFragment extends Fragment{
     }
 
     private void updateUI() {
+        course = DependencyFactory.getCourseService(getActivity()).getCourseById(course.getId());
+
         if (Double.compare(course.getExam_weight(), 0.0) == 1) {
             // check if we have exam already
             LinearLayout exam = (LinearLayout) layout.findViewById(R.id.exam_view);

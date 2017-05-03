@@ -342,7 +342,7 @@ public class IndividualFragment extends Fragment {
                             break;
 
                     }
-                    CourseService sss=DependencyFactory.getCourseService(getActivity());
+                    CourseService sss = DependencyFactory.getCourseService(getActivity());
                     Course cs =sss.getCourseById(cId);
                     if(title==null){
                         cs.add(work);

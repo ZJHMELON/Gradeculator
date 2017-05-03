@@ -3,6 +3,8 @@ package edu.umd.cs.gradeculator.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import static edu.umd.cs.gradeculator.model.Work.Category.*;
+
 /**
  * Created by howardksw1 on 4/5/17.
  */
@@ -19,6 +21,7 @@ public class Work implements Serializable {
     public Work(String title) {
         this.title = title;
     }
+
     public double getGrade(){
         if(completeness){
             grade=earned_points/possible_points;
@@ -65,7 +68,55 @@ public class Work implements Serializable {
 
     public void setCompleteness(boolean completeness) { this.completeness = completeness;}
 
-    public boolean getCompleteness() { return completeness; }
+    public Boolean getCompleteness() { return completeness; }
+
+    public String toCategory_String(Category category) {
+        String c = "";
+        switch (category) {
+            case EXAM:
+                c = "EXAM";
+                break;
+            case ASSIGNMENT:
+                c = "ASSIGNMENT";
+                break;
+            case QUIZ:
+                c = "QUIZ";
+                break;
+            case PROJECT:
+                c = "PROJECT";
+                break;
+            case EXTRA:
+                c = "EXTRA";
+                break;
+        }
+        return c;
+    }
+
+    public Category toString_Category(String s) {
+        Category c = null;
+        switch (s) {
+            case "EXAM":
+                c = EXAM;
+                break;
+            case "ASSIGNMENT":
+                c = ASSIGNMENT;
+                break;
+            case "QUIZ":
+                c = QUIZ;
+                break;
+            case "PROJECT":
+                c = PROJECT;
+                break;
+            case "EXTRA":
+                c = EXTRA;
+                break;
+        }
+        return c;
+    }
+
+    public void setCompleteness() {
+        completeness = true;
+    }
 
     public enum Category {
         EXAM, ASSIGNMENT, QUIZ, PROJECT, EXTRA
