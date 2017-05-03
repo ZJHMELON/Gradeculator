@@ -41,8 +41,8 @@ public class GradeculatorCourseDbHelper extends SQLiteOpenHelper {
             WorkTable.Columns.CURRENT_GRADE + ", " +
             WorkTable.Columns.COMPLETENESS + ", " +
             WorkTable.Columns.DUE_DATE +
-//            " FOREIGN KEY ("+ WorkTable.Columns.ID +
-//            ") REFERENCES " + CourseTable.NAME + "(" + CourseTable.Columns.ID+
+            " FOREIGN KEY ("+ WorkTable.Columns.ID +
+            ") REFERENCES " + CourseTable.NAME + "(" + CourseTable.Columns.ID +
             ")";
 
     public GradeculatorCourseDbHelper(Context context) {
@@ -53,6 +53,9 @@ public class GradeculatorCourseDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_COURSE);
         db.execSQL(SQL_CREATE_WORK);
+
+        // kick in the relationship between couse table and work table
+        db.execSQL("PRAGMA foreign_keys=ON;");
     }
 
     @Override

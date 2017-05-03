@@ -9,13 +9,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -28,8 +26,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
@@ -37,8 +33,6 @@ import edu.umd.cs.gradeculator.service.CourseService;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static android.util.Log.d;
-import static android.util.Log.v;
 
 public class IndividualFragment extends Fragment {
     private static final String EXTRA_WORK_CREATED = "WorkCreated";
@@ -345,9 +339,9 @@ public class IndividualFragment extends Fragment {
                     CourseService sss = DependencyFactory.getCourseService(getActivity());
                     Course cs =sss.getCourseById(cId);
                     if(title==null){
-                        sss.addCourseToBacklog(cs,work,null);
+                        sss.addCourseToBacklog(cs,work, title);
                     }else{
-                        sss.addCourseToBacklog(cs,work,title);
+                        sss.addCourseToBacklog(cs,work, title);
                     }
 
                     data.putExtra(EXTRA_WORK_CREATED, work);

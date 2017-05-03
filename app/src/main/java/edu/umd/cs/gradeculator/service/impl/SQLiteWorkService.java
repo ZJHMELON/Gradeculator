@@ -10,10 +10,10 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
+
 import static edu.umd.cs.gradeculator.service.impl.GradeculatorDbSchema.WorkTable;
 
 /**
@@ -47,17 +47,16 @@ public class SQLiteWorkService {
             work.setWeight(weight);
             work.setEarned_points(earned_point);
             work.setPossible_points(possible_point);
-            if(completeness.equals("True")) {
+            if(completeness.equals("true")) {
                 work.setCompleteness();
             }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             try {
                 work.setDueDate(sdf.parse(due_date));
-            }catch (ParseException e1){
-                Log.d("SQLIteWorkService", "Date parse error exception");
+            }catch (ParseException e) {
+                Log.d("SQLiteWorkServce", "Parse error");
             }
-
             return work;
         }
     }
@@ -83,11 +82,11 @@ public class SQLiteWorkService {
     }
 
     public Work getWorksById(String id, String title) {
-        if(id != null) {
+        if(id != null && title != null) {
             String[] whereArgs = new String[]{id, title};
 
-            ArrayList<Work> works = queryWork(WorkTable.Columns.ID + " = ? AND "
-                    + WorkTable.Columns.TITLE + " = ? ", whereArgs, null);
+            ArrayList<Work> works = queryWork(WorkTable.Columns.ID + " =? AND "
+                    + WorkTable.Columns.TITLE + " =?", whereArgs, null);
             if(works.size() != 0) {
                 return works.get(0);
             }
@@ -96,71 +95,51 @@ public class SQLiteWorkService {
     }
 
     public void addWorkToBacklog(Course course, Work target, String title) {
-        if(getWorksById(course.getId(), target.getTitle()) != null && target.getTitle().equals(title)){
-            //title is not changed
-            db.update(WorkTable.NAME, getContentValues(course, target),WorkTable.Columns.ID +
-                            " = ? AND " + WorkTable.Columns.TITLE + " = ? ",
-                    new String[]{course.getId(), title});
-        }
-         else if(getWorksById(course.getId(), title) != null && title != null) {
-            //This means the user changed the title of work because title is used as a unique ID in the table
-            db.insert(WorkTable.NAME, null, getContentValues(course, target));
-            db.delete(WorkTable.NAME, WorkTable.Columns.ID +
-                            " = ? AND " + WorkTable.Columns.TITLE + " = ? ",
-                    new String[]{course.getId(), title});
-        }else {
-            db.insert(WorkTable.NAME, null, getContentValues(course, target));
-        }
-//        for(Work w:course.getExams()) {
-//            if(getWorksById(course.getId(), w.getTitle()) != null) {
-//                db.update(WorkTable.NAME, getContentValues(course, w), WorkTable.Columns.ID +
-//                        " = ? AND " + WorkTable.Columns.TITLE,
-//                        new String[]{course.getId(), w.getTitle()});
-//            }else {
-//                db.insert(WorkTable.NAME, null, getContentValues(course, w));
-//            }
-//        }
-//
-//        for(Work w:course.getAssigs()) {
-//            if(getWorksById(course.getId(), w.getTitle()) != null) {
-//                db.update(WorkTable.NAME, getContentValues(course, w), WorkTable.Columns.ID +
-//                                " = ? AND " + WorkTable.Columns.TITLE,
-//                        new String[]{course.getId(), w.getTitle()});
-//            }else {
-//                db.insert(WorkTable.NAME, null, getContentValues(course, w));
-//            }
-//        }
-//
-//        for(Work w:course.getProjs()) {
-//            if(getWorksById(course.getId(), w.getTitle()) != null) {
-//                db.update(WorkTable.NAME, getContentValues(course, w), WorkTable.Columns.ID +
-//                                " = ? AND " + WorkTable.Columns.TITLE,
-//                        new String[]{course.getId(), w.getTitle()});
-//            }else {
-//                db.insert(WorkTable.NAME, null, getContentValues(course, w));
-//            }
-//        }
-//
-//        for(Work w:course.getQuzs()) {
-//            if(getWorksById(course.getId(), w.getTitle()) != null) {
-//                db.update(WorkTable.NAME, getContentValues(course, w), WorkTable.Columns.ID +
-//                                " = ? AND " + WorkTable.Columns.TITLE,
-//                        new String[]{course.getId(), w.getTitle()});
-//            }else {
-//                db.insert(WorkTable.NAME, null, getContentValues(course, w));
-//            }
-//        }
-//
-//        for(Work w:course.getExtra()) {
-//            if(getWorksById(course.getId(), w.getTitle()) != null) {
-//                db.update(WorkTable.NAME, getContentValues(course, w), WorkTable.Columns.ID +
-//                                " = ? AND " + WorkTable.Columns.TITLE,
-//                        new String[]{course.getId(), w.getTitle()});
-//            }else {
-//                db.insert(WorkTable.NAME, null, getContentValues(course, w));
-//            }
-//        }
+        if(getWorksById(course.getId(), target.getTitle()) != null && target.getTitle().equals(title)) {
+            // title is not changed
+            db.update(WorkTable.NAME, getContentValues(course, target), WorkTable.Columns.ID +
+                            " = ? AND " + WorkTable.Columns.TITLE + "=?",
+                    new String[]{course.getId(), target.getTitle()});
 
+        }else if(title != null && getWorksById(course.getId(), title) != null) {
+            // This means the user change the title of work because title is used as
+            // a unique ID in the table
+            db.insert(WorkTable.NAME, null, getContentValues(course,target));
+            db.delete(WorkTable.NAME, WorkTable.Columns.ID + "= ? AND " +
+            WorkTable.Columns.TITLE + " = ? ", new String[]{course.getId(), title});
+        } else {
+            db.insert(WorkTable.NAME, null, getContentValues(course, target));
+        }
+    }
+
+    public boolean removeWorkFromBacklog(int position, Course course, Work.Category category) {
+        ArrayList<Work> works = null;
+        switch (category) {
+            case EXAM:
+                works = course.getExams();
+                break;
+            case ASSIGNMENT:
+                works = course.getAssigs();
+                break;
+            case PROJECT:
+                works = course.getProjs();
+                break;
+            case QUIZ:
+                works = course.getQuzs();
+                break;
+            case EXTRA:
+                works = course.getExtra();
+                break;
+        }
+        Work work = works.get(position);
+
+        if(getWorksById(course.getId(), work.getTitle()) != null) {
+            if(db.delete(WorkTable.NAME, WorkTable.Columns.ID + "=? AND " +
+                    WorkTable.Columns.TITLE + "=?", new String[]{course.getId(), work.getTitle()}) != 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<Work> getAllWorks_ForCourse(Course course) {

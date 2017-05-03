@@ -131,7 +131,7 @@ public class MainFragment extends Fragment{
             }
 
             Course courseCreated = AddCourseActivity.getCourseCreated(data);
-            courseService.addCourseToBacklog(courseCreated,null,null);
+            courseService.addCourseToBacklog(courseCreated, null, null);
             updateUI();
         }
 

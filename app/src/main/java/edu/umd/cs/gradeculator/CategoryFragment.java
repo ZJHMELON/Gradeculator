@@ -1,14 +1,17 @@
 package edu.umd.cs.gradeculator;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +19,13 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
 import edu.umd.cs.gradeculator.service.CourseService;
+import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
 
 import static android.app.Activity.RESULT_OK;
 import static edu.umd.cs.gradeculator.model.Work.Category;
@@ -33,6 +38,7 @@ public class CategoryFragment extends Fragment {
 
     private RecyclerView categoryRecyclerView;
     private TextView categoryTitleTextView;
+    private ItemTouchHelper mItemTouchHelper;
 
     private CourseService courseService;
 
@@ -44,6 +50,8 @@ public class CategoryFragment extends Fragment {
     private String courseId;
     private Category category;
     private String categoryName;
+    private List<Work> works;
+    private Course course;
 
 
     public static CategoryFragment newInstance(String courseId, Category category) {
@@ -63,9 +71,9 @@ public class CategoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         courseService = DependencyFactory.getCourseService(getActivity().getApplicationContext());
-
         courseId = getArguments().getString(ARG_COURSE_ID);
         category = (Category) getArguments().getSerializable(ARG_CATEGORY_NAME);
+        course = courseService.getCourseById(courseId);
 
     }
 
@@ -92,24 +100,25 @@ public class CategoryFragment extends Fragment {
     private void updateUI() {
 
         List<Work> works = new ArrayList<>();
-        Course theCourse = courseService.getCourseById(courseId);
+//        Course theCourse = courseService.getCourseById(courseId);
+        course = courseService.getCourseById(courseId);
 
 
         if (category != null) {
             if (category == Category.EXAM) {
-                works = theCourse.getExams();
+                works = course.getExams();
                 categoryName = "Exam";
             } else if (category == Category.QUIZ) {
-                works = theCourse.getQuzs();
+                works = course.getQuzs();
                 categoryName = "Quiz";
             } else if (category == Category.PROJECT) {
-                works = theCourse.getProjs();
+                works = course.getProjs();
                 categoryName = "Project";
             } else if (category == Category.ASSIGNMENT) {
-                works = theCourse.getAssigs();
+                works = course.getAssigs();
                 categoryName = "Assignment";
             } else if (category == Category.EXTRA) {
-                works = theCourse.getExtra();
+                works = course.getExtra();
                 categoryName = "Extra";
             } else {
                 works = null;
@@ -121,6 +130,9 @@ public class CategoryFragment extends Fragment {
             if (adapter == null) {
                 adapter = new WorkAdapter(works);
                 categoryRecyclerView.setAdapter(adapter);
+                ItemTouchHelper.Callback callback = new CategoryFragment.SimpleItemTouchHelperCallback(adapter);
+                mItemTouchHelper = new ItemTouchHelper(callback);
+                mItemTouchHelper.attachToRecyclerView(categoryRecyclerView);
             } else {
                 adapter.setWorks(works);
                 adapter.notifyDataSetChanged();
@@ -233,7 +245,7 @@ public class CategoryFragment extends Fragment {
     }
 
 
-    private class WorkAdapter extends RecyclerView.Adapter<WorkHolder> {
+    private class WorkAdapter extends RecyclerView.Adapter<WorkHolder> implements ItemTouchHelperAdapter{
         private List<Work> works;
 
         public WorkAdapter(List<Work> works) {
@@ -260,6 +272,84 @@ public class CategoryFragment extends Fragment {
         @Override
         public int getItemCount() {
             return works.size();
+        }
+
+        @Override
+        public boolean onItemMove(int fromPosition, int toPosition) {
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(works, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(works, i, i - 1);
+                }
+            }
+            notifyItemMoved(fromPosition, toPosition);
+            return true;
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+            courseService.removeWorkFromACourse(position, course, category);
+            notifyItemRemoved(position);
+        }
+    }
+
+
+    public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
+
+        private final ItemTouchHelperAdapter mAdapter;
+
+        public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
+            mAdapter = adapter;
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return true;
+        }
+
+        @Override
+        public boolean isItemViewSwipeEnabled() {
+            return true;
+        }
+
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+            int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+            return makeMovementFlags(dragFlags, swipeFlags);
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                              RecyclerView.ViewHolder target) {
+            mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            return true;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            final int position = viewHolder.getAdapterPosition();
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Delete entry")
+                    .setMessage("Are you sure you want to remove this course?")
+                    .setPositiveButton(R.string.confirm_remove, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            mAdapter.onItemDismiss(position);
+                            updateUI();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel_remove, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
         }
     }
 

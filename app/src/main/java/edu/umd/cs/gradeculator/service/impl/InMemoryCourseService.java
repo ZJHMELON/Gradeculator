@@ -14,7 +14,7 @@ import edu.umd.cs.gradeculator.service.CourseService;
  * Created by howardksw1 on 4/5/17.
  */
 
-public class InMemoryCourseService implements CourseService {
+public class InMemoryCourseService  {
     private Context context;
     private ArrayList<Course> courses;
 
@@ -23,8 +23,8 @@ public class InMemoryCourseService implements CourseService {
         this.courses = new ArrayList<Course>();
     }
 
-    @Override
-    public void addCourseToBacklog(Course course, Work work, String title) {
+//    @Override
+    public void addCourseToBacklog(Course course) {
         Course currCourse = getCourseById(course.getId());
         if (currCourse == null) {
             courses.add(course);
@@ -36,7 +36,7 @@ public class InMemoryCourseService implements CourseService {
         }
     }
 
-    @Override
+//    @Override
     public Course getCourseById(String id) {
         for(Course course: courses) {
             if(course.getId().equals(id)) {
@@ -46,7 +46,7 @@ public class InMemoryCourseService implements CourseService {
         return null;
     }
 
-    @Override
+//    @Override
     public ArrayList<Course> getAllCourses() {
         ArrayList<Course> prioritizedStories = new ArrayList<Course>(courses);
         Collections.sort(prioritizedStories, new Comparator<Course>() {
@@ -59,7 +59,7 @@ public class InMemoryCourseService implements CourseService {
         return prioritizedStories;
     }
 
-    @Override
+//    @Override
     public boolean remove_course(int position) {
         courses = getAllCourses();
         Course to_delete = courses.get(position);

@@ -14,4 +14,5 @@ public interface CourseService {
     public Course getCourseById(String id);
     public ArrayList<Course> getAllCourses();
     public boolean remove_course(int position);
+    public boolean removeWorkFromACourse(int position, Course course, Work.Category category);
 }

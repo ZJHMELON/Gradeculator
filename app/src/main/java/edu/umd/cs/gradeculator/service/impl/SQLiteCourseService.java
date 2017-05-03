@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,16 +94,14 @@ public class SQLiteCourseService implements CourseService{
 
     @Override
     public void addCourseToBacklog(Course course, Work work, String title) {
-        //Log.d("hello", getCourseById(course.getId()).getTitle());
-        if(work!=null)
-            workDb.addWorkToBacklog(course, work, title);
-        if(course != null) {
-            if (getCourseById(course.getId()) != null) {
-                db.update(CourseTable.NAME, getContentValues(course), CourseTable.Columns.ID + "=?",
-                        new String[]{course.getId()});
-            } else {
-                db.insert(CourseTable.NAME, null, getContentValues(course));
+        if(getCourseById(course.getId()) != null) {
+            db.update(CourseTable.NAME, getContentValues(course), CourseTable.Columns.ID + "=?",
+                    new String[]{course.getId()});
+            if(work != null) {
+                workDb.addWorkToBacklog(course, work,title);
             }
+        }else {
+            db.insert(CourseTable.NAME, null, getContentValues(course));
         }
     }
 
@@ -158,6 +155,14 @@ public class SQLiteCourseService implements CourseService{
             return true;
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean removeWorkFromACourse(int position, Course course, Work.Category category) {
+        if(workDb.removeWorkFromBacklog(position, course, category)) {
+            return true;
+        }
         return false;
     }
 
