@@ -6,6 +6,11 @@ import java.util.UUID;
 import edu.umd.cs.gradeculator.model.Work.Category;
 
 import static edu.umd.cs.gradeculator.model.Course.Grade.*;
+import static edu.umd.cs.gradeculator.model.Work.Category.ASSIGNMENT;
+import static edu.umd.cs.gradeculator.model.Work.Category.EXAM;
+import static edu.umd.cs.gradeculator.model.Work.Category.EXTRA;
+import static edu.umd.cs.gradeculator.model.Work.Category.PROJECT;
+import static edu.umd.cs.gradeculator.model.Work.Category.QUIZ;
 
 public class Course implements Serializable {
 	private String id;
@@ -21,6 +26,11 @@ public class Course implements Serializable {
 	private double project_weight;
 	private double assignment_weight;
 	private double extra_weight;
+	private Boolean examEw=null;
+	private Boolean quizEw=null;
+	private Boolean projectEw=null;
+	private Boolean assignmentsEw=null;
+	private Boolean extraEw=null;
 	private Grade grade = A; // default
 	private double current_grade;
 	private double desire_grade;
@@ -436,31 +446,65 @@ public class Course implements Serializable {
 		return out;
 	}
 
-	public double getCtGrade(Category cate) {
+	public double getCtGrade(Category cate,double totalweight) {
 		double sum = 0;
 		double tempGrade = 0;
 		double allGrade = 0;
-		ArrayList<Work> sumList;
+		Boolean ifEqualW=null;
+		ArrayList<Work> sumList=new ArrayList<Work>();
 		switch (cate) {
 			case ASSIGNMENT:
+				sumList=getExams();
+				ifEqualW=assignmentsEw;
 				break;
+			case EXAM:
+				sumList=getAssigs();
+				ifEqualW=examEw;
+				break;
+			case PROJECT:
+				sumList=getProjs();
+				ifEqualW=projectEw;
+				break;
+			case QUIZ:
+				sumList=getQuzs();
+				ifEqualW=quizEw;
+				break;
+			case EXTRA:
+				sumList=getExtra();
+				ifEqualW=extraEw;
+				break;
+		}
 
-		}
-		for (Work work : exams) {
-			sum += work.getWeight();
-		}
-		if (Double.compare(sum, getExam_weight()) == 0) {
-			for (Work work : exams) {
-				tempGrade += work.getEarned_points();
-				allGrade += work.getPossible_points();
+		if (ifEqualW) {
+			for (Work work : sumList) {
+				if(work.getGrade()>0){
+					tempGrade+=work.getGrade();
+					allGrade+=1;
+				}
 			}
-			return tempGrade / allGrade;
+			return (tempGrade/allGrade)*totalweight;
+		}else{
+			for(Work work : sumList){
+				if(work.getGrade()>0){
+					tempGrade+=(work.getGrade()*work.getWeight());
+					allGrade=work.getWeight();
+				}
+			}
+			return tempGrade/allGrade;
 		}
-		return 0.0;
+
+	}
+	public double getOverAll(){
+		return getCtGrade(EXAM,exam_weight)+getCtGrade(ASSIGNMENT,assignment_weight)
+				+getCtGrade(QUIZ,quiz_weight)
+				+getCtGrade(PROJECT,project_weight)+getCtGrade(EXTRA,extra_weight);
 	}
 
 	public enum Grade {
 		A_PLUS, A, A_MINUS, B_PLUS, B, B_MINUS, C_PLUS, C, C_MINUS ;
+	}
+	public double getOverall(){
+		return 50.0;
 	}
 }
 

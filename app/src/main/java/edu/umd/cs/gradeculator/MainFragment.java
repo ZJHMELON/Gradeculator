@@ -39,7 +39,8 @@ import static android.content.Context.ALARM_SERVICE;
  */
 
 // hihihihihi test 101
-public class MainFragment extends Fragment{
+public class
+MainFragment extends Fragment{
 
     private ArrayList<Course> all_course;
     private ItemTouchHelper mItemTouchHelper;
