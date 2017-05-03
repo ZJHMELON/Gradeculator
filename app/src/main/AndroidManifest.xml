@@ -21,6 +21,10 @@
         <activity android:name=".CategoryActivity"></activity>>
         <activity android:name=".ClassInfoActivity"></activity>>
         <activity android:name=".IndividualActivity"></activity>>
+
+        <service android:name=".service.impl.ReminderBackgroundService" />
+        <service android:name=".service.impl.NotificationService" />
+        <receiver android:name=".service.impl.AlarmRecever"/>
     </application>
 
 </manifest>

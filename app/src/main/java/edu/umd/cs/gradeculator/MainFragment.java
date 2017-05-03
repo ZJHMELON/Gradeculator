@@ -1,9 +1,12 @@
 package edu.umd.cs.gradeculator;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +28,10 @@ import java.util.Collections;
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
 import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
+import edu.umd.cs.gradeculator.service.impl.AlarmRecever;
+import edu.umd.cs.gradeculator.service.impl.ReminderBackgroundService;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 /**
@@ -51,6 +58,17 @@ public class MainFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         courseService = DependencyFactory.getCourseService(getActivity());
+        ReminderBackgroundService.setReminderAlarm(getActivity().getApplicationContext(), 1);
+
+        AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
+        Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
+        myIntent.putExtra("id",1);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
+                1, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60000/3,
+                60000/3,pendingIntent);
+
     }
 
     @Nullable

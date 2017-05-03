@@ -20,7 +20,7 @@ import edu.umd.cs.gradeculator.R;
 public class ReminderBackgroundService extends IntentService {
 
 
-    private static int MY_NOTIFICATION_ID = 1;
+    private static  int MY_NOTIFICATION_ID = 1;
     private static int REMINDER_REQUEST = 2;
     private static int MAIN_REQUEST = 3;
     private static AlarmManager alarmManager;
@@ -49,7 +49,7 @@ public class ReminderBackgroundService extends IntentService {
                 .setTicker(getResources().getString(R.string.reminder_notification))
                 .setSmallIcon(android.R.drawable.ic_menu_compass)
                 .setContentTitle(getResources().getString(R.string.reminder_notification))
-                .setContentText("TO DO")
+                .setContentText("TO DO, for grade")
                 .setContentIntent(mContentIntent)
                 .setAutoCancel(true);
 
@@ -64,7 +64,7 @@ public class ReminderBackgroundService extends IntentService {
 
     public static void setReminderAlarm(Context context, int intervalInMinutes){
 
-        long interval =  intervalInMinutes*60000;
+        long interval =  (intervalInMinutes*60000) / 2;
 
         Intent reminderIntent = ReminderBackgroundService.newIntent(context);
         alarmPendingIntent = PendingIntent.getService(context,REMINDER_REQUEST,reminderIntent,PendingIntent.FLAG_UPDATE_CURRENT);
