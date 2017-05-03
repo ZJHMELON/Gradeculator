@@ -153,7 +153,9 @@
     <string name="grade_title">Grade:</string>
     <string name="grade">18%</string>
 
-    <string name="reminder_notification">AgileAndroid Reminder</string>
+    <string name="reminder_notification">Gradeculator Friendly Reminder</string>
     <string name="course">Courses</string>
+    <string name="reminder_notification_content"> has dropped below your desired grade. You need to work harder!</string>
+
 
 </resources>
