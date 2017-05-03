@@ -46,7 +46,7 @@ public class NotificationService extends Service {
                 .setTicker(getResources().getString(R.string.reminder_notification))
                 .setSmallIcon(android.R.drawable.ic_menu_compass)
                 .setContentTitle(getResources().getString(R.string.reminder_notification))
-                .setContentText("TO DO FOR, DUE")
+                .setContentText("Todo for due")
                 .setContentIntent(mContentIntent)
                 .setAutoCancel(true);
 

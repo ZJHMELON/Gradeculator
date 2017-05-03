@@ -10,8 +10,14 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+import edu.umd.cs.gradeculator.DependencyFactory;
 import edu.umd.cs.gradeculator.MainActivity;
 import edu.umd.cs.gradeculator.R;
+import edu.umd.cs.gradeculator.model.Course;
+import edu.umd.cs.gradeculator.service.CourseService;
 
 /**
  * Created by weng2 on 4/28/2017.
@@ -37,34 +43,53 @@ public class ReminderBackgroundService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
+        CourseService courseService = DependencyFactory.getCourseService(getApplicationContext());
+        ArrayList<Course> courses = courseService.getAllCourses();
+        int notificationId = 0;
+        for(Course ele: courses){
+           if( ele.getCurrent_grade()< ele.getDesire_grade()) {
+               notificationId++;
+
+               String courseTitle = ele.getTitle();
+
+               Intent restartMainIntent = MainActivity.newIntent(this);
+
+               PendingIntent mContentIntent = PendingIntent.getActivity(getApplicationContext(), MAIN_REQUEST,restartMainIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+               Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext())
+                       .setTicker(getResources().getString(R.string.reminder_notification))
+                       .setSmallIcon(android.R.drawable.ic_menu_agenda)
+                       .setContentTitle(getResources().getString(R.string.reminder_notification))
+                       .setContentText(courseTitle+R.string.reminder_notification_content)
+                       .setContentIntent(mContentIntent)
+                       .setAutoCancel(true);
+
+               Notification notification = notificationBuilder.build();
 
 
-        Intent restartMainIntent = MainActivity.newIntent(this);
+               NotificationManager notificationManager = (NotificationManager) getApplicationContext()
+                       .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        PendingIntent mContentIntent = PendingIntent.getActivity(getApplicationContext(), MAIN_REQUEST,restartMainIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-
-        Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext())
-                .setTicker(getResources().getString(R.string.reminder_notification))
-                .setSmallIcon(android.R.drawable.ic_menu_compass)
-                .setContentTitle(getResources().getString(R.string.reminder_notification))
-                .setContentText("TO DO, for grade")
-                .setContentIntent(mContentIntent)
-                .setAutoCancel(true);
-
-        Notification notification = notificationBuilder.build();
+               notificationManager.notify(notificationId,notification);
 
 
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext()
-                .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(MY_NOTIFICATION_ID,notification);
+
+
+           }
+        }
+
+
+        for(int x=0; x <10;x++){
+
+        }
+
+
     }
 
     public static void setReminderAlarm(Context context, int intervalInMinutes){
 
-        long interval =  (intervalInMinutes*60000) / 2;
+        long interval =  (intervalInMinutes*60000) / 6;
 
         Intent reminderIntent = ReminderBackgroundService.newIntent(context);
         alarmPendingIntent = PendingIntent.getService(context,REMINDER_REQUEST,reminderIntent,PendingIntent.FLAG_UPDATE_CURRENT);
