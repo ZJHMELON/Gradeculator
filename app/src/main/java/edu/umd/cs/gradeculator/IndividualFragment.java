@@ -345,13 +345,9 @@ public class IndividualFragment extends Fragment {
                     CourseService sss = DependencyFactory.getCourseService(getActivity());
                     Course cs =sss.getCourseById(cId);
                     if(title==null){
-                        cs.add(work);
+                        sss.addCourseToBacklog(cs,work,null);
                     }else{
-                        for(Work cWork:works){
-                            if(cWork.getTitle().equals(title)){
-                                cWork=work;
-                            }
-                        }
+                        sss.addCourseToBacklog(cs,work,title);
                     }
 
                     data.putExtra(EXTRA_WORK_CREATED, work);

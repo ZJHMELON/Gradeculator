@@ -112,7 +112,7 @@ public class CourseDirFragment extends Fragment{
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD_WEIGHT) {
                final Course c = ClassInfoActivity.getCourse(data);
-                cs.addCourseToBacklog(c);
+                cs.addCourseToBacklog(c,null,null);
                 course.setExam_weight(c.getExam_weight());
                 course.setAssignments_weight(c.getAssignment_weight());
                 course.setQuiz_weight(c.getQuiz_weight());
@@ -123,7 +123,7 @@ public class CourseDirFragment extends Fragment{
 
             if(requestCode == REQUEST_CODE_EDIT_COURSE) {
                 final Course c = AddCourseActivity.getCourseCreated(data);
-                cs.addCourseToBacklog(c);
+                cs.addCourseToBacklog(c,null,null);
                 course.setTitle(c.getTitle());
                 course.setIdentifier(c.getIdentifier());
                 course.setCredit(c.getCredit());

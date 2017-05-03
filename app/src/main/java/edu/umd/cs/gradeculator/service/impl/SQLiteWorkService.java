@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
+import android.nfc.Tag;
+import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,14 +50,13 @@ public class SQLiteWorkService {
             if(completeness.equals("True")) {
                 work.setCompleteness();
             }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-            String year = due_date.substring(0,4);
-            String month = due_date.substring(5,7);
-            String day = due_date.substring(8,10);
-
-            Date date =
-                    new Date(Integer.getInteger(year), Integer.getInteger(month), Integer.getInteger(day));
-            work.setDueDate(date);
+            try {
+                work.setDueDate(sdf.parse(due_date));
+            }catch (ParseException e1){
+                Log.d("SQLIteWorkService", "Date parse error exception");
+            }
 
             return work;
         }
@@ -85,7 +87,7 @@ public class SQLiteWorkService {
             String[] whereArgs = new String[]{id, title};
 
             ArrayList<Work> works = queryWork(WorkTable.Columns.ID + " = ? AND "
-                    + WorkTable.Columns.TITLE, whereArgs, null);
+                    + WorkTable.Columns.TITLE + " = ? ", whereArgs, null);
             if(works.size() != 0) {
                 return works.get(0);
             }
@@ -93,11 +95,19 @@ public class SQLiteWorkService {
         return null;
     }
 
-    public void addWorkToBacklog(Course course, Work target) {
-        if(getWorksById(course.getId(), target.getTitle()) != null) {
-            db.update(WorkTable.NAME, getContentValues(course, target), WorkTable.Columns.ID +
-                            " = ? AND " + WorkTable.Columns.TITLE,
-                    new String[]{course.getId(), target.getTitle()});
+    public void addWorkToBacklog(Course course, Work target, String title) {
+        if(getWorksById(course.getId(), target.getTitle()) != null && target.getTitle().equals(title)){
+            //title is not changed
+            db.update(WorkTable.NAME, getContentValues(course, target),WorkTable.Columns.ID +
+                            " = ? AND " + WorkTable.Columns.TITLE + " = ? ",
+                    new String[]{course.getId(), title});
+        }
+         else if(getWorksById(course.getId(), title) != null && title != null) {
+            //This means the user changed the title of work because title is used as a unique ID in the table
+            db.insert(WorkTable.NAME, null, getContentValues(course, target));
+            db.delete(WorkTable.NAME, WorkTable.Columns.ID +
+                            " = ? AND " + WorkTable.Columns.TITLE + " = ? ",
+                    new String[]{course.getId(), title});
         }else {
             db.insert(WorkTable.NAME, null, getContentValues(course, target));
         }

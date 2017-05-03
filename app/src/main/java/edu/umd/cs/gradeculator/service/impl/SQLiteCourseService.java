@@ -94,15 +94,17 @@ public class SQLiteCourseService implements CourseService{
     }
 
     @Override
-    public void addCourseToBacklog(Course course) {
-        Log.d("hello", getCourseById(course.getId()).getTitle());
-        if(getCourseById(course.getId()) != null) {
-            db.update(CourseTable.NAME, getContentValues(course), CourseTable.Columns.ID + "=?",
-                    new String[]{course.getId()});
-            workDb.addWorkToBacklog(course);
-        }else {
-            db.insert(CourseTable.NAME, null, getContentValues(course));
-            workDb.addWorkToBacklog(course);
+    public void addCourseToBacklog(Course course, Work work, String title) {
+        //Log.d("hello", getCourseById(course.getId()).getTitle());
+        if(work!=null)
+            workDb.addWorkToBacklog(course, work, title);
+        if(course != null) {
+            if (getCourseById(course.getId()) != null) {
+                db.update(CourseTable.NAME, getContentValues(course), CourseTable.Columns.ID + "=?",
+                        new String[]{course.getId()});
+            } else {
+                db.insert(CourseTable.NAME, null, getContentValues(course));
+            }
         }
     }
 

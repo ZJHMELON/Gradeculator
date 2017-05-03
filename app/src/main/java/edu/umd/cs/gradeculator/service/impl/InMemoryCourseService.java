@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import edu.umd.cs.gradeculator.model.Course;
+import edu.umd.cs.gradeculator.model.Work;
 import edu.umd.cs.gradeculator.service.CourseService;
 
 /**
@@ -23,7 +24,7 @@ public class InMemoryCourseService implements CourseService {
     }
 
     @Override
-    public void addCourseToBacklog(Course course) {
+    public void addCourseToBacklog(Course course, Work work, String title) {
         Course currCourse = getCourseById(course.getId());
         if (currCourse == null) {
             courses.add(course);
