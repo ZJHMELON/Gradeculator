@@ -1,9 +1,12 @@
 package edu.umd.cs.gradeculator;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -26,13 +29,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
 import edu.umd.cs.gradeculator.service.CourseService;
+import edu.umd.cs.gradeculator.service.impl.AlarmRecever;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.ALARM_SERVICE;
 
 public class IndividualFragment extends Fragment {
     private static final String EXTRA_WORK_CREATED = "WorkCreated";
@@ -296,6 +302,7 @@ public class IndividualFragment extends Fragment {
                     try {
                         if(date != null) {
                             //the date will only change if the user select a different date
+
                             work.setDueDate(sdf.parse(date));
                         }
                     }catch(ParseException e){
@@ -461,6 +468,34 @@ public class IndividualFragment extends Fragment {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "Date");
     }
+
+    public void scheduleNotification(Date date,int id,String title){
+        long millis = date.getTime();
+        long current = System.currentTimeMillis();
+        long interval = millis - current;
+
+
+        AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
+        Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
+        myIntent.putExtra("title",title);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
+                id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + interval,pendingIntent);
+    }
+
+    public void cancelNotification(int id,String title){
+        AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
+        Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
+        myIntent.putExtra("title",title);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
+                id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.cancel(pendingIntent);
+    }
+
+
     public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {

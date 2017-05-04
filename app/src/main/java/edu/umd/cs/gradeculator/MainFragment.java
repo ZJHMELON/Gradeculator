@@ -62,14 +62,14 @@ MainFragment extends Fragment{
         courseService = DependencyFactory.getCourseService(getActivity());
         ReminderBackgroundService.setReminderAlarm(getActivity().getApplicationContext(), 1);
 
-        AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
-        Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
-        myIntent.putExtra("id",1);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
-                1, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60000/3,
-                60000/3,pendingIntent);
+//        AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
+//        Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
+//        myIntent.putExtra("id",1);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
+//                1, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60000/3,
+//                60000/3,pendingIntent);
 
     }
 
