@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -27,8 +28,6 @@ import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
 import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
 import edu.umd.cs.gradeculator.service.impl.ReminderBackgroundService;
-
-
 /**
  * Created by howardksw1 on 4/21/17.
  */
@@ -41,8 +40,9 @@ MainFragment extends Fragment{
     private ItemTouchHelper mItemTouchHelper;
     private final String TAG = getClass().getSimpleName();
     private CourseService courseService;
-    private RecyclerView courseRecyclerView;
+    private RecycleViewWtEmpty courseRecyclerView;
     private CourseAdapter adapter;
+    @Nullable private View emptyView;
     private static final int REQUEST_CODE_CREATE_COURSE = 0;
     private static final int REQUEST_CODE_EDIT_COURSE = 1;
 
@@ -81,10 +81,21 @@ MainFragment extends Fragment{
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
-        courseRecyclerView = (RecyclerView) view.findViewById(R.id.course_recycler_view);
+        emptyView = (LinearLayout) view.findViewById(R.id.empty_view_main);
+        courseRecyclerView = (RecycleViewWtEmpty) view.findViewById(R.id.course_recycler_view);
         courseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        courseRecyclerView.setEmptyView(emptyView);
 
         toolbar.findViewById(R.id.toolbar_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
+                startActivityForResult(createCourseIntent, REQUEST_CODE_CREATE_COURSE);
+            }
+        });
+
+        TextView empty_btn = (TextView) view.findViewById(R.id.empty_btn_main);
+        empty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
@@ -147,6 +158,7 @@ MainFragment extends Fragment{
         private TextView currentGrade;
         private Course course;
 
+
         public CourseHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -163,7 +175,7 @@ MainFragment extends Fragment{
             courseIdentifier.setText(course.getIdentifier());
             course.setCurrent_grade(course.getOverAll());
             DecimalFormat df = new DecimalFormat("#.##");
-            currentGrade.setText(df.format(course.soFarGrade())+" / "+df.format(course.getCurrent_grade()));
+            currentGrade.setText(df.format(course.getCurrent_grade()));
         }
 
         @Override

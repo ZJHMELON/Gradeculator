@@ -15,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -36,7 +37,7 @@ import static edu.umd.cs.gradeculator.model.Work.Category;
 
 public class CategoryFragment extends Fragment {
 
-    private RecyclerView categoryRecyclerView;
+    private RecycleViewWtEmpty categoryRecyclerView;
     private TextView categoryTitleTextView;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -52,6 +53,7 @@ public class CategoryFragment extends Fragment {
     private String categoryName;
     private List<Work> works;
     private Course course;
+    @Nullable private View emptyView;
 
 
     public static CategoryFragment newInstance(String courseId, Category category) {
@@ -160,8 +162,10 @@ public class CategoryFragment extends Fragment {
 
         categoryTitleTextView.setText(categoryName);
 
-        categoryRecyclerView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
+        emptyView = (LinearLayout) view.findViewById(R.id.empty_view_category);
+        categoryRecyclerView = (RecycleViewWtEmpty) view.findViewById(R.id.category_recycler_view);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        categoryRecyclerView.setEmptyView(emptyView);
 
         toolbar.findViewById(R.id.toolbar_back_category).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +176,14 @@ public class CategoryFragment extends Fragment {
         });
 
         toolbar.findViewById(R.id.toolbar_add_category).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(IndividualActivity.newIntent(getActivity(), null, categoryName, courseId), REQUEST_CODE_CREATE_WORK);
+            }
+        });
+
+        TextView empty_btn = (TextView) view.findViewById(R.id.empty_btn_category);
+        empty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivityForResult(IndividualActivity.newIntent(getActivity(), null, categoryName, courseId), REQUEST_CODE_CREATE_WORK);
