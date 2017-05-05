@@ -1,12 +1,9 @@
 package edu.umd.cs.gradeculator;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -29,10 +26,7 @@ import java.util.Collections;
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
 import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
-import edu.umd.cs.gradeculator.service.impl.AlarmRecever;
 import edu.umd.cs.gradeculator.service.impl.ReminderBackgroundService;
-
-import static android.content.Context.ALARM_SERVICE;
 
 
 /**
@@ -108,7 +102,11 @@ MainFragment extends Fragment{
         Log.d(TAG, "updating UI all stories");
 
         all_course = courseService.getAllCourses();
-
+        if(all_course.size()==0){
+            getActivity().getWindow().setBackgroundDrawableResource(R.drawable.empty);
+        }else{
+            getActivity().getWindow().setBackgroundDrawableResource(R.drawable.dark_background);
+        }
         if (adapter == null) {
             adapter = new CourseAdapter(all_course);
             courseRecyclerView.setAdapter(adapter);
@@ -165,7 +163,7 @@ MainFragment extends Fragment{
             courseIdentifier.setText(course.getIdentifier());
             course.setCurrent_grade(course.getOverAll());
             DecimalFormat df = new DecimalFormat("#.##");
-            currentGrade.setText(df.format(course.getCurrent_grade()));
+            currentGrade.setText(df.format(course.soFarGrade())+" / "+df.format(course.getCurrent_grade()));
         }
 
         @Override

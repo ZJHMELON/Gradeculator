@@ -97,7 +97,8 @@ public class IndividualFragment extends Fragment {
 
         String myFormat = "MM/dd/yy"; //the format for the date
         sdf = new SimpleDateFormat(myFormat); // formatter
-
+        TextView cateTitle=(TextView) view.findViewById(R.id.toolbar_title_individual);
+        cateTitle.setText(cat);
         //gets the course
         CourseService ss=DependencyFactory.getCourseService(getActivity());
         Course cs=ss.getCourseById(cId);
