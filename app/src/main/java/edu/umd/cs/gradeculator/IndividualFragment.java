@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -171,6 +172,7 @@ public class IndividualFragment extends Fragment {
             for(Work cWrok:works){
                 if(cWrok.getTitle().equals(title)){
                     work=cWrok;
+
                 }
             }
         }
@@ -504,6 +506,13 @@ public class IndividualFragment extends Fragment {
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
+            if(work != null && work.getDueDate() != null){
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(work.getDueDate());
+                year = cal.get(Calendar.YEAR);
+                month = cal.get(Calendar.MONTH);
+                day = cal.get(Calendar.DAY_OF_MONTH);
+            }
 
             // Create a new instance of DatePickerDialog and return it
             datePicker = new DatePickerDialog(getActivity(), R.style.datepicker, this, year, month, day);

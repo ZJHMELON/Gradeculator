@@ -1,12 +1,9 @@
 package edu.umd.cs.gradeculator;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -29,10 +27,8 @@ import java.util.Collections;
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
 import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
-import edu.umd.cs.gradeculator.service.impl.AlarmRecever;
 import edu.umd.cs.gradeculator.service.impl.ReminderBackgroundService;
 
-import static android.content.Context.ALARM_SERVICE;
 
 
 /**
@@ -47,8 +43,9 @@ MainFragment extends Fragment{
     private ItemTouchHelper mItemTouchHelper;
     private final String TAG = getClass().getSimpleName();
     private CourseService courseService;
-    private RecyclerView courseRecyclerView;
+    private RecycleViewWtEmpty courseRecyclerView;
     private CourseAdapter adapter;
+    @Nullable private View emptyView;
     private static final int REQUEST_CODE_CREATE_COURSE = 0;
     private static final int REQUEST_CODE_EDIT_COURSE = 1;
 
@@ -87,10 +84,21 @@ MainFragment extends Fragment{
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
-        courseRecyclerView = (RecyclerView) view.findViewById(R.id.course_recycler_view);
+        emptyView = (LinearLayout) view.findViewById(R.id.empty_view_main);
+        courseRecyclerView = (RecycleViewWtEmpty) view.findViewById(R.id.course_recycler_view);
         courseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        courseRecyclerView.setEmptyView(emptyView);
 
         toolbar.findViewById(R.id.toolbar_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
+                startActivityForResult(createCourseIntent, REQUEST_CODE_CREATE_COURSE);
+            }
+        });
+
+        TextView empty_btn = (TextView) view.findViewById(R.id.empty_btn_main);
+        empty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent createCourseIntent = new Intent(getActivity(), AddCourseActivity.class);
@@ -148,6 +156,7 @@ MainFragment extends Fragment{
         private TextView courseIdentifier;
         private TextView currentGrade;
         private Course course;
+
 
         public CourseHolder(View itemView) {
             super(itemView);
