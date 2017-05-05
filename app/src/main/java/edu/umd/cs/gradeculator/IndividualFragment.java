@@ -198,7 +198,8 @@ public class IndividualFragment extends Fragment {
         }
         if(work !=null){
             //initialize the due date textview if there's one
-            due_date.setText(sdf.format(work.getDueDate().getTime()));
+            due_date.setText(sdf.format(work.getDueDate().getTime()).trim());
+            due_date.setTextColor(getResources().getColor(R.color.text_color));
         }
 
         //Check whether need to display weight layout or not
@@ -367,14 +368,13 @@ public class IndividualFragment extends Fragment {
                         assignNameLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
 
-                    if(due_date.getText().toString().trim().length()<=0){
+                    if(due_date.getCurrentTextColor() == getResources().getColor(R.color.hint_color)){
                         dueLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
                         due_date.startAnimation(shake);
                     } else{
                         dueLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
-
 
                     if(totalPointsEditText.getText().toString().trim().length()<=0){
                         totalPointLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
@@ -403,20 +403,6 @@ public class IndividualFragment extends Fragment {
                     } else{
                         weightLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
-
-/*
-                    if(dueDateM.getCurrentTextColor() == getResources().getColor(R.color.hint_color)||
-                            dueDateY.getText().toString().length() == getResources().getColor(R.color.hint_color) ||
-                            dueDateD.getText().toString().length() == getResources().getColor(R.color.hint_color)){
-                        dueLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
-                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
-                        dueDateM.startAnimation(shake);
-                        dueDateD.startAnimation(shake);
-                        dueDateY.startAnimation(shake);
-                    } else{
-                        dueLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                    }
-*/
                 }
             }
         });
@@ -521,7 +507,17 @@ public class IndividualFragment extends Fragment {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             date = month + 1 + "/" + day + "/" + year;
-            due_date.setText(month + 1 + "/" + day + "/" + year);
+            String m = Integer.toString(month+1);
+            String d = Integer.toString(day);
+            due_date.setTextColor(getResources().getColor(R.color.text_color));
+            if(month < 9){
+                m = "0" + Integer.toString(month+1);
+            }
+            if(day < 10){
+                d = "0" + Integer.toString(day);
+            }
+
+            due_date.setText(m + "/" + d + "/" + year);
         }
     }
 }

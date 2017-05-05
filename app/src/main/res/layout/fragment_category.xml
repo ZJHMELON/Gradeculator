@@ -105,7 +105,7 @@
 
         <LinearLayout
             android:gravity="bottom"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -119,7 +119,7 @@
 
         <LinearLayout
             android:gravity="center_horizontal"
-            android:layout_weight="6"
+            android:layout_weight="5"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -132,7 +132,7 @@
                 android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Opps No Assignments In This Category ..."/>
+                android:text="Opps No Assignments Yet ..."/>
 
             <TextView
                 android:id="@+id/empty_btn_category"
