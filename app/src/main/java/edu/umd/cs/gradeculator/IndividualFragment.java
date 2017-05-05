@@ -12,7 +12,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +95,7 @@ public class IndividualFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_individual, container, false);
         layout = (LinearLayout) view.findViewById(R.id.individual_page);
 
-        String myFormat = "MM/dd/yy"; //the format for the date
+        String myFormat = "MM/dd/yyyy"; //the format for the date
         sdf = new SimpleDateFormat(myFormat); // formatter
         TextView cateTitle=(TextView) view.findViewById(R.id.toolbar_title_individual);
         cateTitle.setText(cat);
