@@ -469,13 +469,13 @@ public class IndividualFragment extends Fragment {
         newFragment.show(getFragmentManager(), "Date");
     }
 
-    public void scheduleNotification(Date date,int id,String title){
+    public void scheduleNotification(Date date, int id, String title){
         long millis = date.getTime();
         long current = System.currentTimeMillis();
         long interval = millis - current;
 
 
-        AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager)  getActivity().getSystemService(ALARM_SERVICE);
         Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
         myIntent.putExtra("title",title);
 
