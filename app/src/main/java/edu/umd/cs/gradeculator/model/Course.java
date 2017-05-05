@@ -35,11 +35,6 @@ public class Course implements Serializable {
 	private double project_weight;
 	private double assignment_weight;
 	private double extra_weight;
-	private Boolean examEw=null;
-	private Boolean quizEw=null;
-	private Boolean projectEw=null;
-	private Boolean assignmentsEw=null;
-	private Boolean extraEw=null;
 	private Grade grade = A; // default
 	private double current_grade;
 	private double desire_grade;
@@ -456,7 +451,7 @@ public class Course implements Serializable {
 		return out;
 	}
 
-	public double getCtGrade(Category cate,double totalweight) {
+	public double getCtGrade(Category cate,double totalweight,boolean max) {
 		double sum = 0;
 		double tempGrade = 0;
 		double allGrade = 0;
@@ -491,7 +486,11 @@ public class Course implements Serializable {
 			}
 		}
 		if(count==0){
-			return totalweight;
+			if(max){
+				return totalweight;
+			}else{
+				return 0.0;
+			}
 		}
 		if (ifEqualW) {
 			for (Work work : sumList) {
@@ -512,11 +511,23 @@ public class Course implements Serializable {
 		}
 
 	}
+
 	public double getOverAll(){
-		return getCtGrade(EXAM,exam_weight)+getCtGrade(ASSIGNMENT,assignment_weight)
-				+getCtGrade(QUIZ,quiz_weight)
-				+getCtGrade(PROJECT,project_weight)+getCtGrade(EXTRA,extra_weight);
+		return getCtGrade(EXAM,exam_weight,true)+getCtGrade(ASSIGNMENT,assignment_weight,true)
+				+getCtGrade(QUIZ,quiz_weight,true)
+				+getCtGrade(PROJECT,project_weight,true)+getCtGrade(EXTRA,extra_weight,true);
 	}
+	public double soFarGrade(){
+		int currentWeight=0;
+		if(exams.size()!=0){currentWeight+=getExam_weight();}
+		if(projects.size()!=0){currentWeight+=getProject_weight();}
+		if(quizzes.size()!=0){currentWeight+=getQuiz_weight();}
+		if(assignments.size()!=0){currentWeight+=getAssignment_weight();}
+
+        return 100*(getCtGrade(EXAM,exam_weight,false)+getCtGrade(ASSIGNMENT,assignment_weight,false)
+                +getCtGrade(QUIZ,quiz_weight,false)
+                +getCtGrade(PROJECT,project_weight,false))/currentWeight+getCtGrade(EXTRA,extra_weight,false);
+    }
 
 	public enum Grade {
 		A_PLUS, A, A_MINUS, B_PLUS, B, B_MINUS, C_PLUS, C, C_MINUS ;
