@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
 import edu.umd.cs.gradeculator.service.CourseService;
@@ -35,6 +37,8 @@ public class CourseDirFragment extends Fragment{
     private final int REQUEST_CODE_PROJECT = 9;
     private final int REQUEST_CODE_EXTRA = 10;
     private Course course;
+    private LinearLayout mainLayout;
+    private LinearLayout emptyLayout;
     private LinearLayout layout;
     private TextView course_name;
     private String current_course_id;
@@ -67,8 +71,20 @@ public class CourseDirFragment extends Fragment{
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
+        mainLayout = (LinearLayout) view.findViewById(R.id.course_dir_all);
+
         course_name= (TextView) toolbar.findViewById(R.id.toolbar_course_name);
         course_name.setText(course.getIdentifier());
+
+        emptyLayout = (LinearLayout) view.findViewById(R.id.empty_view_course_dir);
+        TextView empty_btn = (TextView) view.findViewById(R.id.empty_btn_course_dir);
+
+        empty_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(ClassInfoActivity.newIntent(getActivity(),course.getId()),REQUEST_CODE_ADD_WEIGHT);
+            }
+        });
 
         updateUI();
 
@@ -144,6 +160,13 @@ public class CourseDirFragment extends Fragment{
 
     private void updateUI() {
         course = DependencyFactory.getCourseService(getActivity()).getCourseById(course.getId());
+
+        if(checkEmptyView() == true){
+            // empty need to attach empty view
+            emptyLayout.setVisibility(View.VISIBLE);
+        } else{
+            emptyLayout.setVisibility(View.GONE);
+        }
 
         if (Double.compare(course.getExam_weight(), 0.0) == 1) {
             // check if we have exam already
@@ -396,5 +419,20 @@ public class CourseDirFragment extends Fragment{
     public void onBackPressed() {
         getActivity().setResult(RESULT_OK);
         getActivity().finish();
+    }
+
+    public boolean checkEmptyView(){
+        if(Double.compare(course.getExam_weight(), 0.0) == 1 ||
+                Double.compare(course.getQuiz_weight(), 0.0) == 1 ||
+                Double.compare(course.getExtra_weight(), 0.0) == 1 ||
+                Double.compare(course.getProject_weight(), 0.0) == 1 ||
+                Double.compare(course.getAssignment_weight(), 0.0) == 1
+                ){
+            // not empty
+            return false;
+        } else{
+            // empty
+            return true;
+        }
     }
 }

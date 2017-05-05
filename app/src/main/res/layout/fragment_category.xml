@@ -93,9 +93,67 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <LinearLayout
+        android:id="@+id/empty_view_category"
+        android:gravity="center_horizontal"
+        android:weightSum="10"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <android.support.v7.widget.RecyclerView
+
+        <LinearLayout
+            android:gravity="bottom"
+            android:layout_weight="4"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingTop="10sp"
+                android:paddingBottom="30sp"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Opps No Assignments In This Category ..."/>
+
+            <TextView
+                android:id="@+id/empty_btn_category"
+                android:padding="8sp"
+                android:background="@drawable/border"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/text_color"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" + Create New Assignment"/>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <edu.umd.cs.gradeculator.RecycleViewWtEmpty
 
         android:id="@+id/category_recycler_view"
         android:layout_width="match_parent"
@@ -103,7 +161,7 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-    </android.support.v7.widget.RecyclerView>
+    </edu.umd.cs.gradeculator.RecycleViewWtEmpty>
 
 </LinearLayout>
 
