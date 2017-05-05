@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
@@ -39,6 +40,7 @@ import edu.umd.cs.gradeculator.service.impl.AlarmRecever;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.ALARM_SERVICE;
+import static edu.umd.cs.gradeculator.model.Work.Category.EXAM;
 
 public class IndividualFragment extends Fragment {
     private static final String EXTRA_WORK_CREATED = "WorkCreated";
@@ -324,10 +326,11 @@ public class IndividualFragment extends Fragment {
                         work.setWeight(Double.parseDouble(weightEditText.getText().toString()));
                     }
 
+
                     Intent data = new Intent();
                     switch(cat){
                         case "Exam":
-                            work.setCategory(Work.Category.EXAM);
+                            work.setCategory(EXAM);
                             break;
                         case "Quiz":
                             work.setCategory(Work.Category.QUIZ);
@@ -350,6 +353,8 @@ public class IndividualFragment extends Fragment {
                     }else{
                         sss.addCourseToBacklog(cs,work, title);
                     }
+
+                    scheduleManyNotification(work.getDueDate(),work.getCategory(),title);
 
                     data.putExtra(EXTRA_WORK_CREATED, work);
                     getActivity().setResult(RESULT_OK, data);
@@ -469,26 +474,64 @@ public class IndividualFragment extends Fragment {
         newFragment.show(getFragmentManager(), "Date");
     }
 
-    public void scheduleNotification(Date date,int id,String title){
+    public void scheduleManyNotification(Date date,Work.Category category,String title){
+        switch(category) {
+            case EXAM:
+                for(int x =0;x<5;x++){
+                    //id to be determined haha
+                    scheduleNotification(date,0,title,x);
+                }
+                break;
+            case ASSIGNMENT:
+                for(int x =0;x<3;x++){
+                    //id to be determined haha
+                    scheduleNotification(date,0,title,x);
+                }
+                break;
+            case PROJECT:
+                for(int x =0;x<8;x++){
+                    //id to be determined haha
+                    scheduleNotification(date,0,title,x);
+                }
+                break;
+            case QUIZ:
+                for(int x =0;x<2;x++){
+                    //id to be determined haha
+                    scheduleNotification(date,0,title,x);
+                }
+                break;
+            default:
+                break;
+
+        }
+
+    }
+
+    public void scheduleNotification(Date date,int id,String title,int days){
         long millis = date.getTime();
         long current = System.currentTimeMillis();
         long interval = millis - current;
 
+        long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
+        long intervalToAlarm = interval -days*oneDayInMillis;
+
 
         AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
         Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
         myIntent.putExtra("title",title);
+        myIntent.putExtra("days",days);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
                 id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + interval,pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + intervalToAlarm,pendingIntent);
     }
 
-    public void cancelNotification(int id,String title){
+    public void cancelNotification(int id,String title,int days){
         AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
         Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
         myIntent.putExtra("title",title);
+        myIntent.putExtra("days",days);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
                 id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

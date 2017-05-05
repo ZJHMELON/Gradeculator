@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -33,36 +34,36 @@ public class NotificationService extends Service {
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
-        notificationManager = (NotificationManager) this.getApplicationContext()
-                .getSystemService(
-                        this.getApplicationContext().NOTIFICATION_SERVICE);
+        if(intent !=null) {
+            Bundle bundle = intent.getExtras();
+            String title = bundle.getString("title");
+            int days = bundle.getInt("days");
 
-        Intent restartMainIntent = MainActivity.newIntent(this);
+            notificationManager = (NotificationManager) this.getApplicationContext()
+                    .getSystemService(
+                            this.getApplicationContext().NOTIFICATION_SERVICE);
 
-        PendingIntent mContentIntent = PendingIntent.getActivity(getApplicationContext(), MAIN_REQUEST,restartMainIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent restartMainIntent = MainActivity.newIntent(this);
 
+            PendingIntent mContentIntent = PendingIntent.getActivity(getApplicationContext(), MAIN_REQUEST,restartMainIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext())
-                .setTicker(getResources().getString(R.string.reminder_notification))
-                .setSmallIcon(android.R.drawable.ic_menu_compass)
-                .setContentTitle(getResources().getString(R.string.reminder_notification))
-                .setContentText("Todo for due")
-                .setContentIntent(mContentIntent)
-                .setAutoCancel(true);
-
-        Notification notification = notificationBuilder.build();
-
-
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext()
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(MY_NOTIFICATION_ID,notification);
+            Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext())
+                        .setTicker(getResources().getString(R.string.reminder_notification))
+                        .setSmallIcon(android.R.drawable.ic_menu_compass)
+                        .setContentTitle(getResources().getString(R.string.reminder_notification))
+                        .setContentText(title + " is due in " + days + " days!")
+                        .setContentIntent(mContentIntent)
+                        .setAutoCancel(true);
+            Notification notification = notificationBuilder.build();
 
 
+            NotificationManager notificationManager = (NotificationManager) getApplicationContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(MY_NOTIFICATION_ID,notification);
 
 
 
-
-
+        }
     }
 }

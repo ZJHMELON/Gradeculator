@@ -71,7 +71,7 @@ public class Work implements Serializable {
 
     public Boolean getCompleteness() { return completeness; }
 
-    public String toCategory_String(Category category) {
+    public static String toCategory_String(Category category) {
         String c = "";
         switch (category) {
             case EXAM:
@@ -93,7 +93,7 @@ public class Work implements Serializable {
         return c;
     }
 
-    public Category toString_Category(String s) {
+    public static Category toString_Category(String s) {
         Category c = null;
         switch (s) {
             case "EXAM":

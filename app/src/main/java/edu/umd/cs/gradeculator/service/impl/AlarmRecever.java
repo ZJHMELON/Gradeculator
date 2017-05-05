@@ -16,10 +16,14 @@ public class AlarmRecever extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
          if(intent !=null){
              Bundle bundle = intent.getExtras();
-             int id = bundle.getInt("id");
+             //int id = bundle.getInt("id");
+             String title =bundle.getString("title");
+             int days = bundle.getInt("days");
 
              Intent myIntent = new Intent(context,NotificationService.class);
-             myIntent.putExtra("id",id);
+             myIntent.putExtra("title",title);
+             myIntent.putExtra("days",days);
+
              context.startService(myIntent);
 
 
