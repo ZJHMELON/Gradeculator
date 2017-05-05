@@ -28,9 +28,6 @@ import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
 import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
 import edu.umd.cs.gradeculator.service.impl.ReminderBackgroundService;
-
-
-
 /**
  * Created by howardksw1 on 4/21/17.
  */
@@ -116,7 +113,11 @@ MainFragment extends Fragment{
         Log.d(TAG, "updating UI all stories");
 
         all_course = courseService.getAllCourses();
-
+        if(all_course.size()==0){
+            getActivity().getWindow().setBackgroundDrawableResource(R.drawable.empty);
+        }else{
+            getActivity().getWindow().setBackgroundDrawableResource(R.drawable.dark_background);
+        }
         if (adapter == null) {
             adapter = new CourseAdapter(all_course);
             courseRecyclerView.setAdapter(adapter);

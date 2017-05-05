@@ -24,7 +24,7 @@
 
     <string name="dueDate_label">Due</string>
 
-    <string name="dueDate_hint">April 1</string>
+    <string name="dueDate_hint">01/01/2017</string>
 
     <string name="totalPoints_label">Total Points</string>
 
@@ -156,6 +156,8 @@
     <string name="reminder_notification">Gradeculator Friendly Reminder</string>
     <string name="course">Courses</string>
     <string name="reminder_notification_content">is below your expectation!</string>
+    <string name="empty_main">Opps No Classes Yet ...</string>
 
+    <string name="empty_main_btn"> + Create New Project</string>
 
 </resources>
