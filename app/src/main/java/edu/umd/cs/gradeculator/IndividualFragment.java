@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.text.ParseException;
@@ -68,6 +69,7 @@ public class IndividualFragment extends Fragment {
     private View complete_line;
     private View weight_line;
     private boolean equal_weight, finished;
+    private double oldwork=0;
 
     private TextView due_date;
     private String date;
@@ -175,6 +177,7 @@ public class IndividualFragment extends Fragment {
             for(Work cWrok:works){
                 if(cWrok.getTitle().equals(title)){
                     work=cWrok;
+                    oldwork=work.getWeight();
 
                 }
             }
@@ -327,7 +330,11 @@ public class IndividualFragment extends Fragment {
 
                     if(!equal_weight) {
                         // only set weight if the weight is not equally
-                        work.setWeight(Double.parseDouble(weightEditText.getText().toString()));
+                        double weight = Double.parseDouble(weightEditText.getText().toString());
+
+                        work.setWeight(weight);
+                    }else {
+                        work.setWeight(-1);
                     }
 
 
@@ -401,12 +408,16 @@ public class IndividualFragment extends Fragment {
                             gradeLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                         }
                     }
+                    CourseService ss=DependencyFactory.getCourseService(getActivity());
+                    Course cs=ss.getCourseById(cId);
 
                     if(weightEditText.getText().toString().trim().length()<=0){
                         weightLayout.setBackgroundColor(getResources().getColor(R.color.alter_color));
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
                         weightEditText.startAnimation(shake);
                     } else{
+                        if(!cs.ckeckWeight(cat,Double.parseDouble(weightEditText.getText().toString())-oldwork))
+                            Toast.makeText(getActivity(),"Over weight",Toast.LENGTH_SHORT).show();
                         weightLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
                 }
@@ -422,6 +433,8 @@ public class IndividualFragment extends Fragment {
     }
 
     private boolean inputsAreValid() {
+        CourseService ss=DependencyFactory.getCourseService(getActivity());
+        Course cs=ss.getCourseById(cId);
        if(equal_weight && work.getCompleteness()) {
             //the assignment is finished and equally weighted
             return
@@ -446,7 +459,16 @@ public class IndividualFragment extends Fragment {
 //                           PointsEditText.getText().toString().length() <=
 //                                   totalPointsEditText.getText().toString().length() &&
                            weightEditText.getText().toString().length() > 0 &&
-                           due_date.getText().toString().length() > 0;
+                           due_date.getText().toString().length() > 0&&cs.ckeckWeight(cat,Double.parseDouble(weightEditText.getText().toString())-oldwork);
+       }
+       else if (!equal_weight && !work.getCompleteness()){
+           //the assignment is not finished and not equally weighted
+
+           return
+                   gradeNameEditText.getText().toString().trim().length() > 0 &&
+                           totalPointsEditText.getText().toString().length() > 0 &&
+                           weightEditText.getText().toString().length() > 0 &&
+                           due_date.getText().toString().length() > 0 && cs.ckeckWeight(cat,Double.parseDouble(weightEditText.getText().toString())-oldwork);
        }
        else{
            //the assignment is not finished or equally weighted

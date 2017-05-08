@@ -242,7 +242,7 @@ public class CategoryFragment extends Fragment {
             nameTextView.setText(work.getTitle());
             dueTextView.setText(df.format(work.getDueDate())); // fixed
 
-            if(Double.compare(work.getWeight(),0.0) == 0){ // not equal weight
+            if(Double.compare(work.getWeight(),-1.0) == 0){ // not equal weight
                 //display the percent for each category equally distributed
                 if(Category.EXAM == work.getCategory()){
                     possibleTextView.setText(gradef.format(course.getExam_weight()/course.getExams().size()) + "%");
