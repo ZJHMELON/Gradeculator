@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -357,7 +358,7 @@ public class IndividualFragment extends Fragment {
                         sss.addCourseToBacklog(cs,work, title);
                     }
 
-                    scheduleManyNotification(work.getDueDate(),work.getCategory(),title);
+                    scheduleManyNotification(work.getDueDate(),work.getCategory(),work.getTitle());
 
                     data.putExtra(EXTRA_WORK_CREATED, work);
                     getActivity().setResult(RESULT_OK, data);
@@ -463,56 +464,58 @@ public class IndividualFragment extends Fragment {
     }
 
     public void scheduleManyNotification(Date date,Work.Category category,String title){
-        switch(category) {
-            case EXAM:
-                for(int x =0;x<5;x++){
-                    //id to be determined haha
-                    scheduleNotification(date,0,title,x);
-                }
-                break;
-            case ASSIGNMENT:
-                for(int x =0;x<3;x++){
-                    //id to be determined haha
-                    scheduleNotification(date,0,title,x);
-                }
-                break;
-            case PROJECT:
-                for(int x =0;x<8;x++){
-                    //id to be determined haha
-                    scheduleNotification(date,0,title,x);
-                }
-                break;
-            case QUIZ:
-                for(int x =0;x<2;x++){
-                    //id to be determined haha
-                    scheduleNotification(date,0,title,x);
-                }
-                break;
-            default:
-                break;
+        if(title != null) {
+            switch (category) {
+                case EXAM:
+                    for (int x = 0; x < 5; x++) {
+                        //id to be determined haha
+                        scheduleNotification(date, title.hashCode() + x, title, 4 - x);
+                    }
+                    break;
+                case ASSIGNMENT:
+                    for (int x = 0; x < 3; x++) {
+                        //id to be determined haha
+                        scheduleNotification(date, title.hashCode() + x, title, 2 - x);
+                    }
+                    break;
+                case PROJECT:
+                    for (int x = 0; x < 8; x++) {
+                        //id to be determined haha
+                        scheduleNotification(date, title.hashCode() + x, title,  7 - x);
+                    }
+                    break;
+                case QUIZ:
+                    for (int x = 0; x < 2; x++) {
+                        //id to be determined haha
+                        scheduleNotification(date, title.hashCode() + x, title, 1 - x);
+                    }
+                    break;
+                default:
+                    break;
 
+            }
         }
-
     }
 
     public void scheduleNotification(Date date,int id,String title,int days){
+        Log.d(title + " " + date.toString() + " " + Integer.toString(days), Integer.toString(id));
         long millis = date.getTime();
         long current = System.currentTimeMillis();
         long interval = millis - current;
 
         long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
-        long intervalToAlarm = interval -days*oneDayInMillis;
+        long intervalToAlarm = interval - days * oneDayInMillis;
 
 
         AlarmManager alarmManager = (AlarmManager)  getActivity().getSystemService(ALARM_SERVICE);
-        Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
+        Intent myIntent = new Intent(getActivity(), AlarmRecever.class);
         myIntent.putExtra("title",title);
         myIntent.putExtra("days",days);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
-                id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, myIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + intervalToAlarm,pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + intervalToAlarm, pendingIntent);
     }
 
     public void cancelNotification(int id,String title,int days){
