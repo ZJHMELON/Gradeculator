@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -114,11 +116,6 @@ MainFragment extends Fragment{
         Log.d(TAG, "updating UI all stories");
 
         all_course = courseService.getAllCourses();
-        if(all_course.size()==0){
-            getActivity().getWindow().setBackgroundDrawableResource(R.drawable.empty);
-        }else{
-            getActivity().getWindow().setBackgroundDrawableResource(R.drawable.dark_background);
-        }
         if (adapter == null) {
             adapter = new CourseAdapter(all_course);
             courseRecyclerView.setAdapter(adapter);
@@ -158,6 +155,8 @@ MainFragment extends Fragment{
         private TextView courseIdentifier;
         private TextView currentGrade;
         private Course course;
+        private TextView goalGrade;
+        private TextView goalTitle;
 
 
         public CourseHolder(View itemView) {
@@ -167,6 +166,9 @@ MainFragment extends Fragment{
             courseTitle = (TextView) itemView.findViewById(R.id.list_item_course_title);
             courseIdentifier = (TextView) itemView.findViewById(R.id.list_item_course_identifier);
             currentGrade = (TextView) itemView.findViewById(R.id.list_item_current_grade);
+            goalGrade = (TextView) itemView.findViewById(R.id.goal_precentage);
+            goalTitle = (TextView) itemView.findViewById(R.id.goal_title);
+
         }
 
         public void bindCourse(Course course) {
@@ -174,9 +176,17 @@ MainFragment extends Fragment{
 
             courseTitle.setText(course.getTitle());
             courseIdentifier.setText(course.getIdentifier());
-            course.setCurrent_grade(course.getOverAll());
+            course.setCurrent_grade(course.soFarGrade());
             DecimalFormat df = new DecimalFormat("#.##");
-            currentGrade.setText(df.format(course.getCurrent_grade()));
+            if(Double.compare(course.soFarGrade(), -1) != 1){
+                currentGrade.setText("N/A");
+            }else{
+                currentGrade.setText(df.format(course.soFarGrade()) + "%");
+            }
+            goalTitle.setText(R.string.goal_title);
+            goalGrade.setText(df.format(course.getDesire_grade()) + "%");
+
+
         }
 
         @Override

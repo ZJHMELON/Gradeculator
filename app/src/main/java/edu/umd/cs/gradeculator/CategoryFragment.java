@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -236,11 +237,18 @@ public class CategoryFragment extends Fragment {
             this.work = work;
 
             SimpleDateFormat df = new SimpleDateFormat("MM/dd");
+            DecimalFormat gradef = new DecimalFormat("#.##");
 
             nameTextView.setText(work.getTitle());
-            dueTextView.setText("" + df.format(work.getDueDate())); // fixed
-            possibleTextView.setText("" + work.getPossible_points());
-            pointsTextView.setText("" + work.getEarned_points());
+            dueTextView.setText(df.format(work.getDueDate())); // fixed
+            possibleTextView.setText(gradef.format(work.getWeight()) + "%");
+
+            if(work.getCompleteness() == false){
+                pointsTextView.setText("N/A");
+            }else{
+                pointsTextView.setText(gradef.format(work.getEarned_points()) + "/"
+                        + gradef.format(work.getPossible_points()));
+            }
 
         }
 

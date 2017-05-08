@@ -11,9 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class CourseDirFragment extends Fragment{
     private TextView max_grade;
     private Course course;
     private LinearLayout mainLayout;
+    private FrameLayout gradeLayout;
     private LinearLayout emptyLayout;
     private LinearLayout layout;
     private TextView course_name;
@@ -95,6 +98,7 @@ public class CourseDirFragment extends Fragment{
         course_name.setText(course.getIdentifier());
 
         emptyLayout = (LinearLayout) view.findViewById(R.id.empty_view_course_dir);
+        gradeLayout = (FrameLayout) view.findViewById(R.id.gradeProgress);
         TextView empty_btn = (TextView) view.findViewById(R.id.empty_btn_course_dir);
 
         gradeProcessBar = (GradeProcessBar) view.findViewById(R.id.progressBar);
@@ -183,44 +187,53 @@ public class CourseDirFragment extends Fragment{
     private void updateUI() {
         course = DependencyFactory.getCourseService(getActivity()).getCourseById(course.getId());
 
-        // Get colors
-        final String[] startColors = getResources().getStringArray(R.array.devlight);
-        final String[] bgColors = getResources().getStringArray(R.array.bg);
-
-        // Parse colors
-        for (int i = 0; i < MODEL_COUNT; i++) {
-            mStartColors[i] = Color.parseColor(startColors[i]);
-        }
-
-        // Set models
-        final ArrayList<GradeProcessBar.Model> models = new ArrayList<>();
-        models.add(new GradeProcessBar.Model("Maximum", 0, Color.parseColor(bgColors[0]), mStartColors[0]));
-        models.add(new GradeProcessBar.Model("Current", 0, Color.parseColor(bgColors[1]), mStartColors[1]));
-        models.add(new GradeProcessBar.Model("Goal", 0, Color.parseColor(bgColors[2]), mStartColors[2]));
-        gradeProcessBar.setModels(models);
-        gradeProcessBar.setTypeface("");
-
-        // Start apsv animation on start
-        gradeProcessBar.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                List<GradeProcessBar.Model> models = gradeProcessBar.getModels();
-                models.get(0).setProgress((float) course.getOverAll());
-                models.get(1).setProgress((float) course.soFarGrade());
-                models.get(2).setProgress((float) course.getDesire_grade());
-                gradeProcessBar.animateProgress();
-            }
-        }, 300);
-
-        max_grade.setText(course.getOverAll() + "%");
-        goal_grade.setText(course.getDesire_grade() + "%");
-        current_grade.setText(course.soFarGrade() + "%");
-
         if(checkEmptyView() == true){
             // empty need to attach empty view
             emptyLayout.setVisibility(View.VISIBLE);
+            gradeLayout.setVisibility(View.GONE);
         } else{
             emptyLayout.setVisibility(View.GONE);
+            gradeLayout.setVisibility(View.VISIBLE);
+
+
+            // Get colors
+            final String[] startColors = getResources().getStringArray(R.array.devlight);
+            final String[] bgColors = getResources().getStringArray(R.array.bg);
+
+            // Parse colors
+            for (int i = 0; i < MODEL_COUNT; i++) {
+                mStartColors[i] = Color.parseColor(startColors[i]);
+            }
+
+            // Set models
+            final ArrayList<GradeProcessBar.Model> models = new ArrayList<>();
+            models.add(new GradeProcessBar.Model("Maximum", 0, Color.parseColor(bgColors[0]), mStartColors[0]));
+            models.add(new GradeProcessBar.Model("Current", 0, Color.parseColor(bgColors[1]), mStartColors[1]));
+            models.add(new GradeProcessBar.Model("Goal", 0, Color.parseColor(bgColors[2]), mStartColors[2]));
+            gradeProcessBar.setModels(models);
+            gradeProcessBar.setTypeface("");
+
+            // Start apsv animation on start
+            gradeProcessBar.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    List<GradeProcessBar.Model> models = gradeProcessBar.getModels();
+                    models.get(0).setProgress((float) course.getOverAll());
+                    models.get(1).setProgress((float) course.soFarGrade());
+                    models.get(2).setProgress((float) course.getDesire_grade());
+                    gradeProcessBar.animateProgress();
+                }
+            }, 300);
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            if(Double.compare(course.soFarGrade(), -1) != 1){
+                current_grade.setText("N/A");
+            }else{
+                current_grade.setText(df.format(course.soFarGrade()) + "%");
+            }
+
+            max_grade.setText(df.format(course.getOverAll()) + "%");
+            goal_grade.setText(df.format(course.getDesire_grade()) + "%");
         }
 
         if (Double.compare(course.getExam_weight(), 0.0) == 1) {

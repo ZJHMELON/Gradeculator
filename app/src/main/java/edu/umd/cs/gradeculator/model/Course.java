@@ -518,12 +518,15 @@ public class Course implements Serializable {
 				+getCtGrade(PROJECT,project_weight,true)+getCtGrade(EXTRA,extra_weight,true);
 	}
 	public double soFarGrade(){
-		int currentWeight=0;
+		double currentWeight=0;
 		if(exams.size()!=0){currentWeight+=getExam_weight();}
 		if(projects.size()!=0){currentWeight+=getProject_weight();}
 		if(quizzes.size()!=0){currentWeight+=getQuiz_weight();}
 		if(assignments.size()!=0){currentWeight+=getAssignment_weight();}
 
+		if(Double.compare(currentWeight, 0.0) != 1){
+			return -1;
+		}
         return 100*(getCtGrade(EXAM,exam_weight,false)+getCtGrade(ASSIGNMENT,assignment_weight,false)
                 +getCtGrade(QUIZ,quiz_weight,false)
                 +getCtGrade(PROJECT,project_weight,false))/currentWeight+getCtGrade(EXTRA,extra_weight,false);
