@@ -9,9 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.ArrayList;
 
+import edu.umd.cs.gradeculator.CategoryActivity;
+import edu.umd.cs.gradeculator.CourseDirActivity;
 import edu.umd.cs.gradeculator.DependencyFactory;
 import edu.umd.cs.gradeculator.MainActivity;
 import edu.umd.cs.gradeculator.R;
@@ -46,14 +49,16 @@ public class ReminderBackgroundService extends IntentService {
         ArrayList<Course> courses = courseService.getAllCourses();
         int notificationId = 0;
         for(Course ele: courses){
-           if( ele.getOverAll()< ele.getDesire_grade()) {
+            if(ele.soFarGrade()>-1 && (ele.soFarGrade() < ele.getDesire_grade()))
+            {
                notificationId++;
 
                String courseTitle = ele.getTitle();
 
-               Intent restartMainIntent = MainActivity.newIntent(this);
 
-               PendingIntent mContentIntent = PendingIntent.getActivity(getApplicationContext(), MAIN_REQUEST,restartMainIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+               //Intent restartMainIntent = MainActivity.newIntent(this);
+                Intent restartCourseDirIntent = CourseDirActivity.newIntent(this,ele.getId());
+               PendingIntent mContentIntent = PendingIntent.getActivity(getApplicationContext(), MAIN_REQUEST,restartCourseDirIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
                Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext())
                        .setTicker(getResources().getString(R.string.reminder_notification))

@@ -241,7 +241,28 @@ public class CategoryFragment extends Fragment {
 
             nameTextView.setText(work.getTitle());
             dueTextView.setText(df.format(work.getDueDate())); // fixed
-            possibleTextView.setText(gradef.format(work.getWeight()) + "%");
+
+            if(Double.compare(work.getWeight(),0.0) == 0){ // not equal weight
+                //display the percent for each category equally distributed
+                if(Category.EXAM == work.getCategory()){
+                    possibleTextView.setText(gradef.format(course.getExam_weight()/course.getExams().size()) + "%");
+                }
+                else if(Category.QUIZ == work.getCategory()){
+                    possibleTextView.setText(gradef.format(course.getQuiz_weight()/course.getQuzs().size()) + "%");
+                }
+                else if(Category.ASSIGNMENT == work.getCategory()){
+                    possibleTextView.setText(gradef.format(course.getAssignment_weight()/course.getAssigs().size()) + "%");
+                }
+                else if(Category.PROJECT == work.getCategory()){
+                    possibleTextView.setText(gradef.format(course.getProject_weight()/course.getProjs().size()) + "%");
+                }
+                else if(Category.EXTRA == work.getCategory()){
+                    possibleTextView.setText(gradef.format(course.getExtra_weight()/course.getExtra().size()) + "%");
+                }
+            }
+            else {
+                possibleTextView.setText(gradef.format(work.getWeight()) + "%");
+            }
 
             if(work.getCompleteness() == false){
                 pointsTextView.setText("N/A");
