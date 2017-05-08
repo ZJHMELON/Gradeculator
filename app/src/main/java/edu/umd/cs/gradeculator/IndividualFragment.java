@@ -358,6 +358,7 @@ public class IndividualFragment extends Fragment {
                         sss.addCourseToBacklog(cs,work, title);
                     }
 
+                    cancelManyNotification(work.getDueDate(),work.getCategory(),work.getTitle(),cId);
                     scheduleManyNotification(work.getDueDate(),work.getCategory(),work.getTitle(),cId);
 
                     data.putExtra(EXTRA_WORK_CREATED, work);
@@ -496,6 +497,45 @@ public class IndividualFragment extends Fragment {
             }
         }
     }
+
+
+    public void cancelManyNotification(Date date,Work.Category category,String title,String courseId){
+        if(title != null) {
+            switch (category) {
+                case EXAM:
+                    for (int x = 0; x < 5; x++) {
+                        //id to be determined haha
+                        cancelNotification(title.hashCode() + x, title, 4 - x,courseId,category);
+                    }
+                    break;
+                case ASSIGNMENT:
+                    for (int x = 0; x < 3; x++) {
+                        //id to be determined haha
+                        cancelNotification(title.hashCode() + x, title, 2 - x,courseId,category);
+                    }
+                    break;
+                case PROJECT:
+                    for (int x = 0; x < 8; x++) {
+                        //id to be determined haha
+                        cancelNotification(title.hashCode() + x, title,  7 - x,courseId,category);
+                    }
+                    break;
+                case QUIZ:
+                    for (int x = 0; x < 2; x++) {
+                        //id to be determined haha
+                        cancelNotification(title.hashCode() + x, title, 1 - x,courseId,category);
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+        }
+    }
+
+
+
+
 
     public void scheduleNotification(Date date, int id, String title, int days, String courseId, Work.Category category){
         Log.d(title + " " + date.toString() + " " + Integer.toString(days), Integer.toString(id));
