@@ -358,7 +358,7 @@ public class IndividualFragment extends Fragment {
                         sss.addCourseToBacklog(cs,work, title);
                     }
 
-                    scheduleManyNotification(work.getDueDate(),work.getCategory(),work.getTitle());
+                    scheduleManyNotification(work.getDueDate(),work.getCategory(),work.getTitle(),cId);
 
                     data.putExtra(EXTRA_WORK_CREATED, work);
                     getActivity().setResult(RESULT_OK, data);
@@ -463,31 +463,31 @@ public class IndividualFragment extends Fragment {
         newFragment.show(getFragmentManager(), "Date");
     }
 
-    public void scheduleManyNotification(Date date,Work.Category category,String title){
+    public void scheduleManyNotification(Date date,Work.Category category,String title,String courseId){
         if(title != null) {
             switch (category) {
                 case EXAM:
                     for (int x = 0; x < 5; x++) {
                         //id to be determined haha
-                        scheduleNotification(date, title.hashCode() + x, title, 4 - x);
+                        scheduleNotification(date, title.hashCode() + x, title, 4 - x,courseId,category);
                     }
                     break;
                 case ASSIGNMENT:
                     for (int x = 0; x < 3; x++) {
                         //id to be determined haha
-                        scheduleNotification(date, title.hashCode() + x, title, 2 - x);
+                        scheduleNotification(date, title.hashCode() + x, title, 2 - x,courseId,category);
                     }
                     break;
                 case PROJECT:
                     for (int x = 0; x < 8; x++) {
                         //id to be determined haha
-                        scheduleNotification(date, title.hashCode() + x, title,  7 - x);
+                        scheduleNotification(date, title.hashCode() + x, title,  7 - x,courseId,category);
                     }
                     break;
                 case QUIZ:
                     for (int x = 0; x < 2; x++) {
                         //id to be determined haha
-                        scheduleNotification(date, title.hashCode() + x, title, 1 - x);
+                        scheduleNotification(date, title.hashCode() + x, title, 1 - x,courseId,category);
                     }
                     break;
                 default:
@@ -497,7 +497,7 @@ public class IndividualFragment extends Fragment {
         }
     }
 
-    public void scheduleNotification(Date date,int id,String title,int days){
+    public void scheduleNotification(Date date, int id, String title, int days, String courseId, Work.Category category){
         Log.d(title + " " + date.toString() + " " + Integer.toString(days), Integer.toString(id));
         long millis = date.getTime();
         long current = System.currentTimeMillis();
@@ -511,6 +511,8 @@ public class IndividualFragment extends Fragment {
         Intent myIntent = new Intent(getActivity(), AlarmRecever.class);
         myIntent.putExtra("title",title);
         myIntent.putExtra("days",days);
+        myIntent.putExtra("category",category);
+        myIntent.putExtra("courseId",courseId);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, myIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -518,11 +520,13 @@ public class IndividualFragment extends Fragment {
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + intervalToAlarm, pendingIntent);
     }
 
-    public void cancelNotification(int id,String title,int days){
+    public void cancelNotification(int id,String title,int days,String courseId, Work.Category category){
         AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
         Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
         myIntent.putExtra("title",title);
         myIntent.putExtra("days",days);
+        myIntent.putExtra("category",category);
+        myIntent.putExtra("courseId",courseId);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
                 id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

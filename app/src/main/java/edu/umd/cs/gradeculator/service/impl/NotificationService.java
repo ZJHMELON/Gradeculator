@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import edu.umd.cs.gradeculator.CategoryActivity;
 import edu.umd.cs.gradeculator.MainActivity;
 import edu.umd.cs.gradeculator.R;
+import edu.umd.cs.gradeculator.model.Work;
 
 /**
  * Created by weng2 on 5/3/2017.
@@ -38,22 +40,40 @@ public class NotificationService extends Service {
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
             int days = bundle.getInt("days");
+            Work.Category category= (Work.Category) bundle.getSerializable("category");
+            String courseId = bundle.getString("courseId");
+
 
             notificationManager = (NotificationManager) this.getApplicationContext()
                     .getSystemService(
                             this.getApplicationContext().NOTIFICATION_SERVICE);
 
-            Intent restartMainIntent = MainActivity.newIntent(this);
+            //Intent restartMainIntent = MainActivity.newIntent(this);
 
-            PendingIntent mContentIntent = PendingIntent.getActivity(getApplicationContext(), MAIN_REQUEST,restartMainIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent restartCategoryIntent = CategoryActivity.newIntent(this,courseId,category);
+
+            PendingIntent mContentIntent = PendingIntent.getActivity(getApplicationContext(), MAIN_REQUEST,restartCategoryIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            String daysString;
+            if (days == 0) {
+                daysString = "today" + "!";
+            }else if (days == 1){
+
+                daysString = "in "+days  + " day!";
+            }else {
+                daysString = "in "+days  + " days!";
+            }
+
 
             Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext())
                         .setTicker(getResources().getString(R.string.reminder_notification))
                         .setSmallIcon(android.R.drawable.ic_menu_compass)
                         .setContentTitle(getResources().getString(R.string.reminder_notification))
-                        .setContentText(title + " is due in " + days + " days!")
+                        .setContentText(title + " is due " + daysString)
                         .setContentIntent(mContentIntent)
                         .setAutoCancel(true);
+
+
             Notification notification = notificationBuilder.build();
 
 
