@@ -519,10 +519,7 @@ public class Course implements Serializable {
 	}
 	public double soFarGrade(){
 		double currentWeight=0;
-		if(exams.size()!=0){currentWeight+=getExam_weight();}
-		if(projects.size()!=0){currentWeight+=getProject_weight();}
-		if(quizzes.size()!=0){currentWeight+=getQuiz_weight();}
-		if(assignments.size()!=0){currentWeight+=getAssignment_weight();}
+		currentWeight=getWeight(exams)+getWeight(quizzes)+getWeight(projects)+getWeight(assignments);
 
 		if(Double.compare(currentWeight, 0.0) != 1){
 			return -1;
@@ -531,6 +528,15 @@ public class Course implements Serializable {
                 +getCtGrade(QUIZ,quiz_weight,false)
                 +getCtGrade(PROJECT,project_weight,false))/currentWeight+getCtGrade(EXTRA,extra_weight,false);
     }
+    public double getWeight(ArrayList<Work> list){
+		double weight= 0.0;
+		for (Work work: list){
+			if(work.getCompleteness()){
+				weight+=work.getWeight();
+			}
+		}
+		return weight;
+	}
 
 	public enum Grade {
 		A_PLUS, A, A_MINUS, B_PLUS, B, B_MINUS, C_PLUS, C, C_MINUS ;
