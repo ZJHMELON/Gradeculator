@@ -534,7 +534,7 @@ public class Course implements Serializable {
 		for (Work work: list){
 			if(work.getCompleteness()){
 				if(eq){
-					weight+=(w/list.size());
+					return w;
 				}
 				else{
 					weight+=work.getWeight();
