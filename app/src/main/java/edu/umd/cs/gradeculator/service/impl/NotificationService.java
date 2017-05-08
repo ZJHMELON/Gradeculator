@@ -11,9 +11,11 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import edu.umd.cs.gradeculator.CategoryActivity;
+import edu.umd.cs.gradeculator.DependencyFactory;
 import edu.umd.cs.gradeculator.MainActivity;
 import edu.umd.cs.gradeculator.R;
 import edu.umd.cs.gradeculator.model.Work;
+import edu.umd.cs.gradeculator.service.CourseService;
 
 /**
  * Created by weng2 on 5/3/2017.
@@ -36,6 +38,8 @@ public class NotificationService extends Service {
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
+        CourseService courseService = DependencyFactory.getCourseService(getApplicationContext());
+
         if(intent !=null) {
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
@@ -43,6 +47,7 @@ public class NotificationService extends Service {
             Work.Category category= (Work.Category) bundle.getSerializable("category");
             String courseId = bundle.getString("courseId");
 
+            String courseTitle = courseService.getCourseById(courseId).getTitle();
 
             notificationManager = (NotificationManager) this.getApplicationContext()
                     .getSystemService(
@@ -69,7 +74,7 @@ public class NotificationService extends Service {
                         .setTicker(getResources().getString(R.string.reminder_notification))
                         .setSmallIcon(android.R.drawable.ic_menu_compass)
                         .setContentTitle(getResources().getString(R.string.reminder_notification))
-                        .setContentText(title + " is due " + daysString)
+                        .setContentText(title +" of "+ courseTitle + " is due " + daysString)
                         .setContentIntent(mContentIntent)
                         .setAutoCancel(true);
 
