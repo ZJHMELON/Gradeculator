@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Gradeculator_night">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,11 +17,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddCourseActivity"></activity>>
-        <activity android:name=".CourseDirActivity"></activity>>
-        <activity android:name=".CategoryActivity"></activity>>
-        <activity android:name=".ClassInfoActivity"></activity>>
-        <activity android:name=".IndividualActivity"></activity>>
+        <activity android:name=".AddCourseActivity" android:screenOrientation="portrait"></activity>>
+        <activity android:name=".CourseDirActivity" android:screenOrientation="portrait"></activity>>
+        <activity android:name=".CategoryActivity" android:screenOrientation="portrait"></activity>>
+        <activity android:name=".ClassInfoActivity" android:screenOrientation="portrait"></activity>>
+        <activity android:name=".IndividualActivity" android:screenOrientation="portrait"></activity>>
 
         <service android:name=".service.impl.ReminderBackgroundService" />
         <service android:name=".service.impl.NotificationService" />

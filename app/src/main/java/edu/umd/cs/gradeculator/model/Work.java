@@ -93,7 +93,7 @@ public class Work implements Serializable {
         return c;
     }
 
-    public Category toString_Category(String s) {
+    public static Category toString_Category(String s) {
         Category c = null;
         switch (s) {
             case "EXAM":
