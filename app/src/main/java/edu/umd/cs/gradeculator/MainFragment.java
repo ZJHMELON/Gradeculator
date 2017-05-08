@@ -34,7 +34,6 @@ import edu.umd.cs.gradeculator.service.impl.ReminderBackgroundService;
  * Created by howardksw1 on 4/21/17.
  */
 
-// hihihihihi test 101
 public class
 MainFragment extends Fragment{
 
@@ -247,6 +246,15 @@ MainFragment extends Fragment{
         }
     }
 
+
+
+//    Credits
+//    This application uses Open Source components. You can find the source code of their open source projects along with license information below. We acknowledge and are grateful to these developers for their contributions to open source.
+//
+//    Project: android-swipe-to-dismiss-undo https://github.com/hudomju/android-swipe-to-dismiss-undo/
+//    Copyright (c) 2014 Hugo Doménech Juárez
+//    License (MIT) https://github.com/hudomju/android-swipe-to-dismiss-undo/blob/master/LICENSE
+//
 
     public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 

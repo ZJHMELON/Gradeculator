@@ -317,6 +317,13 @@ public class CategoryFragment extends Fragment {
     }
 
 
+    //    Credits
+//    This application uses Open Source components. You can find the source code of their open source projects along with license information below. We acknowledge and are grateful to these developers for their contributions to open source.
+//
+//    Project: Express-Combo https://github.com/hudomju/android-swipe-to-dismiss-undo/
+//    Copyright (c) 2014 Hugo Doménech Juárez
+//    License (MIT) https://github.com/hudomju/android-swipe-to-dismiss-undo/blob/master/LICENSE
+//
     public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         private final ItemTouchHelperAdapter mAdapter;

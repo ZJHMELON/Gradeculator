@@ -1,8 +1,6 @@
 package edu.umd.cs.gradeculator;
 
-/**
- * Created by apple on 5/7/17.
- */
+
 
 
 import android.animation.ValueAnimator;
@@ -38,8 +36,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+//    Credits
+//    This application uses Open Source components.
+//    You can find the source code of their open source projects along with license information below.
+//    We acknowledge and are grateful to these developers for their contributions to open source.
+//
+//    Project: ArcProgressStackView https://github.com/Devlight/ArcProgressStackView/
+//    Copyright (c) 2015 Basil Miller
+//    License (MIT) https://github.com/Devlight/ArcProgressStackView/blob/master/LICENSE.txt
+//
+//    The following code is a modification of the ArcProgressStackView above with less featuers.
+
+
 /**
- * Created by GIGAMOLE on 04.03.2016.
+ * Created by kay on 5/7/17.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class GradeProcessBar extends View {

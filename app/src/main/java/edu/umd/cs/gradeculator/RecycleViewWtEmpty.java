@@ -5,6 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+
+//    Credits
+//    This application uses Open Source components.
+//    You can find the source code of their open source projects along with license information below.
+//    We acknowledge and are grateful to these developers for their contributions to open source.
+//
+//    Project: https://gist.github.com/adelnizamutdinov/31c8f054d1af4588dc5c
+//
+
 /**
  * Created by kay on 5/5/17.
  */
