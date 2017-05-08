@@ -357,6 +357,7 @@ public class CategoryFragment extends Fragment {
                     .setNegativeButton(R.string.cancel_remove, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // do nothing
+                            updateUI();
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)

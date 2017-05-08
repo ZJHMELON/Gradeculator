@@ -81,6 +81,172 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
+    <FrameLayout
+        android:layout_width="300sp"
+        android:layout_height="300sp"
+        android:layout_gravity="center"
+        android:paddingTop="30sp">
+
+        <edu.umd.cs.gradeculator.GradeProcessBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            apsv_preview_bg="#34ffa70b"
+            apsv_preview_colors="@array/devlight"
+            apsv_model_bg_enabled="false"/>
+
+        <LinearLayout
+            android:weightSum="3"
+            android:paddingTop="140sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="17.5dip"
+                    android:gravity="center"
+                    android:shadowColor="#64000000"
+                    android:shadowDx="0"
+                    android:shadowDy="5"
+                    android:shadowRadius="5"
+                    android:text="Maximum"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/max_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="17.5dip"
+                    android:gravity="center"
+                    android:shadowColor="#64000000"
+                    android:shadowDx="0"
+                    android:shadowDy="5"
+                    android:shadowRadius="5"
+                    android:text=""
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"/>
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="17.5dip"
+                    android:gravity="center"
+                    android:shadowColor="#64000000"
+                    android:shadowDx="0"
+                    android:shadowDy="5"
+                    android:shadowRadius="5"
+                    android:text="Current"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/cur_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="17.5dip"
+                    android:gravity="center"
+                    android:shadowColor="#64000000"
+                    android:shadowDx="0"
+                    android:shadowDy="5"
+                    android:shadowRadius="5"
+                    android:text=""
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="17.5dip"
+                    android:gravity="center"
+                    android:shadowColor="#64000000"
+                    android:shadowDx="0"
+                    android:shadowDy="5"
+                    android:shadowRadius="5"
+                    android:text="Goal"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/goal_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="17.5dip"
+                    android:gravity="center"
+                    android:shadowColor="#64000000"
+                    android:shadowDx="0"
+                    android:shadowDy="5"
+                    android:shadowRadius="5"
+                    android:text=""
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="17.5dip"-->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:gravity="center"-->
+                <!--android:shadowColor="#64000000"-->
+                <!--android:shadowDx="0"-->
+                <!--android:shadowDy="5"-->
+                <!--android:shadowRadius="5"-->
+                <!--android:text="Goal"-->
+                <!--android:textColor="#fff"-->
+                <!--android:textSize="15sp"/>-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="17.5dip"-->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:gravity="center"-->
+                <!--android:shadowColor="#64000000"-->
+                <!--android:shadowDx="0"-->
+                <!--android:shadowDy="5"-->
+                <!--android:shadowRadius="5"-->
+                <!--android:text="Current"-->
+                <!--android:textColor="#fff"-->
+                <!--android:textSize="15sp"/>-->
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_course_dir">
+
+    </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/empty_view_course_dir"
         android:gravity="center_horizontal"
@@ -135,19 +301,9 @@
                 android:text=" + Initalize Category"/>
 
         </LinearLayout>
-
-
-
-
     </LinearLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/layout_course_dir">
 
-    </LinearLayout>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package edu.umd.cs.gradeculator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.model.Work;
@@ -34,6 +38,9 @@ public class CourseDirFragment extends Fragment{
     private final int REQUEST_CODE_ASSIGNMENT = 8;
     private final int REQUEST_CODE_PROJECT = 9;
     private final int REQUEST_CODE_EXTRA = 10;
+    private TextView current_grade;
+    private TextView goal_grade;
+    private TextView max_grade;
     private Course course;
     private LinearLayout mainLayout;
     private LinearLayout emptyLayout;
@@ -41,6 +48,19 @@ public class CourseDirFragment extends Fragment{
     private TextView course_name;
     private String current_course_id;
     private CourseService cs;
+    public final static int MODEL_COUNT = 3;
+
+    // APSV
+    private GradeProcessBar gradeProcessBar;
+
+    private View mWrapperAnimation;
+
+    // Parsed colors
+    private int[] mStartColors = new int[MODEL_COUNT];
+    private int[] mEndColors = new int[MODEL_COUNT];
+
+    // First full size of APSV
+    private int mFullSize = -1;
 
 
     @Override
@@ -77,6 +97,11 @@ public class CourseDirFragment extends Fragment{
         emptyLayout = (LinearLayout) view.findViewById(R.id.empty_view_course_dir);
         TextView empty_btn = (TextView) view.findViewById(R.id.empty_btn_course_dir);
 
+        gradeProcessBar = (GradeProcessBar) view.findViewById(R.id.progressBar);
+        current_grade = (TextView) view.findViewById(R.id.cur_grade);
+        goal_grade = (TextView) view.findViewById(R.id.goal_grade);
+        max_grade = (TextView) view.findViewById(R.id.max_grade);
+
         empty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +132,6 @@ public class CourseDirFragment extends Fragment{
                 getActivity().finish();
             }
         });
-
 
         return view;
     }
@@ -158,6 +182,39 @@ public class CourseDirFragment extends Fragment{
 
     private void updateUI() {
         course = DependencyFactory.getCourseService(getActivity()).getCourseById(course.getId());
+
+        // Get colors
+        final String[] startColors = getResources().getStringArray(R.array.devlight);
+        final String[] bgColors = getResources().getStringArray(R.array.bg);
+
+        // Parse colors
+        for (int i = 0; i < MODEL_COUNT; i++) {
+            mStartColors[i] = Color.parseColor(startColors[i]);
+        }
+
+        // Set models
+        final ArrayList<GradeProcessBar.Model> models = new ArrayList<>();
+        models.add(new GradeProcessBar.Model("Maximum", 0, Color.parseColor(bgColors[0]), mStartColors[0]));
+        models.add(new GradeProcessBar.Model("Current", 0, Color.parseColor(bgColors[1]), mStartColors[1]));
+        models.add(new GradeProcessBar.Model("Goal", 0, Color.parseColor(bgColors[2]), mStartColors[2]));
+        gradeProcessBar.setModels(models);
+        gradeProcessBar.setTypeface("");
+
+        // Start apsv animation on start
+        gradeProcessBar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                List<GradeProcessBar.Model> models = gradeProcessBar.getModels();
+                models.get(0).setProgress((float) course.getOverAll());
+                models.get(1).setProgress((float) course.soFarGrade());
+                models.get(2).setProgress((float) course.getDesire_grade());
+                gradeProcessBar.animateProgress();
+            }
+        }, 300);
+
+        max_grade.setText(course.getOverAll() + "%");
+        goal_grade.setText(course.getDesire_grade() + "%");
+        current_grade.setText(course.soFarGrade() + "%");
 
         if(checkEmptyView() == true){
             // empty need to attach empty view

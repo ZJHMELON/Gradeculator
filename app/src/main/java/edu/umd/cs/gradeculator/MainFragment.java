@@ -36,6 +36,7 @@ import edu.umd.cs.gradeculator.service.impl.ReminderBackgroundService;
 public class
 MainFragment extends Fragment{
 
+
     private ArrayList<Course> all_course;
     private ItemTouchHelper mItemTouchHelper;
     private final String TAG = getClass().getSimpleName();
@@ -285,6 +286,7 @@ MainFragment extends Fragment{
                     .setNegativeButton(R.string.cancel_remove, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // do nothing
+                            updateUI();
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
