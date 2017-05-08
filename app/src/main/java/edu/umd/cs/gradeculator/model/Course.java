@@ -481,7 +481,7 @@ public class Course implements Serializable {
 				break;
 		}
 		for (Work work : sumList){
-			if(work.getGrade()>=0){
+			if(Double.compare(work.getGrade(), 0.0)>=0){
 				count++;
 			}
 		}
@@ -494,7 +494,7 @@ public class Course implements Serializable {
 		}
 		if (ifEqualW) {
 			for (Work work : sumList) {
-				if(work.getGrade()>=0){
+				if(Double.compare(work.getGrade(), 0.0)>=0){
 					tempGrade+=work.getGrade();
 					allGrade+=1;
 				}
@@ -502,7 +502,7 @@ public class Course implements Serializable {
 			return (tempGrade/allGrade)*totalweight;
 		}else{
 			for(Work work : sumList){
-				if(work.getGrade()>=0){
+				if(Double.compare(work.getGrade(), 0.0)>=0){
 					tempGrade+=(work.getGrade()*work.getWeight());
 					allGrade+=work.getWeight();
 				}
@@ -519,20 +519,26 @@ public class Course implements Serializable {
 	}
 	public double soFarGrade(){
 		double currentWeight=0;
-		currentWeight=getWeight(exams)+getWeight(quizzes)+getWeight(projects)+getWeight(assignments);
+		currentWeight=getWeight(exams,equal_weight_exam,exam_weight)+getWeight(quizzes,equal_weight_quiz,quiz_weight)
+				+getWeight(projects,equal_weight_project,project_weight)+getWeight(assignments,equal_weight_assignment,assignment_weight);
 
 		if(Double.compare(currentWeight, 0.0) != 1){
 			return -1;
 		}
-        return 100*(getCtGrade(EXAM,exam_weight,false)+getCtGrade(ASSIGNMENT,assignment_weight,false)
+		return 100*(getCtGrade(EXAM,exam_weight,false)+getCtGrade(ASSIGNMENT,assignment_weight,false)
                 +getCtGrade(QUIZ,quiz_weight,false)
                 +getCtGrade(PROJECT,project_weight,false))/currentWeight+getCtGrade(EXTRA,extra_weight,false);
     }
-    public double getWeight(ArrayList<Work> list){
+    public double getWeight(ArrayList<Work> list,Boolean eq,Double w){
 		double weight= 0.0;
 		for (Work work: list){
 			if(work.getCompleteness()){
-				weight+=work.getWeight();
+				if(eq){
+					weight+=(w/list.size());
+				}
+				else{
+					weight+=work.getWeight();
+				}
 			}
 		}
 		return weight;
