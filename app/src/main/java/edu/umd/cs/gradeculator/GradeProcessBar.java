@@ -1,23 +1,17 @@
 package edu.umd.cs.gradeculator;
 
-
-
-
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.SweepGradient;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.FloatRange;
@@ -25,13 +19,8 @@ import android.support.v4.view.ViewCompat;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Interpolator;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,12 +34,8 @@ import java.util.Random;
 //    Copyright (c) 2015 Basil Miller
 //    License (MIT) https://github.com/Devlight/ArcProgressStackView/blob/master/LICENSE.txt
 //
-//    The following code is a modification of the ArcProgressStackView above with less featuers.
+//    The following code is a modification of the ArcProgressStackView above with less features.
 
-
-/**
- * Created by kay on 5/7/17.
- */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class GradeProcessBar extends View {
 

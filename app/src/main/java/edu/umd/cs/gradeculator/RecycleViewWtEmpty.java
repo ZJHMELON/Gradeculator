@@ -12,11 +12,8 @@ import android.view.View;
 //    We acknowledge and are grateful to these developers for their contributions to open source.
 //
 //    Project: https://gist.github.com/adelnizamutdinov/31c8f054d1af4588dc5c
+//    Use EmptyRecyclerView.java by Nizamutdinov Adel
 //
-
-/**
- * Created by kay on 5/5/17.
- */
 
 // Implement the empty view featuer by adding empty featuer into recyclerview
 public class RecycleViewWtEmpty extends RecyclerView {

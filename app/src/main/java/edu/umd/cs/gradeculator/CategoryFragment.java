@@ -32,6 +32,18 @@ import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
 import static android.app.Activity.RESULT_OK;
 import static edu.umd.cs.gradeculator.model.Work.Category;
 
+//    Credits
+//    This application uses Open Source components. You can find the source code of their open
+//     source projects along with license information below. We acknowledge and are grateful to
+//     these developers for their contributions to open source.
+//
+//    Project: Android-ItemTouchHelper-Demo https://github.com/iPaulPro/Android-ItemTouchHelper-Demo
+//    Copyright 2015 Paul Burke
+//    License (Apache 2.0) https://github.com/iPaulPro/Android-ItemTouchHelper-Demo/blob/master/LICENSE.txt
+//    SimpleItemTouchHelperCallback and WorkAdapter are built based the above project.
+//
+
+
 /**
  * Created by weng2 on 4/12/2017.
  */
@@ -338,13 +350,6 @@ public class CategoryFragment extends Fragment {
     }
 
 
-    //    Credits
-//    This application uses Open Source components. You can find the source code of their open source projects along with license information below. We acknowledge and are grateful to these developers for their contributions to open source.
-//
-//    Project: Express-Combo https://github.com/hudomju/android-swipe-to-dismiss-undo/
-//    Copyright (c) 2014 Hugo Doménech Juárez
-//    License (MIT) https://github.com/hudomju/android-swipe-to-dismiss-undo/blob/master/LICENSE
-//
     public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         private final ItemTouchHelperAdapter mAdapter;

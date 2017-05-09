@@ -19,17 +19,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import edu.umd.cs.gradeculator.model.Course;
 import edu.umd.cs.gradeculator.service.CourseService;
 import edu.umd.cs.gradeculator.service.ItemTouchHelperAdapter;
 import edu.umd.cs.gradeculator.service.impl.ReminderBackgroundService;
+
+//    Credits
+//    This application uses Open Source components. You can find the source code of their open
+//     source projects along with license information below. We acknowledge and are grateful to
+//     these developers for their contributions to open source.
+//
+//    Project: Android-ItemTouchHelper-Demo https://github.com/iPaulPro/Android-ItemTouchHelper-Demo
+//    Copyright 2015 Paul Burke
+//    License (Apache 2.0) https://github.com/iPaulPro/Android-ItemTouchHelper-Demo/blob/master/LICENSE.txt
+//    SimpleItemTouchHelperCallback and CourseAdapter are built based the above project.
+//
+
+
+
 /**
  * Created by howardksw1 on 4/21/17.
  */
@@ -57,16 +67,6 @@ MainFragment extends Fragment{
         super.onCreate(savedInstanceState);
         courseService = DependencyFactory.getCourseService(getActivity());
         ReminderBackgroundService.setReminderAlarm(getActivity().getApplicationContext(), 1);
-
-//        AlarmManager alarmManager = (AlarmManager)  getActivity().getApplicationContext().getSystemService(ALARM_SERVICE);
-//        Intent myIntent = new Intent(getActivity().getApplicationContext(), AlarmRecever.class);
-//        myIntent.putExtra("id",1);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
-//                1, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60000/3,
-//                60000/3,pendingIntent);
-
     }
 
     @Nullable
@@ -245,16 +245,6 @@ MainFragment extends Fragment{
             notifyItemRemoved(position);
         }
     }
-
-
-
-//    Credits
-//    This application uses Open Source components. You can find the source code of their open source projects along with license information below. We acknowledge and are grateful to these developers for their contributions to open source.
-//
-//    Project: android-swipe-to-dismiss-undo https://github.com/hudomju/android-swipe-to-dismiss-undo/
-//    Copyright (c) 2014 Hugo Doménech Juárez
-//    License (MIT) https://github.com/hudomju/android-swipe-to-dismiss-undo/blob/master/LICENSE
-//
 
     public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
