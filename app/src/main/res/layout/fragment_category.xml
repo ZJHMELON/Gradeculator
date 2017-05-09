@@ -132,7 +132,7 @@
                 android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Opps No Assignments Yet ..."/>
+                android:text="@string/empty_category"/>
 
             <TextView
                 android:id="@+id/empty_btn_category"
@@ -144,7 +144,7 @@
                 android:textSize="15sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" + Create New Assignment"/>
+                android:text="@string/empty_catogery_btn"/>
 
         </LinearLayout>
 

@@ -39,7 +39,7 @@
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical|end"
-                    android:text="Cancel"
+                    android:text="@string/cancel_btn"
                     android:textAllCaps="true" />
             </LinearLayout>
 
@@ -59,7 +59,7 @@
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical|end"
-                    android:text="Save"
+                    android:text="@string/save_btn"
                     android:textAllCaps="true" />
             </LinearLayout>
 

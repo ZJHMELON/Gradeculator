@@ -70,12 +70,12 @@
                     android:textSize="16sp"
                     android:id="@+id/toolbar_edit_weight"
                     style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-                    android:text="EDIT"
+                    android:text="@string/edit_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical|start"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="true" />
             </LinearLayout>
 
         </LinearLayout>
@@ -176,7 +176,7 @@
                     android:shadowDx="0"
                     android:shadowDy="5"
                     android:shadowRadius="5"
-                    android:text="Maximum"
+                    android:text="@string/max"
                     android:textColor="@color/text_color"
                     android:textSize="15sp"/>
 
@@ -210,7 +210,7 @@
                     android:shadowDx="0"
                     android:shadowDy="5"
                     android:shadowRadius="5"
-                    android:text="Current"
+                    android:text="@string/cur"
                     android:textColor="@color/text_color"
                     android:textSize="15sp"/>
 
@@ -244,7 +244,7 @@
                     android:shadowDx="0"
                     android:shadowDy="5"
                     android:shadowRadius="5"
-                    android:text="Goal"
+                    android:text="@string/goal"
                     android:textColor="@color/text_color"
                     android:textSize="15sp"/>
 

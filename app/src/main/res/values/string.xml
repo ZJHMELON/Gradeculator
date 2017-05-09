@@ -160,5 +160,17 @@
     <string name="empty_main">Opps No Classes Yet ...</string>
 
     <string name="empty_main_btn"> + Create New Class</string>
+    <string name="save_btn">Save</string>
+    <string name="cancel_btn">Cancel</string>
+    <string name="edit_btn">Edit</string>
+    <string name="empty_catogery_btn"> + Create New Assignment</string>
+    <string name="empty_category">Opps No Assignments Yet ...</string>
+
+    <string name="empty_course_btn"> + Initalize Category</string>
+    <string name="empty_course">Opps No Catogeries Yet ...</string>
+    <string name="weight">Weights</string>
+    <string name="max">Maximum</string>
+    <string name="cur">Current</string>
+    <string name="goal">Goal</string>
 
 </resources>

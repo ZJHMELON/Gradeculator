@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -417,8 +418,15 @@ public class IndividualFragment extends Fragment {
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake_edit_text);
                         weightEditText.startAnimation(shake);
                     } else{
-                        if(!cs.ckeckWeight(cat,Double.parseDouble(weightEditText.getText().toString())-oldwork))
-                            Toast.makeText(getActivity(),"Over weight",Toast.LENGTH_SHORT).show();
+                        if(!cs.ckeckWeight(cat,Double.parseDouble(weightEditText.getText().toString())-oldwork)){
+                            // total weight exceed maximum
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Opps..")
+                                    .setMessage("Your total weight for this category exceeds the maximum possible " +
+                                            "weight that you entered.")
+                                    .setPositiveButton(R.string.okay,null)
+                                    .show();
+                        }
                         weightLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     }
                 }
